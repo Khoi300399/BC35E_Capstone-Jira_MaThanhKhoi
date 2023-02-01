@@ -1,19 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { lazy, Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import "./assets/scss/style.scss";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  unstable_HistoryRouter as HistoryBrowserRouter,
+} from "react-router-dom";
+import { createBrowserHistory } from "history";
+import { Provider } from "react-redux";
+import { store } from "./redux/config";
+
+const Login = lazy(() => import("./pages/Login/Login"));
+const Register = lazy(() => import("./pages/Register/Register"));
+const HomeTemplate = lazy(
+  () => import("./templates/HomeTemplate/HomeTemplate")
+);
+const Project = lazy(() => import("./pages/Home/Project"));
+const Profile = lazy(() => import("./pages/Profile/Profile"));
+const Users = lazy(() => import("./pages/Users/Users"));
+const Task = lazy(() => import("./pages/Task/Task"));
+const Comment = lazy(() => import("./pages/Comment/Comment"));
+const AddPropject = lazy(() => import("./pages/Project/AddProject"));
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export const history: any = createBrowserHistory();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+root.render(
+  <Provider store={store}>
+    <HistoryBrowserRouter history={history}>
+      <Suspense>
+        <Routes>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="register" element={<Register />}></Route>
+          <Route path="" element={<HomeTemplate />}>
+            <Route index element={<Project />}></Route>
+            <Route path="profile" element={<Profile />}></Route>
+            <Route path="add-project" element={<AddPropject />}></Route>
+            <Route path="user" element={<Users />}></Route>
+            <Route path="task" element={<Task />}></Route>
+            <Route path="comment" element={<Comment />}></Route>
+          </Route>
+        </Routes>
+      </Suspense>
+    </HistoryBrowserRouter>
+  </Provider>
+);

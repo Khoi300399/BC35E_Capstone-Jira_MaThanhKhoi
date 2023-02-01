@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap");
+  body {
+    font-family: "Epilogue", sans-serif;
+    @apply text-base font-normal;
+  }
+  input {
+    @apply outline-none;
+  }
+  input:focus + .error-input {
+    display: none;
+  }
+  @media screen and (min-width: 1024px) {
+    table {
+      @apply w-full;
+
+      thead tr {
+        @apply bg-gray-100;
+      }
+
+      tbody tr {
+        @apply border-b border-gray-100;
+      }
+
+      td,
+      th {
+        @apply align-middle p-6 text-left text-sm;
+      }
+
+      th {
+        @apply font-bold;
+      }
+    }
+    .table-project {
+      tr {
+        display: grid;
+        grid-template-columns: 10% 25% 20% 20% 15% 10%;
+      }
+      td {
+        display: grid;
+        align-items: center;
+      }
+    }
+  }
+}
