@@ -15,8 +15,8 @@ export const config = {
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == " ") c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      while (c.charAt(0) === " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
   },
@@ -55,7 +55,7 @@ export const {
   USER_LOGIN,
 } = config;
 
-const DOMAIN = "https://shop.cyberlearn.vn/api";
+const DOMAIN = "https://jiranew.cybersoft.edu.vn/api";
 const TOKEN_CYBERSOFT =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJKYXZhIDE3IiwiSGV0SGFuU3RyaW5nIjoiMTkvMTIvMjAyMiIsIkhldEhhblRpbWUiOiIxNjcxNDA4MDAwMDAwIiwibmJmIjoxNjQ4NjU5NjAwLCJleHAiOjE2NzE1NTU2MDB9.OhFEeK7ExgP3U24hEq7GxmL5VzAjzaEPPeOZpaWzZGE";
 
@@ -72,10 +72,10 @@ http.interceptors.request.use(
     const token = getStore(ACCESS_TOKEN);
     config.headers = {
       ...config.headers,
-      ["Authorization"]: `Bearer ${token}`,
+      ["Authorization"]: token,
       ["TokenCybersoft"]: TOKEN_CYBERSOFT,
     };
-    // config.headers['Content-Type'] = 'application/json';
+    config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error) => {

@@ -1,15 +1,28 @@
 import React from "react";
-import Heading from "../../components/Heading/Heading";
 import IconDelete from "../../components/icons/IconDelete";
 import IconEdit from "../../components/icons/IconEdit";
 import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
+import Button from "../../components/Button/Button";
+import HeaderSearch from "../../components/HeaderSearch/HeaderSearch";
 type Props = {};
 
 const Project = (props: Props) => {
   return (
     <div className="w-full overflow-x-auto">
-      <Heading>Project</Heading>
+      <div className=" bg-white rounded-3xl flex items-center justify-between py-8 px-10">
+        <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
+          <HeaderSearch></HeaderSearch>
+        </div>
+        <Button
+          type="button"
+          href="/add-project"
+          kind="secondary"
+          className="bg-secondary bg-opacity-20 text-secondary"
+        >
+          Create project
+        </Button>
+      </div>
       <table className="table-project">
         <thead>
           <tr>

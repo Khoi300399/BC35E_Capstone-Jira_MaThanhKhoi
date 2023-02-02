@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./assets/scss/style.scss";
 import {
-  BrowserRouter,
   Routes,
   Route,
   unstable_HistoryRouter as HistoryBrowserRouter,

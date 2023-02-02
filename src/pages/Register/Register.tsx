@@ -10,23 +10,23 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import ButtonGoogle from "../../components/ButtonGoogle/ButtonGoogle";
+import { useDispatch } from "react-redux";
+import { DispathType } from "../../redux/config";
+import { registerApi } from "../../redux/userReducer/userReducer";
+import { userType } from "../../types/global";
 
 type Props = {};
 
-interface Values {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-}
 const Register = (props: Props) => {
+  const dispath: DispathType = useDispatch();
+
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const initialValues: Values = {
-    name: "",
+  const initialValues: userType = {
     email: "",
-    phone: "",
-    password: "",
+    passWord: "",
+    name: "",
+    phoneNumber: "",
   };
   const { value: acceptTerm, handleToggleValue: handleToggleTerm } =
     useToggle();
@@ -53,22 +53,25 @@ const Register = (props: Props) => {
           email: Yup.string()
             .required("This email already registered")
             .email("Invalid email address"),
-          phone: Yup.string()
+          phoneNumber: Yup.string()
             .required("This phone already registered")
             .matches(phoneRegExp, "Phone number is not valid"),
 
-          password: Yup.string()
+          passWord: Yup.string()
             .required("This password already registered")
             .min(8, "Password must be 8 character "),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-          }, 300);
+          if (acceptTerm) {
+            setTimeout(() => {
+              setSubmitting(false);
+              const actionAsync = registerApi(values);
+              dispath(actionAsync);
+            }, 300);
+          }
         }}
       >
         {({ isSubmitting, errors }) => {
-          const { name, email, phone, password } = errors;
           return (
             <Form>
               <FormGroup>
@@ -77,7 +80,7 @@ const Register = (props: Props) => {
                   id="name"
                   name="name"
                   type="text"
-                  placeholder={!name ? "Please enter your name ..." : ""}
+                  placeholder="Please enter your name ..."
                 />
               </FormGroup>
 
@@ -87,29 +90,27 @@ const Register = (props: Props) => {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder={!email ? "Please enter your email ..." : ""}
+                  placeholder="Please enter your email ..."
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="phone">Phone *</Label>
+                <Label htmlFor="phoneNumber">Phone *</Label>
                 <Input
-                  id="phone"
-                  name="phone"
+                  id="phoneNumber"
+                  name="phoneNumber"
                   type="text"
-                  placeholder={!phone ? "Please enter your phone ..." : ""}
+                  placeholder="Please enter your phone ..."
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="password">Password *</Label>
+                <Label htmlFor="passWord">Password *</Label>
                 <Input
-                  id="password"
-                  name="password"
+                  id="passWord"
+                  name="passWord"
                   type={showPassword ? "text" : "password"}
-                  placeholder={
-                    !password ? "Please enter your password ..." : ""
-                  }
+                  placeholder="Please enter your password ..."
                 >
                   <IconEyeToggle
                     open={showPassword}

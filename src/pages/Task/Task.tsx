@@ -13,7 +13,6 @@ import FormRow from "../../components/common/FormRow/FormRow";
 import FormGroup from "../../components/common/FormGroup/FormGroup";
 import TextTiny from "../../components/Input/TextTiny";
 import Button from "../../components/Button/Button";
-import InputTags from "../../components/Input/InputTags";
 
 type Props = {};
 interface Values {
@@ -347,11 +346,8 @@ const Task = (props: Props) => {
                   </FormGroup>
 
                   <div className=" flex items-center justify-center">
-                    <Button
-                      type="submit"
-                      className="w-48  bg-primary text-white my-3"
-                    >
-                      Create
+                    <Button type="submit" className=" my-3" kind="primary">
+                      Add new task
                     </Button>
                   </div>
                 </Form>

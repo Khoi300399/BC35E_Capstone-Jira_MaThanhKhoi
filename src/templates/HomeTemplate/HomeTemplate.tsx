@@ -7,11 +7,13 @@ type Props = {};
 
 const HomeTemplate = (props: Props) => {
   return (
-    <div className="min-h-screen md:px-10 md:py-5 bg-lite">
+    <div className="relative min-h-screen md:px-10 md:py-5 bg-lite">
       <Header />
-      <div className="flex items-start gap-x-10">
-        <Dashboard />
-        <div className="w-full">
+      <div className="flex items-start gap-x-10 ">
+        <div className="md:fixed ">
+          <Dashboard />
+        </div>
+        <div className="w-full pl-24">
           <Outlet />
         </div>
       </div>

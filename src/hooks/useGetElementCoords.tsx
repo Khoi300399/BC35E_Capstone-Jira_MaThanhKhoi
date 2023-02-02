@@ -9,12 +9,13 @@ export default function useGetElementCoords() {
     width: 0,
     height: 0,
   });
+
   const handleGetElementCoords = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     const node = e.target as HTMLElement;
     const clientRect = node.getBoundingClientRect() as DOMRect;
-    console.log(clientRect);
+
     setCoords({
       x: clientRect.left,
       y: clientRect.top + window.scrollY,

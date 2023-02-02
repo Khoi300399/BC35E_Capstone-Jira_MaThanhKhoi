@@ -14,36 +14,47 @@
   input:focus + .error-input {
     display: none;
   }
-  @media screen and (min-width: 1024px) {
-    table {
-      @apply w-full;
 
-      thead tr {
-        @apply bg-gray-100;
-      }
+  table {
+    @apply w-full;
 
-      tbody tr {
-        @apply border-b border-gray-100;
-      }
-
-      td,
-      th {
-        @apply align-middle p-6 text-left text-sm;
-      }
-
-      th {
-        @apply font-bold;
-      }
+    thead tr {
+      @apply bg-gray-100;
     }
-    .table-project {
-      tr {
-        display: grid;
-        grid-template-columns: 10% 25% 20% 20% 15% 10%;
-      }
-      td {
-        display: grid;
-        align-items: center;
-      }
+
+    tbody tr {
+      @apply border-b border-gray-100;
+    }
+
+    td,
+    th {
+      @apply align-middle p-6 text-left text-sm;
+    }
+
+    th {
+      @apply font-bold;
+    }
+  }
+
+  .table-project {
+    tr {
+      display: grid;
+      grid-template-columns: 10% 25% 20% 20% 15% 10%;
+    }
+    td {
+      display: grid;
+      align-items: center;
+    }
+  }
+
+  .table-user {
+    tr {
+      display: grid;
+      grid-template-columns: 10% 25% 10% 25% 20% 10%;
+    }
+    td {
+      display: grid;
+      align-items: center;
     }
   }
 }

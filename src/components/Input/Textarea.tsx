@@ -1,18 +1,18 @@
-import { useField } from "formik";
-import React from "react";
-import { propsInput } from "../../types/global";
+import React, { useState } from "react";
 
-const Textarea = ({ ...props }: propsInput) => {
-  const [field] = useField(props);
+type Props = {
+  placeholder: string;
+};
 
+const Textarea = ({ ...props }: Props) => {
+  const [text, setText] = useState<string>("");
   return (
-    <textarea
-      className="w-full px-6 py-4 border  rounded-xl text-sm font-medium bg-transparent placeholder:text-text4 dark:placeholder:text-text-2"
-      {...props}
-      {...field}
-    >
-      Textarea
-    </textarea>
+    <>
+      <textarea
+        className="w-full border border-gray-400 resize-none rounded-lg px-2 pt-1 placeholder:text-sm focus:outline-none focus:border-blue-400"
+        {...props}
+      ></textarea>
+    </>
   );
 };
 

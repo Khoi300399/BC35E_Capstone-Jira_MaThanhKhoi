@@ -7,7 +7,7 @@ type Props = {
 const IconDelete = ({ onClick = () => {} }: Props) => {
   return (
     <span
-      className="flex items-center justify-center w-10 h-10 borderborder-transparent rounded cursor-pointer text-error bg-error bg-opacity-20"
+      className="flex items-center justify-center w-10 h-10 borderborder-transparent rounded cursor-pointer text-error hover:bg-error hover:bg-opacity-20 transition-all ease-linear"
       onClick={onClick}
     >
       <svg

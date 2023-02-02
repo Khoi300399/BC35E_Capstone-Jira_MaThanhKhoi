@@ -9,17 +9,19 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ButtonGoogle from "../../components/ButtonGoogle/ButtonGoogle";
+import { userType } from "../../types/global";
+import { loginApi } from "../../redux/userReducer/userReducer";
+import { useDispatch } from "react-redux";
+import { DispathType } from "../../redux/config";
 
 type Props = {};
 
-interface Values {
-  email: string;
-  password: string;
-}
 const Login = (props: Props) => {
-  const initialValues: Values = {
+  const dispath: DispathType = useDispatch();
+
+  const initialValues: userType = {
     email: "",
-    password: "",
+    passWord: "",
   };
 
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
@@ -29,7 +31,6 @@ const Login = (props: Props) => {
       <p className="text-center  font-normal lg:text-sm text-text3 lg:mb-8 mb-6">
         Dont have an account?{" "}
         <Link to={"/login"} className="text-primary font-medium underline">
-          {" "}
           Sign up
         </Link>
       </p>
@@ -39,12 +40,14 @@ const Login = (props: Props) => {
         validationSchema={Yup.object().shape({
           email: Yup.string().required(" ").email(" "),
 
-          password: Yup.string().required(" ").min(8, " "),
+          passWord: Yup.string().required(" ").min(3, " "),
         })}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           setTimeout(() => {
             setSubmitting(false);
-          }, 300);
+            const actionAsync = loginApi(values);
+            dispath(actionAsync);
+          }, 500);
         }}
       >
         {({ isSubmitting }) => {
@@ -61,10 +64,10 @@ const Login = (props: Props) => {
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="password">Password *</Label>
+                <Label htmlFor="passWord">Password *</Label>
                 <Input
-                  id="password"
-                  name="password"
+                  id="passWord"
+                  name="passWord"
                   type={showPassword ? "text" : "password"}
                   placeholder="Please enter your password ..."
                 >

@@ -108,10 +108,7 @@ const AddProject = (props: Props) => {
                     <TextTiny control="tiny-mce" name="description" />
                   </FormGroup>
                   <div className=" flex items-center justify-center">
-                    <Button
-                      type="submit"
-                      className="w-48  bg-primary text-white"
-                    >
+                    <Button type="submit" className=" my-3" kind="primary">
                       Add new project
                     </Button>
                   </div>
