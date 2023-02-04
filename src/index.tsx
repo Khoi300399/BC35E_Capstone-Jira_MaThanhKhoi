@@ -21,6 +21,7 @@ const Users = lazy(() => import("./pages/Users/Users"));
 const Task = lazy(() => import("./pages/Task/Task"));
 const Comment = lazy(() => import("./pages/Comment/Comment"));
 const AddPropject = lazy(() => import("./pages/Project/AddProject"));
+const ProjectDetail = lazy(() => import("./pages/Project/ProjectDetail"));
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -38,6 +39,7 @@ root.render(
             <Route index element={<Project />}></Route>
             <Route path="profile" element={<Profile />}></Route>
             <Route path="add-project" element={<AddPropject />}></Route>
+            <Route path="project-detail" element={<ProjectDetail />}></Route>
             <Route path="user" element={<Users />}></Route>
             <Route path="task" element={<Task />}></Route>
             <Route path="comment" element={<Comment />}></Route>

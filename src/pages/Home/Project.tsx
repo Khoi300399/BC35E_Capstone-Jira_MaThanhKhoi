@@ -1,7 +1,7 @@
 import React from "react";
 import IconDelete from "../../components/icons/IconDelete";
 import IconEdit from "../../components/icons/IconEdit";
-import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
 import Button from "../../components/Button/Button";
 import HeaderSearch from "../../components/HeaderSearch/HeaderSearch";
@@ -57,15 +57,18 @@ const Project = (props: Props) => {
                     icon={<UserOutlined />}
                   />
                 </Tooltip>
-                <Avatar
-                  className="mx-1"
-                  style={{ backgroundColor: "#1890ff" }}
-                  icon={<AntDesignOutlined />}
-                />
-                <Avatar
-                  style={{ backgroundColor: "#1890ff" }}
-                  icon={<AntDesignOutlined />}
-                />
+                <Tooltip className="mx-1" title="Ant User" placement="top">
+                  <Avatar
+                    style={{ backgroundColor: "#87d068" }}
+                    icon={<UserOutlined />}
+                  />
+                </Tooltip>
+                <Tooltip title="Ant User" placement="top">
+                  <Avatar
+                    style={{ backgroundColor: "#87d068" }}
+                    icon={<UserOutlined />}
+                  />
+                </Tooltip>
               </Avatar.Group>
             </td>
             <td>
