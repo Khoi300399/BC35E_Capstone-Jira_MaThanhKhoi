@@ -5,7 +5,7 @@ const Select = ({
   show,
   onClick,
   placeholder = "",
-  className = "max-w-[460px] text-text5 bg-select",
+  className = "max-w-[460px] text-text5 bg-[rgba(9,30,66,0.04)]",
   nodeRef,
 }: Props) => {
   return (

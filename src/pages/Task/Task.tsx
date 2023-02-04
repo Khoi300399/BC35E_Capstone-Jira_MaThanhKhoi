@@ -1,18 +1,24 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { Select as Selects, Space, Slider } from "antd";
+import axios from "axios";
+import { Select as Selects, Avatar } from "antd";
 import Input from "../../components/Input/Input";
-import Label from "../../components/Label/Label";
 import Dropdown from "../../components/Dropdown/Dropdow";
 import Select from "../../components/Dropdown/Select";
 import List from "../../components/Dropdown/List";
 import useClickOutside from "../../hooks/useClickOutside";
 import Option from "../../components/Dropdown/Option";
 import FormRow from "../../components/common/FormRow/FormRow";
-import FormGroup from "../../components/common/FormGroup/FormGroup";
 import TextTiny from "../../components/Input/TextTiny";
 import Button from "../../components/Button/Button";
+import Dropdow from "../../components/Dropdown/Dropdow";
+import FormGroup from "../../components/common/FormGroup/FormGroup";
+import Label from "../../components/Label/Label";
+import SelectTag from "../../components/Dropdown/SelectTag";
+import ListTag from "../../components/Dropdown/ListTag";
+import OptionTag from "../../components/Dropdown/OptionTag";
+import Slider from "../../components/Slider/Slider";
 
 type Props = {};
 interface Values {
@@ -29,6 +35,30 @@ interface Values {
 }
 const { Option: Options } = Selects;
 const Task = (props: Props) => {
+  const [user, setUser] = useState<any[]>([]);
+  const [addUser, setAddUser] = useState<any[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const { nodeRef, show: userTag, setShow: setUserTag } = useClickOutside();
+  const searchFilter = (data: any[]) => {
+    return data?.filter((item) =>
+      item?.lastName.toLowerCase().includes(search)
+    );
+  };
+
+  const removeUser = (id: number) => {
+    setAddUser(addUser.filter((item) => item.id !== id));
+  };
+  const clearListUser = () => {
+    setAddUser(addUser.slice(addUser.length, addUser.length));
+  };
+  console.log(addUser);
+
+  useEffect(() => {
+    const res = axios
+      .get("https://dummyjson.com/users")
+      .then((res) => setUser(res?.data?.users));
+  }, []);
+
   const initialValues: Values = {
     listUserAsign: [],
     taskName: "string",
@@ -74,7 +104,6 @@ const Task = (props: Props) => {
   const handleToggleTaskType = () => {
     setTaskType(!taskType);
   };
-
   return (
     <Fragment>
       <div className="bg-white rounded-xl py-10 px-[66px]">
@@ -166,6 +195,7 @@ const Task = (props: Props) => {
                       <Label>Project name *</Label>
                       <Dropdown>
                         <Select
+                          className="max-w-full text-text5 bg-[rgba(9,30,66,0.04)]"
                           nodeRef={projectRef}
                           show={project}
                           placeholder="Select a project category"
@@ -273,48 +303,79 @@ const Task = (props: Props) => {
                       </Dropdown>
                     </FormGroup>
                   </FormRow>
-                  <FormGroup>
-                    <Label>Task Type *</Label>
-                    <Selects
-                      mode="multiple"
-                      placeholder="select one country"
-                      onChange={handleChange}
-                      optionLabelProp="label"
-                    >
-                      <Options value="china" label="China">
-                        <Space>
-                          <span role="img" aria-label="China">
-                            🇨🇳
-                          </span>
-                          China (中国)
-                        </Space>
-                      </Options>
-                      <Options value="usa" label="USA">
-                        <Space>
-                          <span role="img" aria-label="USA">
-                            🇺🇸
-                          </span>
-                          USA (美国)
-                        </Space>
-                      </Options>
-                      <Options value="japan" label="Japan">
-                        <Space>
-                          <span role="img" aria-label="Japan">
-                            🇯🇵
-                          </span>
-                          Japan (日本)
-                        </Space>
-                      </Options>
-                      <Options value="korea" label="Korea">
-                        <Space>
-                          <span role="img" aria-label="Korea">
-                            🇰🇷
-                          </span>
-                          Korea (韩国)
-                        </Space>
-                      </Options>
-                    </Selects>
-                  </FormGroup>
+                  <FormRow>
+                    <FormGroup>
+                      <Label>Time Tracking</Label>
+                      <Slider
+                        name="Tracking"
+                        min={0}
+                        max={100}
+                        defaultValue={30}
+                      ></Slider>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Assigness</Label>
+                      <Dropdow>
+                        <SelectTag
+                          className="max-w-full text-text5 bg-[rgba(9,30,66,0.04)]"
+                          onClick={() => {
+                            setUserTag(!userTag);
+                          }}
+                          nodeRef={nodeRef}
+                          data={addUser}
+                          show={userTag}
+                          removeUser={removeUser}
+                          clearListUser={clearListUser}
+                          searchFilter={(
+                            e: React.FormEvent<HTMLInputElement>
+                          ) => {
+                            setSearch(e.currentTarget.value);
+                          }}
+                          placeholder="Search assigness ..."
+                        ></SelectTag>
+                        <ListTag show={userTag}>
+                          {searchFilter(user)?.map((user) => {
+                            const userExists = addUser.find(
+                              (u) => u.id === user.id
+                            );
+                            return (
+                              <div key={user.id}>
+                                <OptionTag
+                                  className={`${
+                                    userExists
+                                      ? "text-[#42526e]  bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary"
+                                      : null
+                                  }`}
+                                  onClick={() => {
+                                    if (userExists)
+                                      setAddUser((s) =>
+                                        s.filter((u) => u.id !== user.id)
+                                      );
+                                    else setAddUser((s) => s && [...s, user]);
+                                  }}
+                                >
+                                  <div className="flex items-center gap-x-3">
+                                    <Avatar
+                                      size={25}
+                                      src={
+                                        <img src={user.image} alt="avatar" />
+                                      }
+                                    />
+                                    <span> {user.lastName}</span>
+                                  </div>
+                                  {userExists && (
+                                    <span className="text-primary">
+                                      <i className="fa-solid fa-check"></i>
+                                    </span>
+                                  )}
+                                </OptionTag>
+                              </div>
+                            );
+                          })}
+                        </ListTag>
+                      </Dropdow>
+                    </FormGroup>
+                  </FormRow>
                   <FormRow>
                     <FormGroup>
                       <Label>Total Estimated Hours</Label>
@@ -335,13 +396,7 @@ const Task = (props: Props) => {
                       />
                     </FormGroup>
                   </FormRow>
-                  <FormGroup>
-                    <Slider
-                      defaultValue={
-                        values.originalEstimate - values.timeTrackingSpent
-                      }
-                    />
-                  </FormGroup>
+
                   <FormGroup>
                     <Label>Description *</Label>
                     <TextTiny control="tiny-mce" name="description" />
