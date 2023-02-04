@@ -4,15 +4,17 @@ export type Props = {
   placeholder?: string;
   className?: string;
   show?: boolean;
-  onClick?: any;
+  onClick?: () => void;
+  dataDel?: () => void;
+  removeUser?: any;
+  clearListUser?: any;
   nodeRef?: any;
+  data?: any[];
+
+  searchFilter?: (e: React.FormEvent<HTMLInputElement>) => void;
 };
-const Dropdown = ({ children, nodeRef }: Props) => {
-  return (
-    <div className="relative inline-block w-full" ref={nodeRef}>
-      {children}
-    </div>
-  );
+const Dropdown = ({ children }: Props) => {
+  return <div className="relative ">{children}</div>;
 };
 
 export default Dropdown;

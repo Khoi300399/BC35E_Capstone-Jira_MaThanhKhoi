@@ -164,8 +164,9 @@ const Task = (props: Props) => {
                     </FormGroup>
                     <FormGroup>
                       <Label>Project name *</Label>
-                      <Dropdown nodeRef={projectRef}>
+                      <Dropdown>
                         <Select
+                          nodeRef={projectRef}
                           show={project}
                           placeholder="Select a project category"
                           onClick={handleToggleProject}
@@ -189,8 +190,9 @@ const Task = (props: Props) => {
                   <FormRow className="grid-cols-3">
                     <FormGroup>
                       <Label>Status *</Label>
-                      <Dropdown nodeRef={statusRef}>
+                      <Dropdown>
                         <Select
+                          nodeRef={statusRef}
                           show={status}
                           placeholder={
                             !category ? "Select a project category" : category
@@ -214,8 +216,9 @@ const Task = (props: Props) => {
                     </FormGroup>
                     <FormGroup>
                       <Label>Priority *</Label>
-                      <Dropdown nodeRef={priorityRef}>
+                      <Dropdown>
                         <Select
+                          nodeRef={priorityRef}
                           show={priority}
                           placeholder={
                             !category ? "Select a project category" : category
@@ -243,12 +246,11 @@ const Task = (props: Props) => {
                     </FormGroup>
                     <FormGroup>
                       <Label>Task Type *</Label>
-                      <Dropdown nodeRef={taskTypeRef}>
+                      <Dropdown>
                         <Select
+                          nodeRef={taskTypeRef}
                           show={taskType}
-                          placeholder={
-                            !category ? "Select a project category" : category
-                          }
+                          placeholder="Select a project category"
                           onClick={handleToggleTaskType}
                         />
                         <List show={taskType}>

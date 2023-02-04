@@ -16,8 +16,8 @@ export type propsInput = {
 export type portalType = {
   containerClassName?: string;
   bodyClassName?: string;
-  containerStyle?: any;
-  bodyStyle?: any;
+  containerStyle?: Object;
+  bodyStyle?: Object;
   visible: boolean;
   onClose?: () => void;
   children?: React.ReactNode;

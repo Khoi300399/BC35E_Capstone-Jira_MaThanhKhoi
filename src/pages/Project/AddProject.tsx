@@ -77,8 +77,9 @@ const AddProject = (props: Props) => {
                     </FormGroup>
                     <FormGroup>
                       <Label>Project category *</Label>
-                      <Dropdown nodeRef={nodeRef}>
+                      <Dropdown>
                         <Select
+                          nodeRef={nodeRef}
                           show={show}
                           placeholder={"Select a project category"}
                           onClick={handleToggleDropdown}

@@ -1,10 +1,17 @@
 import React from "react";
 import { Props } from "./Dropdow";
 
-const Select = ({ show, onClick, placeholder = "", className = "" }: Props) => {
+const Select = ({
+  show,
+  onClick,
+  placeholder = "",
+  className = "max-w-[460px] text-text5 bg-select",
+  nodeRef,
+}: Props) => {
   return (
     <div
-      className={`flex items-center justify-between px-6 py-4 bg-transparent border border-strock rounded-xl text-sm text-text4 font-medium cursor-pointer  select-none ${className}`}
+      ref={nodeRef}
+      className={`flex items-center justify-between px-6 py-4 bg-transparent border border-strock rounded-xl text-sm font-semibold cursor-pointer  select-none ${className}`}
       onClick={onClick}
     >
       <span>{placeholder}</span>
