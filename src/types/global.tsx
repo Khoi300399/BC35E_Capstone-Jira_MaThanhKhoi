@@ -23,6 +23,30 @@ export type portalType = {
   children?: React.ReactNode;
 };
 
+export interface DropResult {
+  allowedDropEffect: string;
+  dropEffect: string;
+  name: string;
+}
+
+export const type = {
+  CARD: "card",
+};
+export const COLUMN_NAMES = {
+  BACKLOG: "BACKLOG",
+  SELECTED_FOR_DEVELOPMENT: "SELECTED FOR DEVELOPMENT",
+  IN_PROGRESS: "IN PROGRESS",
+  DONE: "DONE",
+};
+export interface TaskModel {
+  id: number;
+  name: string;
+  statusName: string;
+  priority: string;
+  taskType: string;
+}
+export const ITEM_TYPE = "ITEM";
+
 /*------------------- Types Reducer -------------------*/
 
 // userReducer
@@ -39,4 +63,27 @@ export interface userType {
 
 export interface userState {
   userLogin: userType | null;
+}
+
+export const ItemType = {
+  BOX: "Box",
+};
+
+// statusReducer
+
+export interface statusState {
+  statuses: statusType[];
+}
+export interface statusType {
+  statusId: string;
+  statusName: string;
+  alias: string;
+  deleted: string;
+}
+
+export enum ColumnType {
+  BACKLOG,
+  DONE,
+  SELECTED_FOR_DEVELOPMENT = "SELECTED FOR DEVELOPMENT",
+  IN_PROGRESS = "IN PROGRESS",
 }

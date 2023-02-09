@@ -1,5 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 import "./assets/scss/style.scss";
 import {
   Routes,
@@ -30,22 +32,24 @@ export const history: any = createBrowserHistory();
 
 root.render(
   <Provider store={store}>
-    <HistoryBrowserRouter history={history}>
-      <Suspense>
-        <Routes>
-          <Route path="login" element={<Login />}></Route>
-          <Route path="register" element={<Register />}></Route>
-          <Route path="" element={<HomeTemplate />}>
-            <Route index element={<Project />}></Route>
-            <Route path="profile" element={<Profile />}></Route>
-            <Route path="add-project" element={<AddPropject />}></Route>
-            <Route path="project-detail" element={<ProjectDetail />}></Route>
-            <Route path="user" element={<Users />}></Route>
-            <Route path="task" element={<Task />}></Route>
-            <Route path="comment" element={<Comment />}></Route>
-          </Route>
-        </Routes>
-      </Suspense>
-    </HistoryBrowserRouter>
+    <DndProvider backend={HTML5Backend}>
+      <HistoryBrowserRouter history={history}>
+        <Suspense>
+          <Routes>
+            <Route path="login" element={<Login />}></Route>
+            <Route path="register" element={<Register />}></Route>
+            <Route path="" element={<HomeTemplate />}>
+              <Route index element={<Project />}></Route>
+              <Route path="profile" element={<Profile />}></Route>
+              <Route path="add-project" element={<AddPropject />}></Route>
+              <Route path="project-detail" element={<ProjectDetail />}></Route>
+              <Route path="user" element={<Users />}></Route>
+              <Route path="task" element={<Task />}></Route>
+              <Route path="comment" element={<Comment />}></Route>
+            </Route>
+          </Routes>
+        </Suspense>
+      </HistoryBrowserRouter>
+    </DndProvider>
   </Provider>
 );

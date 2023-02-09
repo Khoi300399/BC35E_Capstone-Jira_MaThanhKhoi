@@ -1,13 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Tooltip } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { DispathType, RootState } from "../../redux/config";
 import HeaderSearch from "../../components/HeaderSearch/HeaderSearch";
 import Button from "../../components/Button/Button";
-import { Link } from "react-router-dom";
+import TaskCard from "../../components/TaskDetail/TaskCard";
+import TaskBox from "../../components/TaskDetail/TaskBox";
+import { useDispatch, useSelector } from "react-redux";
+import { getStatusApi } from "../../redux/statusReducer/statusReducer";
 
+export interface TaskModel {
+  id: number;
+  name: string;
+  statusName: string;
+  priority: string;
+  taskType: string;
+}
+export const tasks = [
+  {
+    id: 2,
+    name: "Prepare a dish from a foreign culture",
+    statusName: "SELECTED FOR DEVELOPMENT",
+    priority: "High",
+    taskType: "bug",
+  },
+
+  {
+    id: 4,
+    name: "Buy a new house decoration",
+    statusName: "DONE",
+    priority: "Medium",
+    taskType: "bug",
+  },
+  {
+    id: 3,
+    name: "Organize pantry",
+    statusName: "IN PROGRESS",
+    priority: "Lowest",
+    taskType: "new task",
+  },
+  {
+    id: 6,
+    name: "Use DummyJSON in the project",
+    statusName: "IN PROGRESS",
+    priority: "Medium",
+    taskType: "bug",
+  },
+  {
+    id: 1,
+    name: "Do something nice for someone I care about",
+    statusName: "BACKLOG",
+    priority: "Low",
+    taskType: "new task",
+  },
+  {
+    id: 5,
+    name: "Create a compost pile",
+    statusName: "BACKLOG",
+    priority: "High",
+    taskType: "new task",
+  },
+];
 type Props = {};
 
 const ProjectDetail = (props: Props) => {
+  const dispatch: DispathType = useDispatch();
+  const { statuses } = useSelector((state: RootState) => state.statusReducer);
+  useEffect(() => {
+    const actionAsync = getStatusApi();
+    dispatch(actionAsync);
+  }, []);
+
+  const [items, setItems] = useState<TaskModel[]>(tasks);
+
+  function changeStatusName(currentItem: TaskModel, columnNextMove: string) {
+    setItems((prevState) => {
+      return prevState.map((item) => {
+        return {
+          ...item,
+          statusName:
+            item.id === currentItem.id ? columnNextMove : item.statusName,
+        };
+      });
+    });
+  }
+
+  function moveItem(dragIndex: number, hoverIndex: number) {
+    const dragItem = items[dragIndex];
+    if (dragItem) {
+      setItems((prevState) => {
+        const coppiedStateArray = [...prevState];
+
+        // remove item by "hoverIndex" and put "dragItem" instead
+        const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragItem);
+
+        // remove item by "dragIndex" and put "prevItem" instead
+        coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
+
+        return coppiedStateArray;
+      });
+    }
+  }
+
   return (
     <div className="bg-lite">
       <div className="bg-white rounded-3xl flex items-center justify-between py-8 px-10">
@@ -20,7 +114,6 @@ const ProjectDetail = (props: Props) => {
               maxCount={2}
               maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
             >
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
               <Avatar style={{ backgroundColor: "#f56a00" }}>Khôi</Avatar>
               <Tooltip className="mx-1" title="Ant User" placement="top">
                 <Avatar
@@ -53,773 +146,26 @@ const ProjectDetail = (props: Props) => {
           Create task
         </Button>
       </div>
-      <div className="bg-lite flex-1 overflow-auto">
-        <main className="p-3 h-full inline-flex space-x-2">
+      <div className="bg-lite flex-1 overflow-auto  ">
+        <main className="p-3 h-full flex items-start gap-x-5">
           {/* TODO */}
-          <div className="flex flex-col  w-80 rounded-lg bg-[rgba(9,30,66,0.04)]">
-            <div className="bg-blue-200 rounded px-3 py-1 flex items-center">
-              <span className="text-lg px-3 pt-3 pb-1 font-semibold text-blue-500 leading-tight font-mono">
-                TODO
-              </span>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ul className="pt-1 pb-3 px-3">
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5 " to="#">
-                    <div className="flex items-center gap-x-2">
-                      <div>
-                        <span className="text-base font-medium text-text5">
-                          Bài tập cuối khóa
-                        </span>
-                      </div>
-                      <div>
-                        <span className="px-2 py-1 text-xs text-red-500 bg-red-200 font-medium rounded-lg">
-                          BUG
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#198754] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          Low
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div className="flex items-center gap-x-2">
-                      <div>
-                        <span className="text-base font-medium text-text5">
-                          Bài tập cuối khóa
-                        </span>
-                      </div>
-                      <div>
-                        <span className="px-2 py-1 text-xs text-red-500 bg-red-200 font-medium rounded-lg">
-                          BUG
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#ffc107] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          MEDIUM
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div className="flex items-center gap-x-2">
-                      <div>
-                        <span className="text-base font-medium text-text5">
-                          Bài tập cuối khóa
-                        </span>
-                      </div>
-                      <div>
-                        <span className="px-2 py-1 text-xs text-teal-500 bg-teal-200 font-medium rounded-lg">
-                          TASK
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#dc3545] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          HIGH
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          {/* In Progress */}
-          <div className="flex flex-col  w-80 rounded-lg bg-[rgba(9,30,66,0.04)]">
-            <div className="bg-orange-200 rounded px-3 py-1 flex items-center">
-              <span className="text-lg px-3 pt-3 pb-1 font-semibold text-orange-500 leading-tight font-mono">
-                TODO
-              </span>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ul className="pt-1 pb-3 px-3">
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5 " to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#198754] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          Low
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#ffc107] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          MEDIUM
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#dc3545] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          HIGH
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/*  */}
-          <div className="flex flex-col  w-80 rounded-lg bg-[rgba(9,30,66,0.04)]">
-            <div className="bg-pink-200 rounded px-3 py-1 flex items-center">
-              <span className="text-lg px-3 pt-3 pb-1 font-semibold text-pink-500 leading-tight font-mono">
-                TODO
-              </span>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ul className="pt-1 pb-3 px-3">
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5 " to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#198754] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          Low
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#ffc107] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          MEDIUM
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#dc3545] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          HIGH
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex flex-col  w-80 rounded-lg bg-[rgba(9,30,66,0.04)]">
-            <div className="bg-green-200 rounded px-3 py-1 flex items-center">
-              <span className="text-lg px-3 pt-3 pb-1 font-semibold text-green-500 leading-tight font-mono">
-                TODO
-              </span>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ul className="pt-1 pb-3 px-3">
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5 " to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#198754] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          Low
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#ffc107] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          MEDIUM
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-                <li className="mt-1 bg-white p-5 shadow rounded-md ">
-                  <Link className="flex flex-col gap-y-5" to="#">
-                    <div>
-                      <span className="text-base font-medium text-text5">
-                        Bài tập cuối khóa
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="bg-[#dc3545] w-auto text-white text-xs font-semibold rounded-sm  px-2 py-1">
-                          HIGH
-                        </span>
-                      </div>
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          Khôi
-                        </Avatar>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          className="mx-1"
-                          title="Ant User"
-                          placement="top"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {statuses.map((si, i) => {
+            return (
+              <TaskBox key={i} name={si.statusName} id={si.statusId}>
+                {items
+                  .filter((ti) => ti.statusName === si.statusName)
+                  .map((item, inx) => (
+                    <TaskCard
+                      key={item.id}
+                      index={inx}
+                      status={item}
+                      changeStatusName={changeStatusName}
+                      moveItem={moveItem}
+                    />
+                  ))}
+              </TaskBox>
+            );
+          })}
         </main>
       </div>
     </div>
