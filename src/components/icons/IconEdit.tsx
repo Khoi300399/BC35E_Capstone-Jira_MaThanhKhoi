@@ -7,8 +7,8 @@ type Props = {
 const IconEdit = ({ onClick = () => {} }: Props) => {
   return (
     <span
-      className="flex items-center justify-center w-10 h-10 border border-transparent text-blue-600 hover:bg-blue-200 transition-all ease-linear rounded cursor-pointer"
-      onClick={onClick}
+      className="flex items-center justify-center w-10 h-10 border border-transparent text-blue-600 hover:bg-blue-200 transition-all ease-linear rounded cursor-pointer select-none"
+      onClick={onClick()}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

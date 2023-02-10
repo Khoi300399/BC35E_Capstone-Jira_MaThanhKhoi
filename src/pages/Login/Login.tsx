@@ -88,7 +88,8 @@ const Login = (props: Props) => {
 
               <Button
                 type="submit"
-                className="w-full bg-primary text-white"
+                className="w-full"
+                kind="primary"
                 isLoading={isSubmitting}
               >
                 Sign in

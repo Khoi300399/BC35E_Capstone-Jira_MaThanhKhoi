@@ -6,11 +6,13 @@ export type Coords = {
 };
 
 export type propsInput = {
+  disabled?: boolean;
   id?: string;
   name: string;
   type?: string;
   placeholder?: string;
   children?: React.ReactNode;
+  className?: string;
 };
 
 export type portalType = {

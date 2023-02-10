@@ -30,6 +30,7 @@ module.exports = {
         darkSoft: "#24242C",
         darkStoke: "#3A3A43",
         darkRed: "#422C32",
+        bgInput: "#F4F5F6",
       },
       boxShadow: {
         sdprimary: "10px 10px 20px rgba(211, 211, 211, 0.25)",

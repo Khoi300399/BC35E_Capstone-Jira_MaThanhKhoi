@@ -23,15 +23,30 @@ const Button = ({
   );
 
   let defaultClassName =
-    "p-4 text-base font-semibold rounded-xl flex items-center justify-center min-h-[56px]";
+    "text-base font-semibold rounded-xl flex items-center justify-center cursor-pointer";
+
   switch (rest.kind) {
     case "primary":
-      defaultClassName = defaultClassName + " bg-primary text-white";
+      defaultClassName =
+        defaultClassName +
+        " bg-gradient-to-r from-[#00a7b4] to-[#a4d96c] text-white p-4 min-h-[56px]";
       break;
 
     case "secondary":
       defaultClassName =
-        defaultClassName + " bg-secondary bg-opacity-20 text-secondary";
+        defaultClassName +
+        " bg-secondary bg-opacity-20 text-secondary p-4 min-h-[56px]";
+      break;
+
+    case "cancel":
+      defaultClassName =
+        defaultClassName +
+        " bg-stock border border-strock text-text2 px-2 py-1 font-mono";
+      break;
+
+    case "success":
+      defaultClassName =
+        defaultClassName + " bg-blue-500 text-white px-2 py-1 font-mono";
       break;
 
     default:
@@ -45,7 +60,7 @@ const Button = ({
     );
   return (
     <button
-      className={`${
+      className={`cursor-pointer ${
         defaultClassName +
         " " +
         (!!isLoading ? "opacity-50 pointer-events-none" : "")

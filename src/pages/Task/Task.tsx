@@ -217,33 +217,7 @@ const Task = (props: Props) => {
                       </Dropdown>
                     </FormGroup>
                   </FormRow>
-                  <FormRow className="grid-cols-3">
-                    <FormGroup>
-                      <Label>Status *</Label>
-                      <Dropdown>
-                        <Select
-                          nodeRef={statusRef}
-                          show={status}
-                          placeholder={
-                            !category ? "Select a project category" : category
-                          }
-                          onClick={handleToggleStatus}
-                        />
-                        <List show={status}>
-                          <Option onClick={() => handleSelectStatus("sadasd")}>
-                            1
-                          </Option>
-                          <Option
-                            onClick={() => handleSelectStatus("asdasdsad")}
-                          >
-                            4
-                          </Option>
-                          <Option onClick={() => handleSelectStatus("asdasd")}>
-                            3
-                          </Option>
-                        </List>
-                      </Dropdown>
-                    </FormGroup>
+                  <FormRow className="grid-cols-2">
                     <FormGroup>
                       <Label>Priority *</Label>
                       <Dropdown>
@@ -305,13 +279,34 @@ const Task = (props: Props) => {
                   </FormRow>
                   <FormRow>
                     <FormGroup>
-                      <Label>Time Tracking</Label>
-                      <Slider
-                        name="Tracking"
-                        min={0}
-                        max={100}
-                        defaultValue={30}
-                      ></Slider>
+                      <FormGroup>
+                        <Label>Status *</Label>
+                        <Dropdown>
+                          <Select
+                            nodeRef={statusRef}
+                            show={status}
+                            placeholder="Select a status"
+                            onClick={handleToggleStatus}
+                          />
+                          <List show={status}>
+                            <Option
+                              onClick={() => handleSelectStatus("sadasd")}
+                            >
+                              1
+                            </Option>
+                            <Option
+                              onClick={() => handleSelectStatus("asdasdsad")}
+                            >
+                              4
+                            </Option>
+                            <Option
+                              onClick={() => handleSelectStatus("asdasd")}
+                            >
+                              3
+                            </Option>
+                          </List>
+                        </Dropdown>
+                      </FormGroup>
                     </FormGroup>
                     <FormGroup>
                       <Label>Assigness</Label>
@@ -376,23 +371,32 @@ const Task = (props: Props) => {
                       </Dropdow>
                     </FormGroup>
                   </FormRow>
-                  <FormRow>
+                  <FormRow className="grid-cols-3">
                     <FormGroup>
-                      <Label>Total Estimated Hours</Label>
+                      <Label>Time Tracking</Label>
+                      <Slider
+                        name="Tracking"
+                        min={0}
+                        max={100}
+                        defaultValue={30}
+                      ></Slider>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Original Estimate (hours)</Label>
                       <Input
                         id="name"
                         name="name"
-                        type="number"
-                        placeholder="Please enter task name..."
+                        type="text"
+                        placeholder="Original Estimate..."
                       />
                     </FormGroup>
                     <FormGroup>
-                      <Label>Total Estimated Hours</Label>
+                      <Label>Time Spent (hours)</Label>
                       <Input
                         id="name"
                         name="name"
-                        type="number"
-                        placeholder="Please enter task name..."
+                        type="text"
+                        placeholder="Time Spent..."
                       />
                     </FormGroup>
                   </FormRow>

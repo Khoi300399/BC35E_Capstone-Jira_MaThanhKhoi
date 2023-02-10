@@ -26,10 +26,10 @@ const AddProject = (props: Props) => {
     category: "",
   };
   const { show, setShow, nodeRef } = useClickOutside();
-  const [category, setCategory] = useState("");
   const handleToggleDropdown = () => {
     setShow(!show);
   };
+  const [category, setCategory] = useState("");
 
   return (
     <Fragment>

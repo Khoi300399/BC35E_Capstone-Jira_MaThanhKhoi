@@ -16,6 +16,13 @@ import SelectTag from "../../components/Dropdown/SelectTag";
 import ListTag from "../../components/Dropdown/ListTag";
 import OptionTag from "../../components/Dropdown/OptionTag";
 import axios from "axios";
+import Input from "../../components/Input/Input";
+import Slider from "../../components/Slider/Slider";
+import FormRow from "../../components/common/FormRow/FormRow";
+import TextTiny from "../../components/Input/TextTiny";
+import Button from "../../components/Button/Button";
+import FormConfirm from "../../components/common/FormConfirm/FormConfirm";
+import InputDate from "../../components/Input/InputDate";
 
 type Props = {};
 
@@ -53,6 +60,15 @@ const Comment = (props: Props) => {
   } = useClickOutside();
   const handleToggleTaskType = () => {
     setTaskType(!taskType);
+  };
+
+  const {
+    show: priority,
+    setShow: setPriority,
+    nodeRef: priorityRef,
+  } = useClickOutside();
+  const handleTogglePriority = () => {
+    setPriority(!priority);
   };
 
   const {
@@ -116,10 +132,8 @@ const Comment = (props: Props) => {
                     <i className="fa-solid fa-xmark text-3xl text-red-600"></i>
                   </button>
                   <div className="px-12 pt-7 pb-4 flex items-center justify-between">
-                    <div className="flex items-baseline gap-x-2">
-                      <i className="fa-solid fa-square-check text-blue-500"></i>
-                      <span>Title of task</span>
-                    </div>
+                    <div className="w-2/4"></div>
+
                     <div className="flex items-center gap-x-8">
                       <button className="flex items-baseline justify-center gap-2 text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
                         <i className="fa-regular fa-paper-plane "></i>
@@ -136,77 +150,132 @@ const Comment = (props: Props) => {
                   </div>
 
                   <div className=" flex items-start justify-between gap-x-20 pl-8 pr-5 pb-8">
-                    <div className="w-[60%] overflow-x-hidden overflow-y-auto max-h-[500px]">
-                      <h1 className="font-medium text-2xl text-[#172b4d] mb-5">
+                    <div className="w-[60%] overflow-x-hidden overflow-y-auto max-h-[500px] scrollbar-none ">
+                      <h1 className="font-medium text-2xl text-text2 mb-5">
                         Bài tập cuối khóa
                       </h1>
-                      <div className=" flex items-center justify-between gap-x-3">
+                      <FormGroup>
+                        <Label>Description *</Label>
+                        <TextTiny control="tiny-mce" name="description" />
+                        <div className="flex items-center  gap-x-3 ">
+                          <Button type="button" kind="cancel">
+                            Cancel
+                          </Button>
+                          <Button type="button" kind="success">
+                            Save
+                          </Button>
+                        </div>
+                      </FormGroup>
+                      <div className=" flex items-center justify-between gap-x-3 mb-2">
                         <Avatar
                           size={40}
                           src={<img src={url} alt="avatar" />}
                         />
                         <Textarea
+                          className="pt-2 h-10"
                           name="comment"
                           placeholder="Add a comment ..."
                         ></Textarea>
+                        <Button type="button" kind="success">
+                          Send
+                        </Button>
                       </div>
                     </div>
-                    <div className="w-[40%] pr-5 overflow-x-hidden overflow-y-auto h-[500px] max-h-[500px] scrollbar-thumb-primary  scrollbar-thin scrollbar-track-white">
+                    <div className="w-[40%] pr-5 overflow-x-hidden overflow-y-auto h-[500px] max-h-[500px] scrollbar-thumb-stone-300 scrollbar-track-slate-100 scrollbar-thin ">
+                      <FormRow>
+                        <FormGroup>
+                          <Label>Priority</Label>
+                          <Dropdow>
+                            <Select
+                              className=" text-text2 bg-bgInput"
+                              nodeRef={priorityRef}
+                              placeholder="High"
+                              onClick={handleTogglePriority}
+                              show={priority}
+                            ></Select>
+                            <List show={priority}>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() => handleSelectTaskType("sadasd")}
+                              >
+                                1
+                              </Option>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() =>
+                                  handleSelectTaskType("asdasdsad")
+                                }
+                              >
+                                4
+                              </Option>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() => handleSelectTaskType("asdasd")}
+                              >
+                                3
+                              </Option>
+                            </List>
+                          </Dropdow>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label>Task Type</Label>
+                          <Dropdow>
+                            <Select
+                              className=" text-text2 bg-bgInput"
+                              nodeRef={taskTypeRef}
+                              placeholder="bug"
+                              onClick={handleToggleTaskType}
+                              show={taskType}
+                            ></Select>
+                            <List show={taskType}>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() => handleSelectTaskType("sadasd")}
+                              >
+                                1
+                              </Option>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() =>
+                                  handleSelectTaskType("asdasdsad")
+                                }
+                              >
+                                4
+                              </Option>
+                              <Option
+                                className="hover:bg-gray-200 "
+                                onClick={() => handleSelectTaskType("asdasd")}
+                              >
+                                3
+                              </Option>
+                            </List>
+                          </Dropdow>
+                        </FormGroup>
+                      </FormRow>
                       <FormGroup>
-                        <Dropdow>
-                          <Select
-                            nodeRef={taskTypeRef}
-                            className="w-2/6 text-text5 bg-select"
-                            placeholder="To do"
-                            onClick={handleToggleTaskType}
-                            show={taskType}
-                          ></Select>
-                          <List show={taskType} className="w-2/6">
-                            <Option
-                              className="hover:bg-gray-200 hover:border-l-4 hover:border-l-blue-500"
-                              onClick={() => handleSelectTaskType("sadasd")}
-                            >
-                              1
-                            </Option>
-                            <Option
-                              className="hover:bg-gray-200 hover:border-l-4 hover:border-l-blue-500"
-                              onClick={() => handleSelectTaskType("asdasdsad")}
-                            >
-                              4
-                            </Option>
-                            <Option
-                              className="hover:bg-gray-200 hover:border-l-4 hover:border-l-blue-500"
-                              onClick={() => handleSelectTaskType("asdasd")}
-                            >
-                              3
-                            </Option>
-                          </List>
-                        </Dropdow>
-                      </FormGroup>
-                      <FormGroup>
-                        <Label>Status *</Label>
+                        <Label>Status</Label>
                         <Dropdow>
                           <Select
                             nodeRef={statusRef}
-                            placeholder="DONE"
+                            placeholder="BACKLOG"
                             onClick={handleToggleStatus}
                             show={status}
                           ></Select>
                           <List show={status}>
                             <Option
-                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] hover:border-l-4  hover:border-l-blue-500"
+                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] "
                               onClick={() => handleSelectStatus("sadasd")}
                             >
                               1
                             </Option>
                             <Option
-                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] hover:border-l-4 hover:border-l-blue-500"
+                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] "
                               onClick={() => handleSelectStatus("asdasdsad")}
                             >
                               4
                             </Option>
                             <Option
-                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] hover:border-l-4 hover:border-l-blue-500"
+                              className="hover:text-[#42526e]  hover:bg-[rgba(9,30,66,0.04)] "
                               onClick={() => handleSelectStatus("asdasd")}
                             >
                               3
@@ -215,7 +284,7 @@ const Comment = (props: Props) => {
                         </Dropdow>
                       </FormGroup>
                       <FormGroup>
-                        <Label>Status *</Label>
+                        <Label>Assigness</Label>
                         <Dropdow>
                           <SelectTag
                             onClick={() => {
@@ -275,6 +344,38 @@ const Comment = (props: Props) => {
                           </ListTag>
                         </Dropdow>
                       </FormGroup>
+
+                      <FormGroup>
+                        <Label>Time Tracking</Label>
+                        <Slider
+                          name="Tracking"
+                          min={0}
+                          max={100}
+                          defaultValue={30}
+                        ></Slider>
+                      </FormGroup>
+                      <FormRow>
+                        <FormGroup>
+                          <Label>Original Estimate (hours)</Label>
+                          <Input
+                            className="appearance-none bg-bgInput"
+                            id="estimate"
+                            name="estimate"
+                            type="text"
+                            placeholder="Original Estimate..."
+                          ></Input>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label>Time Spent (hours)</Label>
+                          <Input
+                            className="appearance-none bg-bgInput"
+                            id="estimate"
+                            name="estimate"
+                            type="text"
+                            placeholder="Time Spent..."
+                          ></Input>
+                        </FormGroup>
+                      </FormRow>
                     </div>
                   </div>
                 </div>

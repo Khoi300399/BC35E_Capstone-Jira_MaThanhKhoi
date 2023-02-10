@@ -5,13 +5,13 @@ const Select = ({
   show,
   onClick,
   placeholder = "",
-  className = "max-w-[460px] text-text5 bg-[rgba(9,30,66,0.04)]",
+  className = " text-text2 bg-bgInput",
   nodeRef,
 }: Props) => {
   return (
     <div
       ref={nodeRef}
-      className={`flex items-center justify-between px-6 py-4 bg-transparent border border-strock rounded-xl text-sm font-semibold cursor-pointer  select-none ${className}`}
+      className={`flex items-center justify-between px-6 py-4  border border-strock rounded-xl text-sm font-semibold cursor-pointer select-none ${className}`}
       onClick={onClick}
     >
       <span>{placeholder}</span>

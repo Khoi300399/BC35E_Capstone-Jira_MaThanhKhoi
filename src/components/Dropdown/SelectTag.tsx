@@ -5,7 +5,7 @@ const SelectTag = ({
   show,
   onClick,
   placeholder = "",
-  className = "max-w-[460px] text-text5 bg-select",
+  className = "max-w-[460px] text-text5 bg-[#F4F5F6]",
   nodeRef,
   data = [""],
   searchFilter,

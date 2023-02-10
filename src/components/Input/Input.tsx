@@ -4,12 +4,16 @@ import { withErrorBoundary } from "react-error-boundary";
 import ErrorComponent from "../common/ErrorComponent/ErrorComponent";
 import { propsInput } from "../../types/global";
 
-const Input = ({ children, ...props }: propsInput) => {
+const Input = ({
+  children,
+  className = "bg-bgInput",
+  ...props
+}: propsInput) => {
   const [field, meta] = useField(props);
   return (
     <div className="relative ">
       <input
-        className={`w-full px-6 py-4 border  rounded-xl text-sm font-medium bg-transparent placeholder:text-text4 dark:placeholder:text-text-2 ${
+        className={`w-full px-6 py-4 border  rounded-xl text-sm font-medium placeholder:text-text4 dark:placeholder:text-text-2 ${className} ${
           meta.touched && meta.error
             ? "border-error text-error"
             : "border-strock text-text1 dark:border-darkStoke"
