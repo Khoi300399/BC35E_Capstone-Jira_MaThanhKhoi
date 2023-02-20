@@ -16,17 +16,14 @@ const FormTemplate = (props: Props) => {
         alt="bg"
         className="hidden lg:block absolute bottom-0 right-0 left-0 pointer-events-none z-[-1] "
       />
-      <Link
-        to="/"
-        className="flex items-center justify-centerp-5 gap-x-5 text-2xl text-primary font-bold "
-      >
+      <div className="flex items-center justify-centerp-5 gap-x-5 text-2xl text-primary font-bold ">
         <img
           srcSet="./img/logo.png 2x"
           alt="..."
           className="w-full max-w-[70px]"
         />
         <span className="hidden lg:inline-block">Monkey Jira</span>
-      </Link>
+      </div>
       <div className="w-full max-w-[556px] bg-white dark:bg-darkSecondary rounded-xl px-5 py-8 lg:px-16 lg:py-12 mx-auto">
         <h1 className="mb-1 text-lg font-semibold text-center lg:text-xl lg:mb-3 text-text1 dark:text-white">
           {heading}

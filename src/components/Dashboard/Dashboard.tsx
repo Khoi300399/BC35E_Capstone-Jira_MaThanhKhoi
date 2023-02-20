@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { history } from "../../index";
+import { clearStore, getStoreJson, USER_LOGIN } from "../../util/setting";
 import IconDarkMode from "../icons/IconDarkMode";
 import IconDashboard from "../icons/IconDashboard";
 import IconLogout from "../icons/IconLogout";
@@ -13,6 +15,13 @@ type linkType = {
   url: string;
   onClick?: any;
 };
+if (!getStoreJson(USER_LOGIN)) {
+  history.push("/login");
+}
+function logOut() {
+  clearStore(USER_LOGIN);
+  window.location.reload();
+}
 const sideBarLink: linkType[] = [
   {
     icon: <IconDashboard />,
@@ -26,14 +35,16 @@ const sideBarLink: linkType[] = [
   },
   {
     icon: <IconTask />,
-    title: "Task",
-    url: "/task",
+    title: "Create project",
+    url: "/add-project",
   },
   {
     icon: <IconLogout />,
     title: "Log out",
-    url: "/add-project",
-    onClick: () => {},
+    url: "*",
+    onClick: () => {
+      logOut();
+    },
   },
   {
     icon: <IconDarkMode />,
@@ -47,7 +58,7 @@ const navLink =
 const Dashboard = (props: Props) => {
   return (
     <div className=" w-full md:w-[76px] rounded-3x shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] flex flex-col items-center px-4 py-4 flex-shrink-0 ">
-      {sideBarLink.map(({ icon, title, url }: linkType) => (
+      {sideBarLink.map(({ icon, title, url, onClick }: linkType) => (
         <div
           className="md:tooltip md:tooltip-primary  md:tooltip-right md:mb-6 last:mt-auto last:shadow-sdprimary"
           data-tip={title}
@@ -55,6 +66,7 @@ const Dashboard = (props: Props) => {
         >
           <NavLink
             to={url}
+            onClick={onClick}
             className={({ isActive }: any) =>
               isActive
                 ? `${navLink}text-primary bg-primary bg-opacity-20 `

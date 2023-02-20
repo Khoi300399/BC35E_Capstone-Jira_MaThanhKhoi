@@ -7,7 +7,7 @@ const SelectTag = ({
   placeholder = "",
   className = "max-w-[460px] text-text5 bg-[#F4F5F6]",
   nodeRef,
-  data = [""],
+  data = [],
   searchFilter,
   removeUser,
   clearListUser,
@@ -74,16 +74,16 @@ const SelectTag = ({
     >
       <div>
         <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 ">
-          {data?.map((user, index) => (
+          {data?.map(({ userId, name }) => (
             <li
-              key={user.id}
+              key={userId + name}
               className="flex items-center justify-between gap-x-2 p-1 border border-strock bg-white rounded-lg"
             >
-              <span className="text-text1 ">{user.lastName}</span>
+              <span className="text-text1 ">{name}</span>
               <span
                 className="flex items-center justify-center w-4 h-4 border rounded-full hover:text-error hover:border-error transition-all"
                 onClick={() => {
-                  removeUser(user.id);
+                  removeUser(userId);
                 }}
               >
                 <svg

@@ -1,42 +1,34 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Coords } from "../../types/global";
-import { clearStore, USER_LOGIN } from "../../util/setting";
 
-const AvatarModal = ({ coords }: { coords: Coords }) => {
-  const navigate = useNavigate();
-  function logOut() {
-    clearStore(USER_LOGIN);
-    navigate("/login");
-    window.location.reload();
-  }
+const ListUserModal = ({ coords }: { coords: Coords }) => {
   if (typeof document === "undefined") return null;
-
   return createPortal(
     <div
       style={{
-        left: coords.x + coords.width * 1.5,
+        left: coords.x + coords.width / 2,
         top: coords.y + coords.height * 1.5,
       }}
-      className="absolute bg-white rounded-2xl shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] z-10 w-[230px] px-5 -translate-x-full"
+      className="absolute bg-white rounded-2xl shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1);] z-10 w-[230px] px-5 -translate-x-full"
     >
-      <div className="absolute  bg-white right-8 rounded-sm -translate-y-2/4 shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] rotate-45 w-4 h-4 border-t-transparent border-r-transparent"></div>
-      <div className=" pt-5 pb-5  gap-y-2 border-b  border-b-gray-300">
+      <div className="flex flex-col pt-6 pb-7  gap-y-2 border-b  border-b-gray-300">
         <Link
-          to="/profile"
-          className="font-medium  text-text5 inline-block hover:text-blue-500"
+          to="/"
+          className="font-medium  text-gray-700 inline-block hover:text-blue-500"
         >
           Account
         </Link>
-      </div>
-      <div className="flex flex-col pt-5 pb-6  gap-y-5">
-        <button
-          onClick={() => {
-            logOut();
-          }}
-          className="inline-flex gap-x-2 items-center hover:bg-error hover:bg-opacity-20  rounded transition-all hover:text-error text-text5"
+        <Link
+          to="/"
+          className="font-medium text-gray-700 inline-block hover:text-blue-500"
         >
+          Settings
+        </Link>
+      </div>
+      <div className="flex flex-col pt-7 pb-6  gap-y-5">
+        <button className="inline-flex gap-x-2 items-center   text-gray-700  hover:text-blue-500">
           <svg
             width="24"
             height="24"
@@ -52,11 +44,16 @@ const AvatarModal = ({ coords }: { coords: Coords }) => {
 
           <span> Sign out</span>
         </button>
-        <div className=" text-text5 inline-block ">Interface</div>
+        <Link
+          to="/"
+          className=" text-gray-700 inline-block hover:text-blue-500"
+        >
+          Interface
+        </Link>
       </div>
     </div>,
     document.querySelector("body") as HTMLElement
   );
 };
 
-export default AvatarModal;
+export default ListUserModal;

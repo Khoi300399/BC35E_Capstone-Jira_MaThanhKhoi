@@ -1,4 +1,5 @@
 import React from "react";
+import { AddUserType } from "../../types/global";
 export type Props = {
   children?: JSX.Element | React.ReactNode;
   placeholder?: string;
@@ -9,7 +10,7 @@ export type Props = {
   removeUser?: any;
   clearListUser?: any;
   nodeRef?: any;
-  data?: any[];
+  data?: AddUserType[];
 
   searchFilter?: (e: React.FormEvent<HTMLInputElement>) => void;
 };

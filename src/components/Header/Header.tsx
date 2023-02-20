@@ -1,11 +1,15 @@
-import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import useClickOutside from "../../hooks/useClickOutside";
 import useGetElementCoords from "../../hooks/useGetElementCoords";
-import { Coords } from "../../types/global";
+import mainLogo from "../../assets/img/logo.png";
 import AvatarModal from "../Modal/AvatarModal";
+import { getStoreJson, USER_LOGIN } from "../../util/setting";
+import { UserLoginType } from "../../types/global";
 
 const Header = () => {
+  // Admin
+  const admin: UserLoginType = getStoreJson(USER_LOGIN);
+
   // variable ClickOutSide
   const {
     show: isShowDropdown,
@@ -33,17 +37,13 @@ const Header = () => {
           to="/"
           className="flex items-center justify-center-5 gap-x-5 text-2xl text-primary font-bold "
         >
-          <img
-            srcSet="./img/logo.png 2x"
-            alt="..."
-            className="w-full max-w-[70px]"
-          />
+          <img src={mainLogo} alt="..." className="w-full max-w-[70px]" />
           <span className="hidden lg:inline-block">Monkey Jira</span>
         </Link>
         <div className=" max-w-[458px] w-full"></div>
       </div>
-      <div className="flex items-baseline flex-1 gap-x-4 justify-end">
-        <div className="indicator">
+      <div className="flex items-center flex-1 gap-x-4 justify-end">
+        <div className="indicator ">
           <span className="indicator-item indicator-top badge badge-xs badge-error text-white p-2 ">
             9
           </span>
@@ -67,7 +67,7 @@ const Header = () => {
         <div className="relative" ref={nodeRef}>
           <div
             ref={elmRef}
-            className="w-10 h-10 select-none cursor-pointer"
+            className="w-10 h-10 select-none cursor-pointer "
             onClick={handleToggleSettings}
           >
             <img
@@ -76,7 +76,11 @@ const Header = () => {
               className="rounded-full object-cover w-full h-full"
             />
           </div>
+
           {isShowDropdown && <AvatarModal coords={coords} />}
+        </div>
+        <div className="flex items-center">
+          <p className="text-text5 font-semibold">{admin.name}</p>
         </div>
       </div>
     </div>

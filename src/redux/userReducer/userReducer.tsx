@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userState, userType } from "../../types/global";
+import {
+  UserModel,
+  userState,
+  userType,
+  UserUpdateType,
+} from "../../types/global";
 import {
   ACCESS_TOKEN,
   getStoreJson,
@@ -11,6 +16,8 @@ import { DispathType } from "../config";
 
 const initialState: userState = {
   userLogin: getStoreJson(USER_LOGIN) ? getStoreJson(USER_LOGIN) : null,
+  userAll: [],
+  userByKeyword: [],
 };
 
 const userReducer = createSlice({
@@ -20,10 +27,21 @@ const userReducer = createSlice({
     loginAction: (state: userState, action: PayloadAction<userType>) => {
       state.userLogin = action.payload;
     },
+
+    getUserAction: (state: userState, action: PayloadAction<UserModel[]>) => {
+      state.userAll = action.payload;
+    },
+    getUserByKeywordAction: (
+      state: userState,
+      action: PayloadAction<UserModel[]>
+    ) => {
+      state.userAll = action.payload;
+    },
   },
 });
 
-export const { loginAction } = userReducer.actions;
+export const { loginAction, getUserAction, getUserByKeywordAction } =
+  userReducer.actions;
 
 export default userReducer.reducer;
 
@@ -42,20 +60,40 @@ export const loginApi = (userLogin: userType) => {
   };
 };
 
-export const registerApi = (userRegister: userType) => {
+export const getUserApi = (name?: string) => {
   return async (dispatch: DispathType) => {
-    await http.post("/Users/signup", userRegister);
+    if (name) {
+      const res = await http.get(`/Users/getUser?keyword=${name}`);
+      // sau khi call api thành công
+      let action: PayloadAction<UserModel[]> = getUserByKeywordAction(
+        res.data.content
+      );
+      dispatch(action);
+    } else {
+      const res = await http.get("/Users/getUser");
+      // sau khi call api thành công
+      let action: PayloadAction<userType[]> = getUserAction(res.data.content);
+      dispatch(action);
+    }
   };
 };
 
-export const updateUserApi = (userUpdate: userType) => {
+export const registerApi = (userRegister: userType) => {
+  return async (dispatch: DispathType) => {
+    const res = await http.post("/Users/signup", userRegister);
+
+    console.log("res", res.data.content);
+  };
+};
+
+export const updateUserApi = (userUpdate: UserUpdateType) => {
   return async (dispatch: DispathType) => {
     await http.put("/Users/editUser", userUpdate);
   };
 };
 
-export const deleteUserApi = (idUser: userType) => {
+export const deleteUser = (id: number) => {
   return async (dispatch: DispathType) => {
-    await http.put(`/Users/deleteUser?id=${idUser}`);
+    await http.delete(`/Users/deleteUser?id=${id}`);
   };
 };

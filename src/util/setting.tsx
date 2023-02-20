@@ -1,4 +1,6 @@
 import axios from "axios";
+import { history } from "../index";
+
 // import {history} from '../index';
 export const config = {
   setCookie: (name: string, value: string, days: number) => {
@@ -40,6 +42,9 @@ export const config = {
     }
     return null;
   },
+  clearStore: (name: string) => {
+    localStorage.removeItem(name);
+  },
   ACCESS_TOKEN: "accessToken",
   USER_LOGIN: "userLogin",
 };
@@ -51,6 +56,7 @@ export const {
   setStore,
   setStoreJson,
   getStoreJson,
+  clearStore,
   ACCESS_TOKEN,
   USER_LOGIN,
 } = config;
@@ -69,7 +75,7 @@ export const http = axios.create({
 //Cấu hình request header
 http.interceptors.request.use(
   (config: any) => {
-    const token = getStore(ACCESS_TOKEN);
+    const token = getStoreJson(ACCESS_TOKEN);
     config.headers = {
       ...config.headers,
       ["Authorization"]: `Bearer ${token}`,
@@ -92,12 +98,12 @@ http.interceptors.response.use(
     // const originalRequest = error.config;
     console.log(err.response.status);
     if (err.response.status === 400 || err.response.status === 404) {
-      // history.push('/');
+      history.push("/");
       return Promise.reject(err);
     }
     if (err.response.status === 401 || err.response.status === 403) {
       alert("Token không hợp lệ ! Vui lòng đăng nhập lại !");
-      // history.push('/login');
+      history.push("/login");
       return Promise.reject(err);
     }
   }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Input from "../../components/Input/Input";
@@ -12,25 +12,39 @@ import FormRow from "../../components/common/FormRow/FormRow";
 import FormGroup from "../../components/common/FormGroup/FormGroup";
 import TextTiny from "../../components/Input/TextTiny";
 import Button from "../../components/Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { DispathType, RootState } from "../../redux/config";
+import {
+  createProject,
+  getProjectCategoryApi,
+} from "../../redux/projectReducer/projectReducer";
+import { useToast } from "../../components/Toast";
 
 type Props = {};
 interface Values {
-  name: string;
+  projectName: string;
   description: string;
-  category: string;
+  categoryId: number;
 }
 const AddProject = (props: Props) => {
+  const dispatch: DispathType = useDispatch();
   const initialValues: Values = {
-    name: "",
+    projectName: "",
     description: "",
-    category: "",
+    categoryId: 0,
   };
   const { show, setShow, nodeRef } = useClickOutside();
   const handleToggleDropdown = () => {
     setShow(!show);
   };
-  const [category, setCategory] = useState("");
+  const { projectCategory } = useSelector(
+    (state: RootState) => state.projectReducer
+  );
+  const { add } = useToast();
 
+  useEffect(() => {
+    dispatch(getProjectCategoryApi());
+  }, []);
   return (
     <Fragment>
       <div className="bg-white rounded-xl py-10 px-[66px]">
@@ -42,35 +56,53 @@ const AddProject = (props: Props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={Yup.object().shape({
-              name: Yup.string().required(
+              projectName: Yup.string().required(
                 "This project name already registered"
               ),
 
               description: Yup.string().required(
                 "This description already registered"
               ),
-              category: Yup.string().required(
-                "This description already registered"
+              categoryId: Yup.string().required(
+                "This category already registered"
               ),
             })}
-            onSubmit={(values, { setSubmitting }) => {
-              console.log(values);
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              setTimeout(async () => {
+                setSubmitting(false);
+                await dispatch(createProject(values));
+                add({
+                  type: "success",
+                  message: "Create project successfully",
+                  duration: 3000,
+                  position: "topCenter",
+                });
+                resetForm();
+              });
             }}
           >
-            {({ isSubmitting, errors, setFieldValue }) => {
-              const handleSelectCategory = (value: string) => {
+            {({ isSubmitting, errors, setFieldValue, values }) => {
+              const placeholderCategory =
+                values.categoryId === 1
+                  ? "Dự án web"
+                  : values.categoryId === 2
+                  ? "Dự án phần mềm"
+                  : values.categoryId === 3
+                  ? "Dự án di động"
+                  : "Select a project category";
+              const handleSelectCategory = (value: number) => {
                 setShow(false);
-                setFieldValue("category", value);
+                setFieldValue("categoryId", value);
               };
-              const { name, category } = errors;
+
               return (
                 <Form>
                   <FormRow>
                     <FormGroup>
-                      <Label htmlFor="name">Project name *</Label>
+                      <Label htmlFor="projectName">Project name *</Label>
                       <Input
-                        id="name"
-                        name="name"
+                        id="projectName"
+                        name="projectName"
                         type="text"
                         placeholder="Please enter project name..."
                       />
@@ -81,25 +113,32 @@ const AddProject = (props: Props) => {
                         <Select
                           nodeRef={nodeRef}
                           show={show}
-                          placeholder={"Select a project category"}
+                          placeholder={placeholderCategory}
                           onClick={handleToggleDropdown}
                         />
                         <List show={show}>
-                          <Option
-                            onClick={() => handleSelectCategory("sadasd")}
-                          >
-                            1
-                          </Option>
-                          <Option
-                            onClick={() => handleSelectCategory("asdasdsad")}
-                          >
-                            4
-                          </Option>
-                          <Option
-                            onClick={() => handleSelectCategory("asdasd")}
-                          >
-                            3
-                          </Option>
+                          {projectCategory.map(
+                            ({ id, projectCategoryName }) => {
+                              const selected = id === values.categoryId;
+                              return (
+                                <Option
+                                  className={
+                                    selected
+                                      ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                      : ""
+                                  }
+                                  key={id}
+                                  onClick={() => {
+                                    console.log(values);
+
+                                    handleSelectCategory(id);
+                                  }}
+                                >
+                                  {projectCategoryName}
+                                </Option>
+                              );
+                            }
+                          )}
                         </List>
                       </Dropdown>
                     </FormGroup>
@@ -109,7 +148,12 @@ const AddProject = (props: Props) => {
                     <TextTiny control="tiny-mce" name="description" />
                   </FormGroup>
                   <div className=" flex items-center justify-center">
-                    <Button type="submit" className=" my-3" kind="primary">
+                    <Button
+                      isLoading={isSubmitting}
+                      type="submit"
+                      className=" my-3"
+                      kind="primary"
+                    >
                       Add new project
                     </Button>
                   </div>

@@ -1,3 +1,4 @@
+import { type } from "os";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -8,22 +9,24 @@ type Props = {
   isLoading?: boolean;
   href?: string;
   kind?: string;
+  onClick?: any;
 };
 
 const Button = ({
   children,
+  onClick,
   className = "",
   isLoading = false,
   ...rest
 }: Props) => {
   const child = !!isLoading ? (
-    <div className="w-10 h-10 rounded-full p-4 border-4 border-white border-t-transparent border-b-transparent animate-spin"></div>
+    <div className="w-8 h-8 rounded-full border-4 border-white border-t-transparent border-b-transparent animate-spin"></div>
   ) : (
     children
   );
 
   let defaultClassName =
-    "text-base font-semibold rounded-xl flex items-center justify-center cursor-pointer";
+    "text-base font-semibold rounded-xl flex items-center justify-center";
 
   switch (rest.kind) {
     case "primary":
@@ -41,12 +44,19 @@ const Button = ({
     case "cancel":
       defaultClassName =
         defaultClassName +
-        " bg-stock border border-strock text-text2 px-2 py-1 font-mono";
+        " bg-stock hover:bg-gray-100 transition-all text-text3 text-base font-medium font-mono px-4 py-2 rounded-lg";
       break;
 
     case "success":
       defaultClassName =
-        defaultClassName + " bg-blue-500 text-white px-2 py-1 font-mono";
+        defaultClassName +
+        " bg-blue-500 hover:bg-opacity-80  text-white px-4 py-2 font-mono";
+      break;
+
+    case "delete":
+      defaultClassName =
+        defaultClassName +
+        " bg-red-500 hover:bg-opacity-80 text-white px-4 py-2 font-mono";
       break;
 
     default:
@@ -60,6 +70,7 @@ const Button = ({
     );
   return (
     <button
+      onClick={onClick}
       className={`cursor-pointer ${
         defaultClassName +
         " " +

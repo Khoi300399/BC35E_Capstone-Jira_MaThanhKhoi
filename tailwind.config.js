@@ -34,6 +34,32 @@ module.exports = {
       },
       boxShadow: {
         sdprimary: "10px 10px 20px rgba(211, 211, 211, 0.25)",
+        sdSecondary:
+          " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px",
+        sdThirty:
+          "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
+      },
+      animation: {
+        toastIn: "toastIn .8s both",
+        toastOut: "toastOut .8s both",
+      },
+      keyframes: {
+        toastIn: {
+          "0%": {
+            transform: "var(--elm-translate) scale(0.7)",
+            opacity: 0.7,
+          },
+          "80%": { transform: "translate(0px) scale(0.7)", opacity: 0.7 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        toastOut: {
+          "0%": { transform: "scale(1)", opacity: 1 },
+          "20%": { transform: "translate(0px) scale(0.7)", opacity: 0.7 },
+          "100%": {
+            transform: "var(--elm-translate) scale(0.7)",
+            opacity: 0.7,
+          },
+        },
       },
     },
   },

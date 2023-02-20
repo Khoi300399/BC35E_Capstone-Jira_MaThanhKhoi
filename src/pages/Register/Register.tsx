@@ -38,7 +38,6 @@ const Register = (props: Props) => {
       <p className="mb-6 font-normal text-center lg:text-sm text-text3 lg:mb-8">
         Already have an account?{" "}
         <Link to={"/login"} className="font-medium underline text-primary">
-          {" "}
           Sign in
         </Link>
       </p>
@@ -49,16 +48,16 @@ const Register = (props: Props) => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          name: Yup.string().required("This name already registered"),
+          name: Yup.string().required("name cannot be blank !"),
           email: Yup.string()
-            .required("This email already registered")
+            .required("email cannot be blank !")
             .email("Invalid email address"),
           phoneNumber: Yup.string()
-            .required("This phone already registered")
+            .required("phone number cannot be blank !")
             .matches(phoneRegExp, "Phone number is not valid"),
 
           passWord: Yup.string()
-            .required("This password already registered")
+            .required("pasword cannot be blank !")
             .min(8, "Password must be 8 character "),
         })}
         onSubmit={(values, { setSubmitting }) => {
@@ -136,6 +135,7 @@ const Register = (props: Props) => {
               </CheckBox>
 
               <Button
+                kind="primary"
                 type="submit"
                 className="w-full text-white bg-primary"
                 isLoading={isSubmitting}

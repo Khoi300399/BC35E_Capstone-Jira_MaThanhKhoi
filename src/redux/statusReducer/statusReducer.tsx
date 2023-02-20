@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { statusState, statusType } from "../../types/global";
+import { statusState, statusType, UpdateStatusType } from "../../types/global";
 import { http } from "../../util/setting";
 import { DispathType } from "../config";
 
@@ -32,5 +32,10 @@ export const getStatusApi = () => {
     // Sau khi call api thành công
     let action: PayloadAction<statusType[]> = getStatusAction(res.data.content);
     dispatch(action);
+  };
+};
+export const updateStatus = (data: UpdateStatusType) => {
+  return async (dispatch: DispathType) => {
+    const res = await http.put("/Project/updateStatus", data);
   };
 };

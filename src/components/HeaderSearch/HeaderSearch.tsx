@@ -1,12 +1,15 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  onChange?: any;
+};
 
-const HeaderSearch = (props: Props) => {
+const HeaderSearch = ({ onChange }: Props) => {
   return (
     <div className="bg-gray-100 rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full  flex items-center">
       <div className="flex-1 px-5">
         <input
+          onChange={onChange}
           type="text"
           placeholder="Search..."
           className="bg-transparent w-full text-sm text-text1 placeholder:text-text4 "

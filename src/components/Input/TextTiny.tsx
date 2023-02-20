@@ -1,13 +1,14 @@
+import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Field } from "formik";
-import React from "react";
 
 type Props = {
   control: string;
   name: string;
+  value?: string;
 };
 
-const TextTiny = ({ control, name, ...props }: Props) => {
+const TextTiny = ({ control, name, value, ...props }: Props) => {
   switch (control) {
     case "tiny-mce":
       return (
@@ -20,6 +21,7 @@ const TextTiny = ({ control, name, ...props }: Props) => {
                 <>
                   <Editor
                     value={field.value}
+                    initialValue={value}
                     init={{
                       height: 500,
                       menubar: true,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/config";
@@ -11,33 +11,37 @@ type Props = {
 };
 
 const TaskBox = ({ children, name, id }: Props) => {
-  const colorText =
-    id === "1"
-      ? "text-blue-500"
-      : id === "2"
-      ? "text-orange-500"
-      : id === "3"
-      ? "text-red-500"
-      : "text-green-500";
-  const colorBg =
-    id === "1"
-      ? "bg-blue-200"
-      : id === "2"
-      ? "bg-orange-200"
-      : id === "3"
-      ? "bg-red-200"
-      : "bg-green-200";
-  const icon = id === "1" ? "🌞" : id === "2" ? "📝" : id === "3" ? "⏳" : "✅";
+  const [colorText, colorBg, icon] = useMemo(() => {
+    let text, bg, icon;
+    if (id === "1") {
+      text = "text-blue-500";
+      bg = "bg-blue-200";
+      icon = "🌞";
+    } else if (id === "2") {
+      text = "text-orange-500";
+      bg = "bg-orange-200";
+      icon = "📝";
+    } else if (id === "3") {
+      text = "text-red-500";
+      bg = "bg-red-200";
+      icon = "⏳";
+    } else {
+      text = "text-green-500";
+      bg = "bg-green-200";
+      icon = "✅";
+    }
+    return [text, bg, icon];
+  }, [id]);
 
   const { statuses } = useSelector((state: RootState) => state.statusReducer);
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: ItemType.BOX,
-    drop: () => ({ name }),
+    drop: () => ({ statusName: name, statusId: id }),
     canDrop: (item: any, monitor) => {
       // console.log("item canDrop", item);
       const itemIndex = statuses.findIndex(
-        (si) => si.statusName === item.statusName
+        (si) => si.statusId === item.statusId
       );
       const statusIndex = statuses.findIndex((si) => si.statusName === name);
       return [
@@ -48,7 +52,9 @@ const TaskBox = ({ children, name, id }: Props) => {
         itemIndex,
       ].includes(statusIndex);
     },
-    hover: (item, monitor) => {},
+    hover: (item, monitor) => {
+      // console.log("itemcanDrop", item);
+    },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -57,7 +63,7 @@ const TaskBox = ({ children, name, id }: Props) => {
 
   // const isActive = isOver && canDrop;
   // console.log("isOver", isOver);
-  console.log("canDrop", canDrop);
+  // console.log("canDrop", canDrop);
 
   return (
     <div
