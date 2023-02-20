@@ -71,7 +71,7 @@ const Header = () => {
             onClick={handleToggleSettings}
           >
             <img
-              src="https://api.dicebear.com/5.x/fun-emoji/svg?seed=Ginger"
+              src={admin.avatar}
               alt="avatar"
               className="rounded-full object-cover w-full h-full"
             />
