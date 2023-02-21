@@ -13,15 +13,18 @@ import ButtonGoogle from "../../components/ButtonGoogle/ButtonGoogle";
 import { userType } from "../../types/global";
 import { loginApi } from "../../redux/userReducer/userReducer";
 import { useDispatch } from "react-redux";
-import { DispathType } from "../../redux/config";
+import { DispathType, RootState } from "../../redux/config";
 import { getStoreJson, USER_LOGIN } from "../../util/setting";
+import { useSelector } from "react-redux";
+import { useToast } from "../../components/Toast";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const dispath: DispathType = useDispatch();
   const navigate = useNavigate();
-
+  const { status } = useSelector((state: RootState) => state.userReducer);
+  const { add } = useToast();
   const initialValues: userType = {
     email: "",
     passWord: "",
@@ -50,13 +53,25 @@ const Login = (props: Props) => {
           passWord: Yup.string().required(" ").min(3, " "),
         })}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          // document.body.classList.toggle("dark");
-          setTimeout(() => {
-            setSubmitting(true);
-            const actionAsync = loginApi(values);
-            dispath(actionAsync);
-            navigate("/");
-          }, 500);
+          const actionAsync = loginApi(values);
+          await dispath(actionAsync);
+          setSubmitting(true);
+          console.log("status", status);
+          if (status) {
+            add({
+              type: "success",
+              message: "LogLogged in successfully",
+              duration: 3000,
+              position: "topCenter",
+            });
+          } else {
+            add({
+              type: "error",
+              message: "Login failed",
+              duration: 3000,
+              position: "topCenter",
+            });
+          }
         }}
       >
         {({ isSubmitting }) => {

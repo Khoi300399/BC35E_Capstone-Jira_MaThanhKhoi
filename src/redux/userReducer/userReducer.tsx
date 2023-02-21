@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useToast } from "../../components/Toast";
 import {
   UserModel,
   userState,
@@ -19,8 +20,8 @@ const initialState: userState = {
   userAll: [],
   userByKeyword: [],
   loading: false,
+  status: false,
 };
-
 const userReducer = createSlice({
   name: "userReducer",
   initialState,
@@ -41,6 +42,9 @@ const userReducer = createSlice({
     setLoading: (state: userState, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setStatus: (state: userState, action: PayloadAction<boolean>) => {
+      state.status = action.payload;
+    },
   },
 });
 
@@ -49,6 +53,7 @@ export const {
   getUserAction,
   getUserByKeywordAction,
   setLoading,
+  setStatus,
 } = userReducer.actions;
 
 export default userReducer.reducer;
@@ -65,7 +70,11 @@ export const loginApi = (userLogin: userType) => {
         setStoreJson(USER_LOGIN, res.data.content);
         setStoreJson(ACCESS_TOKEN, res.data.content.accessToken);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+      });
+    let action: PayloadAction<boolean> = setStatus(true);
+    dispatch(action);
   };
 };
 

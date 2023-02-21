@@ -2,12 +2,13 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { Coords } from "../../types/global";
-import { clearStore, USER_LOGIN } from "../../util/setting";
+import { ACCESS_TOKEN, clearStore, USER_LOGIN } from "../../util/setting";
 
 const AvatarModal = ({ coords }: { coords: Coords }) => {
   const navigate = useNavigate();
   function logOut() {
     clearStore(USER_LOGIN);
+    clearStore(ACCESS_TOKEN);
     navigate("/login");
     window.location.reload();
   }

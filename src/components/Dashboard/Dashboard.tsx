@@ -1,7 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { history } from "../../index";
-import { clearStore, getStoreJson, USER_LOGIN } from "../../util/setting";
+import {
+  ACCESS_TOKEN,
+  clearStore,
+  getStoreJson,
+  USER_LOGIN,
+} from "../../util/setting";
 import IconDarkMode from "../icons/IconDarkMode";
 import IconDashboard from "../icons/IconDashboard";
 import IconLogout from "../icons/IconLogout";
@@ -20,6 +25,7 @@ if (!getStoreJson(USER_LOGIN)) {
 }
 function logOut() {
   clearStore(USER_LOGIN);
+  clearStore(ACCESS_TOKEN);
   window.location.reload();
 }
 const sideBarLink: linkType[] = [

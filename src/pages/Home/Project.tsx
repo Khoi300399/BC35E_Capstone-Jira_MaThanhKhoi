@@ -699,22 +699,24 @@ const Project = (props: Props) => {
                           </div>
                         </td>
                         <td>
-                          <div className="flex items-center text-gray-500 ">
-                            <span
-                              onClick={() => {
-                                handleToggleModal(id);
-                              }}
-                            >
-                              <IconEdit />
-                            </span>
-                            <span
-                              onClick={() => {
-                                handleToggleModalDeteleProject(id);
-                              }}
-                            >
-                              <IconDelete />
-                            </span>
-                          </div>
+                          {creator.id === admin.id && (
+                            <div className="flex items-center text-gray-500 ">
+                              <span
+                                onClick={() => {
+                                  handleToggleModal(id);
+                                }}
+                              >
+                                <IconEdit />
+                              </span>
+                              <span
+                                onClick={() => {
+                                  handleToggleModalDeteleProject(id);
+                                }}
+                              >
+                                <IconDelete />
+                              </span>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );

@@ -788,6 +788,7 @@ const ProjectDetail = () => {
                             key={task.taskId}
                             index={inx}
                             items={task}
+                            creator={creator}
                             changeStatusName={changeStatusName}
                           />
                         ));

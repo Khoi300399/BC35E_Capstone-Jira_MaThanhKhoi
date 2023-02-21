@@ -49,3 +49,8 @@ export const deleteCommentApi = (id: number) => {
     await http.delete(`/Comment/deleteComment?idComment=${id}`);
   };
 };
+export const updateCommentApi = (id: number, data: string) => {
+  return async (dispatch: DispathType) => {
+    await http.put(`/Comment/updateComment?id=${id}&contentComment=${data}`);
+  };
+};

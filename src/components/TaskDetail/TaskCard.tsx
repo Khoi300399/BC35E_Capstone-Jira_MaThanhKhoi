@@ -23,8 +23,10 @@ import { Link } from "react-router-dom";
 import { Avatar, Tooltip } from "antd";
 import {
   AddUserType,
+  Creator,
   ItemType,
   LstTaskDeTail,
+  UserLoginType,
   UserModel,
   userType,
 } from "../../types/global";
@@ -52,14 +54,14 @@ import {
   insertCommentApi,
 } from "../../redux/commentReducer/commentReducer";
 import IconError from "../icons/IconError";
+import ButtonEditComment from "../Button/ButtonEditComment";
 
 type Props = {
   index: number;
-
+  creator: Creator;
   items: LstTaskDeTail;
   changeStatusName: (
     item: LstTaskDeTail,
-
     statusId: string,
     taskId: number
   ) => void;
@@ -80,7 +82,9 @@ interface Values {
   comment?: string;
 }
 
-const TaskCard = ({ index, items, changeStatusName }: Props) => {
+const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
+  console.log("creator", creator);
+
   const { add } = useToast();
   const {
     taskName,
@@ -160,7 +164,8 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
   );
   const dispatch: DispathType = useDispatch();
   // Admin
-  const admin: userType = getStoreJson(USER_LOGIN);
+  const admin: UserLoginType = getStoreJson(USER_LOGIN);
+
   const { userAll } = useSelector((state: RootState) => state.userReducer);
   const [openModalBase, setOpenModalBase] = useState<boolean>(false);
   const [openModalDeleteTask, setpenModalDeleteTask] = useState<boolean>(false);
@@ -168,6 +173,8 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
   const [search, setSearch] = useState<string>("");
   const { nodeRef, show: userTag, setShow: setUserTag } = useClickOutside();
   const [openDesc, setOpenDesc] = useState<boolean>(false);
+  const [openTitle, setEditTitle] = useState<string>(taskName);
+  const [openTitleTiny, setEditTitleTiny] = useState<string>(description);
   const [openTaskName, setOpenTaskName] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingBtn, setIsLoadingBtn] = useState<boolean>(false);
@@ -236,8 +243,8 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
   const initialValues: Values = {
     listUserAsign: [],
     taskId: taskId,
-    taskName,
-    description,
+    taskName: openTitle,
+    description: openTitleTiny,
     statusId,
     originalEstimate: estimate,
     timeTrackingSpent: spent,
@@ -388,7 +395,7 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
             }}
           >
             {({ isSubmitting, setFieldValue, values, resetForm }) => {
-              const { priorityId, statusId, typeId, description } = values;
+              const { priorityId, statusId, typeId } = values;
               const placeholderPriority =
                 priorityId === 1
                   ? "🟥 High"
@@ -445,14 +452,16 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                               <i className="fa-solid fa-link"></i>
                               <span>Link Issue</span>
                             </button>
-                            <button
-                              onClick={() => {
-                                setpenModalDeleteTask(true);
-                              }}
-                              className="flex items-center justify-center text-[#42526e] bg-[rgba(9,30,66,0.04)] hover:bg-error hover:bg-opacity-20 hover:text-error transition-all ease-linear w-10 h-10 rounded text-xl"
-                            >
-                              <i className="fa-regular fa-trash-can"></i>
-                            </button>
+                            {admin.id === creator.id && (
+                              <button
+                                onClick={() => {
+                                  setpenModalDeleteTask(true);
+                                }}
+                                className="flex items-center justify-center text-[#42526e] bg-[rgba(9,30,66,0.04)] hover:bg-error hover:bg-opacity-20 hover:text-error transition-all ease-linear w-10 h-10 rounded text-xl"
+                              >
+                                <i className="fa-regular fa-trash-can"></i>
+                              </button>
+                            )}
                           </div>
                         </div>
 
@@ -461,33 +470,59 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                             {openTaskName ? (
                               <>
                                 <Input
-                                  className="appearance-none bg-bgInput outline-none border-none"
+                                  className=" bg-bgInput outline-none border-none w-2/3"
                                   id="taskName"
                                   name="taskName"
                                   type="text"
                                   placeholder=""
                                 ></Input>
-                                <div className="flex items-center justify-end gap-x-3 ">
-                                  <Button
+                                <div className="flex items-center justify-end gap-x-3 mt-2 w-2/3">
+                                  <button
+                                    onClick={() => {
+                                      setEditTitle(values.taskName);
+                                      setOpenTaskName(false);
+                                    }}
+                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite  hover:bg-blue-500 hover:bg-opacity-20 hover:text-blue-500 transition-all"
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                      className="w-5 h-5"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </button>
+                                  <button
                                     onClick={() => {
                                       setOpenTaskName(false);
                                     }}
-                                    type="button"
-                                    kind="cancel"
+                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite hover:bg-error hover:bg-opacity-20 hover:text-error transition-all"
                                   >
-                                    Cancel
-                                  </Button>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                      className="w-5 h-5"
+                                    >
+                                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                                    </svg>
+                                  </button>
                                 </div>
                               </>
                             ) : (
-                              <h1
+                              <h2
                                 onClick={() => {
                                   setOpenTaskName(true);
                                 }}
-                                className="font-medium text-2xl text-text2 text-center cursor-pointer mb-5"
+                                className="font-medium text-2xl text-text2 cursor-pointer mb-5"
                               >
-                                {values.taskName}
-                              </h1>
+                                {openTitle}
+                              </h2>
                             )}
                             <FormGroup>
                               <Label
@@ -495,14 +530,14 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                                   setOpenDesc(true);
                                 }}
                               >
-                                Description *
+                                Description
                               </Label>
                               {openDesc ? (
                                 <>
                                   <TextTiny
                                     control="tiny-mce"
                                     name="description"
-                                    value={values.description ?? description}
+                                    value={openTitleTiny}
                                   />
                                   <div className="flex items-center justify-end gap-x-3">
                                     <Button
@@ -514,14 +549,24 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                                     >
                                       Cancel
                                     </Button>
+                                    <Button
+                                      kind="success"
+                                      onClick={() => {
+                                        setEditTitleTiny(values.description);
+                                        setOpenDesc(false);
+                                      }}
+                                      type="button"
+                                    >
+                                      Save
+                                    </Button>
                                   </div>
                                 </>
                               ) : (
                                 <div
                                   dangerouslySetInnerHTML={{
-                                    __html: description,
+                                    __html: openTitleTiny,
                                   }}
-                                  className="cursor-pointer text-sm text-text4"
+                                  className="cursor-pointer text-sm text-text3"
                                   onClick={() => {
                                     setOpenDesc(true);
                                   }}
@@ -567,20 +612,20 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                               </div>
                             </div>
                             {comment.map(({ user, contentComment, id }) => {
-                              const isActiveDelete =
-                                parseInt(admin.id || "0") === user.userId;
+                              const isActiveDelete = admin.id === user.userId;
                               return (
                                 <div
                                   key={id}
                                   className=" flex items-start gap-x-3 mb-5"
                                 >
-                                  <span className="w-9 h-9 rounded-full overflow-hidden">
+                                  <div className="w-9 h-9 rounded-full overflow-hidden">
                                     <img
                                       className="w-full h-full object-cover"
                                       src={user.avatar}
                                       alt="avatar"
                                     />
-                                  </span>
+                                  </div>
+
                                   <div className="flex flex-col">
                                     <h4 className="text-text5 font-semibold">
                                       {user.name}
@@ -590,24 +635,11 @@ const TaskCard = ({ index, items, changeStatusName }: Props) => {
                                         <span>{contentComment}</span>
                                       </div>
                                       {isActiveDelete && (
-                                        <div className="flex gap-x-2">
-                                          <span className="text-xs text-blue-500 cursor-pointer">
-                                            Edit
-                                          </span>
-                                          <span
-                                            onClick={async () => {
-                                              await dispatch(
-                                                deleteCommentApi(id)
-                                              );
-                                              await dispatch(
-                                                getCommentApi(taskId)
-                                              );
-                                            }}
-                                            className="text-xs text-error cursor-pointer"
-                                          >
-                                            Delete
-                                          </span>
-                                        </div>
+                                        <ButtonEditComment
+                                          id={id}
+                                          text={contentComment}
+                                          taskId={taskId}
+                                        />
                                       )}
                                     </div>
                                   </div>

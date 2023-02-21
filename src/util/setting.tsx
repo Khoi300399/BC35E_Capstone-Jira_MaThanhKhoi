@@ -98,12 +98,11 @@ http.interceptors.response.use(
     // const originalRequest = error.config;
     console.log(err.response.status);
     if (err.response.status === 400 || err.response.status === 404) {
-      history.push("/");
       return Promise.reject(err);
     }
     if (err.response.status === 401 || err.response.status === 403) {
-      alert("Token không hợp lệ ! Vui lòng đăng nhập lại !");
-      history.push("/login");
+      // alert("Token không hợp lệ ! Vui lòng đăng nhập lại !");
+      // history.push("/login");
       return Promise.reject(err);
     }
   }
