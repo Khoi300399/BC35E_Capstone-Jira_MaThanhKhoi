@@ -37,7 +37,7 @@ type Props = {};
 
 const Project = (props: Props) => {
   // lấy data từ redux
-  const { projectAll, projectCategory } = useSelector(
+  const { projectAll, projectCategory, loading } = useSelector(
     (state: RootState) => state.projectReducer
   );
 
@@ -55,6 +55,12 @@ const Project = (props: Props) => {
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
 
   const [search, setSearch] = useState<string>("");
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const [searchUser, setSearchUser] = useState<string>("");
+
   const [openDesc, setOpenDesc] = useState<boolean>(false);
   const [openModalBase, setOpenModalBase] = useState<boolean>(false);
   const [openModalMember, setOpenModalMember] = useState<boolean>(false);
@@ -87,14 +93,15 @@ const Project = (props: Props) => {
     setIsLoading(false);
   };
 
-  const searchFilter = (data: UserModel[]) => {
-    return data?.filter((item) => item.name?.toLowerCase().includes(search));
-  };
-  const searchFilterProject = (data: ProjectType[]) => {
-    return data?.filter((item) =>
-      item.projectName?.toLowerCase().includes(search)
-    );
-  };
+  const filteredUsers = userAll.filter((user) => {
+    const lowerCaseSearchText = searchUser.toLowerCase();
+    return user.name.toLowerCase().includes(lowerCaseSearchText);
+  });
+
+  const filterProject = projectAll.filter((prod) => {
+    const lowerCaseSearchText = search.toLowerCase();
+    return prod.projectName.toLowerCase().includes(lowerCaseSearchText);
+  });
 
   // Admin
   const admin = getStoreJson(USER_LOGIN);
@@ -105,17 +112,22 @@ const Project = (props: Props) => {
 
   const { add } = useToast();
   // phân trang
-  const [current, setCurrent] = useState(1);
-  const [listProject, setListProject] = useState<ProjectType[]>([]);
-  useEffect(() => {
-    setListProject(projectAll ? projectAll?.slice(0, 6) : []);
-  }, [projectAll]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
 
-  const onChange = (page: number) => {
-    setCurrent(page);
-
-    setListProject(projectAll?.slice((page - 1) * 6, (page - 1) * 6 + 6));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
+  const handlePageSizeChange = (current: number, size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  const totalItems = filterProject.length;
+
+  const startItemIndex = (currentPage - 1) * pageSize;
+  const endItemIndex = startItemIndex + pageSize;
+  const pageProject = filterProject.slice(startItemIndex, endItemIndex);
   return (
     <>
       {/* Modal delete project */}
@@ -256,67 +268,65 @@ const Project = (props: Props) => {
                             onChange={(
                               e: React.FormEvent<HTMLInputElement>
                             ) => {
-                              setSearch(e.currentTarget.value);
+                              setSearchUser(e.currentTarget.value);
                             }}
                           />
                         </div>
 
                         <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
-                          {searchFilter(userAll).map(
-                            ({ avatar, name, userId }) => {
-                              return (
-                                <div
-                                  key={userId}
-                                  className="flex items-center justify-between p-4 border-b border-strock"
-                                >
-                                  <div className="flex items-center gap-x-2">
-                                    <Avatar
-                                      src={
-                                        <img
-                                          src={avatar}
-                                          alt={`${name} avatar`}
-                                        />
-                                      }
-                                    />
-                                    <span className="text-text1 max-w-[250px] font-medium truncate">
-                                      {name}
-                                    </span>
-                                  </div>
-                                  <button
-                                    onClick={async () => {
-                                      if (creator.id === admin.id) {
-                                        await dispatch(
-                                          assignUserProject({
-                                            projectId,
-                                            userId,
-                                          })
-                                        );
-                                        await dispatch(getProjectApi());
-                                        await add({
-                                          type: "success",
-                                          message: `Add ${name} successfully`,
-                                          duration: 3000,
-                                          position: "bottomLeft",
-                                        });
-                                      } else {
-                                        setOpenModalMember(false);
-                                        add({
-                                          type: "warning",
-                                          message:
-                                            "Only the creator can add member in this project",
-                                          duration: 3000,
-                                          position: "bottomLeft",
-                                        });
-                                      }
-                                    }}
-                                    className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg"
-                                  >
-                                    Add
-                                  </button>
+                          {filteredUsers.map(({ avatar, name, userId }) => {
+                            return (
+                              <div
+                                key={userId}
+                                className="flex items-center justify-between p-4 border-b border-strock"
+                              >
+                                <div className="flex items-center gap-x-2">
+                                  <Avatar
+                                    src={
+                                      <img
+                                        src={avatar}
+                                        alt={`${name} avatar`}
+                                      />
+                                    }
+                                  />
+                                  <span className="text-text1 max-w-[250px] font-medium truncate">
+                                    {name}
+                                  </span>
                                 </div>
-                              );
-                            }
-                          )}
+                                <button
+                                  onClick={async () => {
+                                    if (creator.id === admin.id) {
+                                      await dispatch(
+                                        assignUserProject({
+                                          projectId,
+                                          userId,
+                                        })
+                                      );
+                                      await dispatch(getProjectApi());
+                                      await add({
+                                        type: "success",
+                                        message: `Add ${name} successfully`,
+                                        duration: 3000,
+                                        position: "bottomLeft",
+                                      });
+                                    } else {
+                                      setOpenModalMember(false);
+                                      add({
+                                        type: "warning",
+                                        message:
+                                          "Only the creator can add member in this project",
+                                        duration: 3000,
+                                        position: "bottomLeft",
+                                      });
+                                    }
+                                  }}
+                                  className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg"
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                       <div className="w-[45%] p-4">
@@ -592,7 +602,7 @@ const Project = (props: Props) => {
             Create project
           </Button>
         </div>
-        {!!projectAll ? (
+        {loading ? (
           <>
             <table className="table-project">
               <thead>
@@ -606,7 +616,7 @@ const Project = (props: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {searchFilterProject(listProject)?.map(
+                {pageProject.map(
                   ({ members, creator, id, projectName, categoryName }) => {
                     const bgColor =
                       categoryName === "Dự án web"
@@ -715,12 +725,12 @@ const Project = (props: Props) => {
             <div className="flex items-center justify-end my-5">
               <Pagination
                 hideOnSinglePage
-                defaultCurrent={1}
-                onChange={onChange}
-                current={current}
-                pageSize={6}
-                total={projectAll.length}
-                className="pl-5 ml-5"
+                defaultCurrent={currentPage}
+                pageSize={pageSize}
+                current={currentPage}
+                onChange={handlePageChange}
+                onShowSizeChange={handlePageSizeChange}
+                total={totalItems}
               />
             </div>
           </>

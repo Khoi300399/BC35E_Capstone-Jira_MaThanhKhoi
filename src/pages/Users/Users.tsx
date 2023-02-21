@@ -33,11 +33,19 @@ const Users = (props: Props) => {
     useToggle();
   const dispatch: DispathType = useDispatch();
   const { add } = useToast();
+
   const [search, setSearch] = useState<string>("");
-  const searchFilter = (data: UserModel[]) => {
-    return data?.filter((item) => item.name?.toLowerCase().includes(search));
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
   };
-  const { userAll } = useSelector((state: RootState) => state.userReducer);
+  const { userAll, loading } = useSelector(
+    (state: RootState) => state.userReducer
+  );
+
+  const filteredUsers = userAll.filter((user) => {
+    const lowerCaseSearchText = search.toLowerCase();
+    return user.name.toLowerCase().includes(lowerCaseSearchText);
+  });
 
   const [openModalDeleteUser, setOpenModalDeleteUser] =
     useState<boolean>(false);
@@ -64,20 +72,26 @@ const Users = (props: Props) => {
 
   useEffect(() => {
     dispatch(getUserApi());
-  }, []);
+  }, [dispatch]);
 
   // phân trang
-  const [current, setCurrent] = useState(1);
-  const [listUser, setListUser] = useState<UserModel[]>([]);
-  useEffect(() => {
-    setListUser(userAll ? userAll?.slice(0, 6) : []);
-  }, [userAll]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
 
-  const onChange = (page: number) => {
-    setCurrent(page);
-
-    setListUser(userAll?.slice((page - 1) * 6, (page - 1) * 6 + 6));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
+  const handlePageSizeChange = (current: number, size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  const totalItems = filteredUsers.length;
+
+  const startItemIndex = (currentPage - 1) * pageSize;
+  const endItemIndex = startItemIndex + pageSize;
+  const pagedUsers = filteredUsers.slice(startItemIndex, endItemIndex);
+
   return (
     <>
       {/* Modal delete user */}
@@ -346,11 +360,7 @@ const Users = (props: Props) => {
       <div className="w-full overflow-x-auto">
         <div className="mb-2 bg-white rounded-3xl flex items-center justify-between py-8 px-10">
           <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
-            <HeaderSearch
-              onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                setSearch(e.currentTarget.value);
-              }}
-            ></HeaderSearch>
+            <HeaderSearch onChange={handleSearch}></HeaderSearch>
           </div>
           <div className="flex items-start gap-x-6">
             <Link
@@ -385,7 +395,7 @@ const Users = (props: Props) => {
             </div>
           </div>
         </div>
-        {!!userAll ? (
+        {loading ? (
           <>
             <table className="table-user">
               <thead>
@@ -399,7 +409,7 @@ const Users = (props: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {searchFilter(listUser).map(
+                {pagedUsers.map(
                   ({ userId, email, name, phoneNumber }, index) => {
                     return (
                       <tr key={userId}>
@@ -436,12 +446,12 @@ const Users = (props: Props) => {
             <div className="flex items-center justify-end my-5">
               <Pagination
                 hideOnSinglePage
-                defaultCurrent={1}
-                onChange={onChange}
-                current={current}
-                pageSize={6}
-                total={userAll.length}
-                className="pl-5 ml-5"
+                defaultCurrent={currentPage}
+                pageSize={pageSize}
+                current={currentPage}
+                onChange={handlePageChange}
+                onShowSizeChange={handlePageSizeChange}
+                total={totalItems}
               />
             </div>
           </>

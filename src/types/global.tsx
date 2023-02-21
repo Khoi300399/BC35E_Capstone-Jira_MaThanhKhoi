@@ -120,6 +120,7 @@ export interface userState {
   userLogin: userType;
   userAll: UserModel[];
   userByKeyword: UserModel[];
+  loading: boolean;
 }
 
 export interface UserLoginType {
@@ -166,6 +167,7 @@ export interface ProjectState {
   projectCategory: ProjectCategoryType[];
   taskType: TaskType[];
   lstTask: LstTask[];
+  loading: boolean;
 }
 
 export interface TaskType {

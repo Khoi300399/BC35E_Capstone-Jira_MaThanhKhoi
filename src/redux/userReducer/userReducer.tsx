@@ -18,6 +18,7 @@ const initialState: userState = {
   userLogin: getStoreJson(USER_LOGIN) ? getStoreJson(USER_LOGIN) : null,
   userAll: [],
   userByKeyword: [],
+  loading: false,
 };
 
 const userReducer = createSlice({
@@ -37,11 +38,18 @@ const userReducer = createSlice({
     ) => {
       state.userAll = action.payload;
     },
+    setLoading: (state: userState, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { loginAction, getUserAction, getUserByKeywordAction } =
-  userReducer.actions;
+export const {
+  loginAction,
+  getUserAction,
+  getUserByKeywordAction,
+  setLoading,
+} = userReducer.actions;
 
 export default userReducer.reducer;
 
@@ -49,32 +57,34 @@ export default userReducer.reducer;
 
 export const loginApi = (userLogin: userType) => {
   return async (dispatch: DispathType) => {
-    const res = await http.post("/Users/signin", userLogin);
-    // Sau khi đăng nhập thành công
-    let action: PayloadAction<userType> = loginAction(res.data.content);
-    dispatch(action);
-
-    //  Lưu đăng nhập thành công vào localstorage
-    setStoreJson(USER_LOGIN, res.data.content);
-    setStoreJson(ACCESS_TOKEN, res.data.content.accessToken);
+    await http
+      .post("/Users/signin", userLogin)
+      .then((res) => {
+        let action: PayloadAction<userType> = loginAction(res.data.content);
+        dispatch(action);
+        setStoreJson(USER_LOGIN, res.data.content);
+        setStoreJson(ACCESS_TOKEN, res.data.content.accessToken);
+      })
+      .catch((error) => console.log(error));
   };
 };
 
-export const getUserApi = (name?: string) => {
+export const getUserApi = () => {
   return async (dispatch: DispathType) => {
-    if (name) {
-      const res = await http.get(`/Users/getUser?keyword=${name}`);
-      // sau khi call api thành công
-      let action: PayloadAction<UserModel[]> = getUserByKeywordAction(
-        res.data.content
-      );
-      dispatch(action);
-    } else {
-      const res = await http.get("/Users/getUser");
-      // sau khi call api thành công
-      let action: PayloadAction<userType[]> = getUserAction(res.data.content);
-      dispatch(action);
-    }
+    await http
+      .get("/Users/getUser")
+      .then((res) => {
+        // sau khi call api thành công
+        let action: PayloadAction<userType[]> = getUserAction(res.data.content);
+        dispatch(action);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        let action: PayloadAction<boolean> = setLoading(false);
+        dispatch(action);
+      });
+    let action: PayloadAction<boolean> = setLoading(true);
+    dispatch(action);
   };
 };
 

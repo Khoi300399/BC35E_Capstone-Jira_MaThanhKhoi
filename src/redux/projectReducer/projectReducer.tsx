@@ -39,6 +39,7 @@ const initialState: ProjectState = {
   projectByKeyword: [],
   taskType: [],
   lstTask: [],
+  loading: false,
 };
 
 const projectReducer = createSlice({
@@ -84,6 +85,9 @@ const projectReducer = createSlice({
     ) => {
       state.taskType = action.payload;
     },
+    setLoading: (state: ProjectState, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -94,29 +98,31 @@ export const {
   getProjectDetailAction,
   getTaskTypeAction,
   getLstTaskAction,
+  setLoading,
 } = projectReducer.actions;
 
 export default projectReducer.reducer;
 
 /*--------------- action async --------------- */
 
-export const getProjectApi = (name?: string) => {
+export const getProjectApi = () => {
   return async (dispatch: DispathType) => {
-    if (name) {
-      const res = await http.get(`/Project/getAllProject?keyword=${name}`);
-      // Sau khi call api thành công
-      let action: PayloadAction<ProjectType[]> = getProjectByKeywordAction(
-        res.data.content
-      );
-      dispatch(action);
-    } else {
-      const res = await http.get("/Project/getAllProject");
-      // Sau khi call api thành công
-      let action: PayloadAction<ProjectType[]> = getProjectAction(
-        res.data.content
-      );
-      dispatch(action);
-    }
+    await http
+      .get("/Project/getAllProject")
+      .then((res) => {
+        // Sau khi call api thành công
+        let action: PayloadAction<ProjectType[]> = getProjectAction(
+          res.data.content
+        );
+        dispatch(action);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        let action: PayloadAction<boolean> = setLoading(false);
+        dispatch(action);
+      });
+    let action: PayloadAction<boolean> = setLoading(true);
+    dispatch(action);
   };
 };
 
