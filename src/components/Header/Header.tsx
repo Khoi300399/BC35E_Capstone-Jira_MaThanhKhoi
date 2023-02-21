@@ -71,7 +71,7 @@ const Header = () => {
             onClick={handleToggleSettings}
           >
             <img
-              src={admin.avatar}
+              src={admin?.avatar || ""}
               alt="avatar"
               className="rounded-full object-cover w-full h-full"
             />
@@ -80,7 +80,7 @@ const Header = () => {
           {isShowDropdown && <AvatarModal coords={coords} />}
         </div>
         <div className="flex items-center">
-          <p className="text-text5 font-semibold">{admin.name}</p>
+          <p className="text-text5 font-semibold">{admin?.name || ""}</p>
         </div>
       </div>
     </div>
