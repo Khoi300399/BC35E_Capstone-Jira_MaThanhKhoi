@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isExpired } from "react-jwt";
 import { history } from "../index";
 
 // import {history} from '../index';
@@ -78,7 +79,9 @@ http.interceptors.request.use(
     const token = getStoreJson(ACCESS_TOKEN);
     config.headers = {
       ...config.headers,
+      // eslint-disable-next-line no-useless-computed-key
       ["Authorization"]: `Bearer ${token}`,
+      // eslint-disable-next-line no-useless-computed-key
       ["TokenCybersoft"]: TOKEN_CYBERSOFT,
     };
     config.headers["Content-Type"] = "application/json";
@@ -91,20 +94,26 @@ http.interceptors.request.use(
 //Cấu hình kết quả trả về
 http.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   (err) => {
     // const originalRequest = error.config;
     console.log(err.response.status);
     if (err.response.status === 400 || err.response.status === 404) {
-      return Promise.reject(err);
     }
     if (err.response.status === 401 || err.response.status === 403) {
-      // alert("Token không hợp lệ ! Vui lòng đăng nhập lại !");
-      // history.push("/login");
-      return Promise.reject(err);
+      const isMyTokenExpired = isExpired(getStoreJson(ACCESS_TOKEN));
+      //token hết hạn
+      if (isMyTokenExpired) {
+        alert("Hết phiên đăng nhập yêu cầu đăng nhập lại !");
+        clearStore(ACCESS_TOKEN);
+        clearStore(USER_LOGIN);
+        //Chuyển hướng trang dạng f5
+        window.location.href = "/login";
+      }
+      history.push("/login");
     }
+    return Promise.reject(err);
   }
 );
 /**

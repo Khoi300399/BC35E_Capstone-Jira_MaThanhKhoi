@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { DispathType, RootState } from "../../redux/config";
@@ -25,11 +25,12 @@ import {
   deleteProject,
   getProjectApi,
   getProjectCategoryApi,
+  getProjectDetailByIdApi,
   removeUserFromProject,
   updateProject,
 } from "../../redux/projectReducer/projectReducer";
 import { getUserApi } from "../../redux/userReducer/userReducer";
-import { ProjectType, ProjectUpdateType, UserModel } from "../../types/global";
+
 import IconError from "../../components/icons/IconError";
 import { getStoreJson, USER_LOGIN } from "../../util/setting";
 import { Link } from "react-router-dom";
@@ -37,13 +38,12 @@ type Props = {};
 
 const Project = (props: Props) => {
   // lấy data từ redux
-  const { projectAll, projectCategory, loading } = useSelector(
+  const { projectAll, projectCategory, loading, projectDetail } = useSelector(
     (state: RootState) => state.projectReducer
   );
-
+  const { id: projectId } = projectDetail;
   const { userAll } = useSelector((state: RootState) => state.userReducer);
 
-  const descRef = useRef<HTMLDivElement>(null);
   const dispatch: DispathType = useDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,12 +52,8 @@ const Project = (props: Props) => {
     setShow(!show);
   };
 
-  const [projectList, setProjectList] = useState<ProjectType[]>([]);
-
   const [search, setSearch] = useState<string>("");
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
+  const [saveId, setSaveId] = useState<number>(0);
 
   const [searchUser, setSearchUser] = useState<string>("");
 
@@ -68,28 +64,32 @@ const Project = (props: Props) => {
     useState<boolean>(false);
 
   const handleToggleModal = async (id: number) => {
+    setSaveId(id);
     setOpenDesc(false);
     setIsLoading(true);
     setOpenModalBase(true);
-
     await dispatch(getProjectCategoryApi());
-    setProjectList(projectAll.filter((u) => u.id === id));
+    dispatch(getProjectDetailByIdApi(id));
 
     setIsLoading(false);
   };
 
   const handleToggleModalMember = async (id: number) => {
+    setSaveId(id);
     setIsLoading(true);
     setOpenModalMember(true);
     await dispatch(getUserApi());
-    setProjectList(projectAll.filter((u) => u.id === id));
+    await dispatch(getProjectDetailByIdApi(id));
+
     setIsLoading(false);
   };
 
   const handleToggleModalDeteleProject = async (id: number) => {
+    setSaveId(id);
     setIsLoading(true);
     setOpenModalDeleteProject(true);
-    setProjectList(projectAll.filter((u) => u.id === id));
+    dispatch(getProjectDetailByIdApi(id));
+
     setIsLoading(false);
   };
 
@@ -108,7 +108,7 @@ const Project = (props: Props) => {
 
   useEffect(() => {
     dispatch(getProjectApi());
-  }, []);
+  }, [dispatch]);
 
   const { add } = useToast();
   // phân trang
@@ -142,64 +142,57 @@ const Project = (props: Props) => {
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
             <>
-              {projectList.map(({ projectName, id }) => {
-                return (
-                  <div
-                    key={id}
-                    className="relative bg-white max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary"
-                  >
-                    <div className="flex gap-x-2 p-6">
-                      <IconError />
-                      <div className="flex-1">
-                        <h3 className="text-xl font-mono font-semibold">
-                          Delete {projectName}?
-                        </h3>
-                      </div>
-                    </div>
-                    <div className="text-sm text-text2 leading-6 px-6">
-                      <p className="mb-3">
-                        You're about to permanently delete this project, its
-                        comments and attachments, and all of its data.
-                      </p>
-                      <p>
-                        If you're not sure, you can resolve or close this issue
-                        instead.
-                      </p>
-                    </div>
-                    <div className="flex items-start justify-end gap-x-3 px-6 py-5">
-                      <Button
-                        kind="cancel"
-                        type="button"
-                        onClick={() => {
-                          setOpenModalDeleteProject(false);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        kind="delete"
-                        type="button"
-                        onClick={async () => {
-                          setIsLoading(true);
-                          await dispatch(deleteProject(id));
-                          await dispatch(getProjectApi());
-                          await setIsLoading(false);
-                          await setOpenModalDeleteProject(false);
-
-                          add({
-                            type: "success",
-                            message: `Delete ${projectName} successfully`,
-                            duration: 3000,
-                            position: "topRight",
-                          });
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </div>
+              <div className="relative bg-white max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary">
+                <div className="flex gap-x-2 p-6">
+                  <IconError />
+                  <div className="flex-1">
+                    <h3 className="text-xl font-mono font-semibold">
+                      Delete {projectDetail.projectName}?
+                    </h3>
                   </div>
-                );
-              })}
+                </div>
+                <div className="text-sm text-text2 leading-6 px-6">
+                  <p className="mb-3">
+                    You're about to permanently delete this project, its
+                    comments and attachments, and all of its data.
+                  </p>
+                  <p>
+                    If you're not sure, you can resolve or close this issue
+                    instead.
+                  </p>
+                </div>
+                <div className="flex items-start justify-end gap-x-3 px-6 py-5">
+                  <Button
+                    kind="cancel"
+                    type="button"
+                    onClick={() => {
+                      setOpenModalDeleteProject(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    kind="delete"
+                    type="button"
+                    onClick={async () => {
+                      setIsLoading(true);
+                      await dispatch(deleteProject(projectDetail.id));
+                      await dispatch(getProjectApi());
+                      await setIsLoading(false);
+                      await setOpenModalDeleteProject(false);
+
+                      add({
+                        type: "success",
+                        message: `Delete ${projectDetail.projectName} successfully`,
+                        duration: 3000,
+                        position: "topRight",
+                      });
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
             </>
           )}
         </ModalBase>
@@ -217,373 +210,339 @@ const Project = (props: Props) => {
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
             <div className="relative bg-white max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
-              {projectList.map((project) => {
-                const { members, projectName, creator } = project;
-                const projectId = project?.id;
-                return (
-                  <div key={projectId}>
-                    <div className="flex items-start justify-between mx-5 mt-5">
-                      <div className=" flex items-center gap-x-3">
-                        <div className="text-text2 font-medium">ID :</div>
-                        <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
-                          {projectId}
-                        </span>
-                      </div>
-                      <span
-                        className="text-text2 hover:text-error select-none cursor-pointer"
-                        onClick={() => {
-                          setOpenModalMember(false);
+              <div>
+                <div className="flex items-start justify-between mx-5 mt-5">
+                  <div className=" flex items-center gap-x-3">
+                    <div className="text-text2 font-medium">ID :</div>
+                    <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
+                      {projectDetail.id}
+                    </span>
+                  </div>
+                  <span
+                    className="text-text2 hover:text-error select-none cursor-pointer"
+                    onClick={() => {
+                      setOpenModalMember(false);
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <h2 className="mt-5 text-2xl text-center text-text5 font-bold ">
+                  {projectDetail.projectName}
+                </h2>
+                <div className="flex items-start justify-between">
+                  <div className="w-[55%] p-4 ">
+                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                      Add member
+                    </h3>
+
+                    <div className="mt-3">
+                      <input
+                        className="p-4 outline-none w-full border border-gray-200 rounded"
+                        type="text"
+                        placeholder="Search user..."
+                        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                          setSearchUser(e.currentTarget.value);
                         }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </span>
+                      />
                     </div>
-                    <h2 className="mt-5 text-2xl text-center text-text5 font-bold ">
-                      {projectName}
-                    </h2>
-                    <div className="flex items-start justify-between">
-                      <div className="w-[55%] p-4 ">
-                        <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
-                          Add member
-                        </h3>
 
-                        <div className="mt-3">
-                          <input
-                            className="p-4 outline-none w-full border border-gray-200 rounded"
-                            type="text"
-                            placeholder="Search user..."
-                            onChange={(
-                              e: React.FormEvent<HTMLInputElement>
-                            ) => {
-                              setSearchUser(e.currentTarget.value);
-                            }}
-                          />
-                        </div>
+                    <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
+                      {filteredUsers.map(({ avatar, name, userId }) => {
+                        const inx = projectDetail.members.findIndex(
+                          (u) => u.userId === userId
+                        );
+                        const isActive = inx !== -1;
 
-                        <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
-                          {filteredUsers.map(({ avatar, name, userId }) => {
-                            return (
-                              <div
-                                key={userId}
-                                className="flex items-center justify-between p-4 border-b border-strock"
-                              >
-                                <div className="flex items-center gap-x-2">
-                                  <Avatar
-                                    src={
-                                      <img
-                                        src={avatar}
-                                        alt={`${name} avatar`}
-                                      />
-                                    }
-                                  />
-                                  <span className="text-text1 max-w-[250px] font-medium truncate">
-                                    {name}
-                                  </span>
-                                </div>
-                                <button
-                                  onClick={async () => {
-                                    if (creator.id === admin.id) {
-                                      await dispatch(
-                                        assignUserProject({
-                                          projectId,
-                                          userId,
-                                        })
-                                      );
-                                      await dispatch(getProjectApi());
-                                      await add({
-                                        type: "success",
-                                        message: `Add ${name} successfully`,
-                                        duration: 3000,
-                                        position: "bottomLeft",
-                                      });
-                                    } else {
-                                      setOpenModalMember(false);
-                                      add({
-                                        type: "warning",
-                                        message:
-                                          "Only the creator can add member in this project",
-                                        duration: 3000,
-                                        position: "bottomLeft",
-                                      });
-                                    }
-                                  }}
-                                  className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg"
-                                >
-                                  Add
-                                </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      <div className="w-[45%] p-4">
-                        <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
-                          Remove member
-                        </h3>
+                        return (
+                          <div
+                            key={userId}
+                            className="flex items-center justify-between p-4 border-b border-strock"
+                          >
+                            <div className="flex items-center gap-x-2">
+                              <Avatar
+                                src={
+                                  <img src={avatar} alt={`${name} avatar`} />
+                                }
+                              />
+                              <span className="text-text1 max-w-[250px] font-medium truncate">
+                                {name}
+                              </span>
+                            </div>
+                            <button
+                              disabled={isActive}
+                              onClick={async () => {
+                                await dispatch(
+                                  assignUserProject({
+                                    projectId,
+                                    userId,
+                                  })
+                                );
+                                await dispatch(getProjectApi());
+                                await dispatch(getProjectDetailByIdApi(saveId));
 
-                        <div className="overflow-x-hidden overflow-y-auto border border-strock mt-3 rounded-lg max-h-[470px] scrollbar-none">
-                          {members.map(({ avatar, name, userId }) => {
-                            return (
-                              <div
-                                key={userId}
-                                className="flex items-center justify-between p-4 border-b border-strock "
-                              >
-                                <div className="flex items-center gap-x-2">
-                                  <Avatar
-                                    src={
-                                      <img
-                                        src={avatar}
-                                        alt={`${name} avatar`}
-                                      />
-                                    }
-                                  />
-                                  <span className="text-text1 font-medium">
-                                    {name}
-                                  </span>
-                                </div>
-                                <button
-                                  onClick={async () => {
-                                    if (creator.id === admin.id) {
-                                      await dispatch(
-                                        removeUserFromProject({
-                                          projectId,
-                                          userId,
-                                        })
-                                      );
-                                      await dispatch(getProjectApi());
-                                      await add({
-                                        type: "success",
-                                        message: `Delete ${name} successfully`,
-                                        duration: 3000,
-                                        position: "bottomLeft",
-                                      });
-                                    } else {
-                                      setOpenModalMember(false);
-                                      add({
-                                        type: "warning",
-                                        message:
-                                          "Only the creator can delete member in this project",
-                                        duration: 3000,
-                                        position: "bottomLeft",
-                                      });
-                                    }
-                                  }}
-                                  className="text-white font-medium font-mono bg-error px-2 py-1 rounded-lg"
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                                add({
+                                  type: "success",
+                                  message: `Add ${name} successfully`,
+                                  duration: 3000,
+                                  position: "bottomLeft",
+                                });
+                              }}
+                              className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg disabled:bg-opacity-20"
+                            >
+                              Add
+                            </button>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                );
-              })}
+                  <div className="w-[45%] p-4">
+                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                      Remove member
+                    </h3>
+
+                    <div className="overflow-x-hidden overflow-y-auto border border-strock mt-3 rounded-lg max-h-[470px] scrollbar-none">
+                      {projectDetail.members.map(({ avatar, name, userId }) => {
+                        return (
+                          <div
+                            key={userId}
+                            className="flex items-center justify-between p-4 border-b border-strock "
+                          >
+                            <div className="flex items-center gap-x-2">
+                              <Avatar
+                                src={
+                                  <img src={avatar} alt={`${name} avatar`} />
+                                }
+                              />
+                              <span className="text-text1 font-medium">
+                                {name}
+                              </span>
+                            </div>
+                            <button
+                              onClick={async () => {
+                                await dispatch(
+                                  removeUserFromProject({
+                                    projectId,
+                                    userId,
+                                  })
+                                );
+                                await dispatch(getProjectDetailByIdApi(saveId));
+                                await dispatch(getProjectApi());
+                                await add({
+                                  type: "success",
+                                  message: `Delete ${name} successfully`,
+                                  duration: 3000,
+                                  position: "bottomLeft",
+                                });
+                              }}
+                              className="text-white font-medium font-mono bg-error px-2 py-1 rounded-lg"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              );
             </div>
           )}
         </ModalBase>
       )}
 
       {/* Modal update project */}
-      {openModalBase &&
-        projectList.map(({ id, projectName, categoryName, description }) => {
-          if (descRef.current) {
-            descRef.current.innerHTML = description;
-          }
-          const initialValues: ProjectUpdateType = {
-            projectName,
-            description,
-            categoryId: id,
-          };
-          return (
-            <ModalBase
-              key={id}
-              visible={openModalBase}
-              onClose={() => {
+      {openModalBase && (
+        <ModalBase
+          visible={openModalBase}
+          onClose={() => {
+            setOpenModalBase(false);
+          }}
+        >
+          {isLoading ? (
+            <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
+          ) : (
+            <Formik
+              initialValues={{
+                projectName: projectDetail.projectName,
+                description: projectDetail.description,
+                categoryId: projectDetail.id,
+              }}
+              validationSchema={Yup.object().shape({
+                projectName: Yup.string().required(""),
+              })}
+              onSubmit={async (values, { setSubmitting }) => {
+                console.log("values", values);
+                setSubmitting(true);
+                await dispatch(updateProject(saveId, values));
+                await dispatch(getProjectApi());
                 setOpenModalBase(false);
               }}
             >
-              {isLoading ? (
-                <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
-              ) : (
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={Yup.object().shape({
-                    projectName: Yup.string().required(""),
-                  })}
-                  onSubmit={async (values, { setSubmitting }) => {
-                    setSubmitting(true);
-                    await dispatch(updateProject(id, values));
-                    await dispatch(getProjectApi());
-                    setOpenModalBase(false);
-                  }}
-                >
-                  {({ isSubmitting, setFieldValue, values, resetForm }) => {
-                    const handleSelectCategory = (id: number) => {
-                      setShow(false);
-                      setFieldValue("categoryId", id);
-                    };
+              {({ isSubmitting, setFieldValue, values, resetForm }) => {
+                const handleSelectCategory = (id: number) => {
+                  setShow(false);
+                  setFieldValue("categoryId", id);
+                };
 
-                    return (
-                      <Form>
-                        <div className="relative bg-white min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
-                          <div className="flex items-start justify-between mx-5 mt-5">
-                            <div className=" flex items-center gap-x-3">
-                              <div className="text-text2 font-medium">ID :</div>
-                              <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
-                                {id}
-                              </span>
-                            </div>
-                            <span
-                              className="text-text2 hover:text-error select-none cursor-pointer"
+                return (
+                  <Form>
+                    <div className="relative bg-white min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
+                      <div className="flex items-start justify-between mx-5 mt-5">
+                        <div className=" flex items-center gap-x-3">
+                          <div className="text-text2 font-medium">ID :</div>
+                          <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
+                            {projectDetail.id}
+                          </span>
+                        </div>
+                        <span
+                          className="text-text2 hover:text-error select-none cursor-pointer"
+                          onClick={() => {
+                            setOpenModalBase(false);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <div className="bg-white rounded-xl py-10 px-[66px]">
+                        <div className="text-center">
+                          <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
+                            Update Project 📝
+                          </h1>
+
+                          <FormRow>
+                            <FormGroup>
+                              <Label htmlFor="projectName">Project name</Label>
+                              <Input
+                                id="projectName"
+                                name="projectName"
+                                type="text"
+                                placeholder={projectDetail.projectName}
+                              />
+                            </FormGroup>
+                            <FormGroup>
+                              <Label>Project category *</Label>
+                              <Dropdown>
+                                <Select
+                                  nodeRef={nodeRef}
+                                  show={show}
+                                  placeholder={
+                                    projectDetail.projectCategory.name
+                                  }
+                                  onClick={handleToggleDropdown}
+                                />
+                                <List show={show}>
+                                  {projectCategory.map(
+                                    ({ id, projectCategoryName }) => (
+                                      <Option
+                                        key={id}
+                                        onClick={() => handleSelectCategory(id)}
+                                      >
+                                        {projectCategoryName}
+                                      </Option>
+                                    )
+                                  )}
+                                </List>
+                              </Dropdown>
+                            </FormGroup>
+                          </FormRow>
+                          <FormGroup>
+                            <Label
                               onClick={() => {
-                                setOpenModalBase(false);
+                                setOpenDesc(true);
                               }}
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6 18L18 6M6 6l12 12"
+                              Description *
+                            </Label>
+                            {openDesc ? (
+                              <>
+                                <TextTiny
+                                  control="tiny-mce"
+                                  name="description"
                                 />
-                              </svg>
-                            </span>
-                          </div>
-                          <div className="bg-white rounded-xl py-10 px-[66px]">
-                            <div className="text-center">
-                              <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
-                                Update Project 📝
-                              </h1>
-
-                              <FormRow>
-                                <FormGroup>
-                                  <Label htmlFor="projectName">
-                                    Project name
-                                  </Label>
-                                  <Input
-                                    id="projectName"
-                                    name="projectName"
-                                    type="text"
-                                    placeholder={projectName}
-                                  />
-                                </FormGroup>
-                                <FormGroup>
-                                  <Label>Project category *</Label>
-                                  <Dropdown>
-                                    <Select
-                                      nodeRef={nodeRef}
-                                      show={show}
-                                      placeholder={categoryName}
-                                      onClick={handleToggleDropdown}
-                                    />
-                                    <List show={show}>
-                                      {projectCategory.map(
-                                        ({ id, projectCategoryName }) => (
-                                          <Option
-                                            key={id}
-                                            onClick={() =>
-                                              handleSelectCategory(id)
-                                            }
-                                          >
-                                            {projectCategoryName}
-                                          </Option>
-                                        )
-                                      )}
-                                    </List>
-                                  </Dropdown>
-                                </FormGroup>
-                              </FormRow>
-                              <FormGroup>
-                                <Label
-                                  onClick={() => {
-                                    setOpenDesc(true);
-                                  }}
-                                >
-                                  Description *
-                                </Label>
-                                {openDesc ? (
-                                  <>
-                                    <TextTiny
-                                      control="tiny-mce"
-                                      name="description"
-                                    />
-                                    <div className="flex items-center justify-end gap-x-3">
-                                      <Button
-                                        kind="cancel"
-                                        onClick={() => {
-                                          setOpenDesc(false);
-                                          resetForm();
-                                        }}
-                                        type="button"
-                                      >
-                                        Cancel
-                                      </Button>
-                                      <Button
-                                        kind="success"
-                                        onClick={() => {
-                                          setOpenDesc(false);
-                                        }}
-                                        type="button"
-                                      >
-                                        Save
-                                      </Button>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <div
-                                    className="cursor-pointer"
-                                    dangerouslySetInnerHTML={{
-                                      __html: values.description,
-                                    }}
+                                <div className="flex items-center justify-end gap-x-3">
+                                  <Button
+                                    kind="cancel"
                                     onClick={() => {
-                                      setOpenDesc(true);
+                                      setOpenDesc(false);
+                                      resetForm();
                                     }}
-                                  ></div>
-                                )}
-                              </FormGroup>
-                              <div className=" flex items-center justify-center">
-                                <Button
-                                  isLoading={isSubmitting}
-                                  type="submit"
-                                  className=" my-3"
-                                  kind="success"
-                                >
-                                  Submit
-                                </Button>
-                              </div>
-                            </div>
+                                    type="button"
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    kind="success"
+                                    onClick={() => {
+                                      setOpenDesc(false);
+                                    }}
+                                    type="button"
+                                  >
+                                    Save
+                                  </Button>
+                                </div>
+                              </>
+                            ) : (
+                              <div
+                                className="cursor-pointer"
+                                dangerouslySetInnerHTML={{
+                                  __html: values.description,
+                                }}
+                                onClick={() => {
+                                  setOpenDesc(true);
+                                }}
+                              ></div>
+                            )}
+                          </FormGroup>
+                          <div className=" flex items-center justify-center">
+                            <Button
+                              isLoading={isSubmitting}
+                              type="submit"
+                              className=" my-3"
+                              kind="success"
+                            >
+                              Submit
+                            </Button>
                           </div>
                         </div>
-                      </Form>
-                    );
-                  }}
-                </Formik>
-              )}
-            </ModalBase>
-          );
-        })}
+                      </div>
+                    </div>
+                  </Form>
+                );
+              }}
+            </Formik>
+          )}
+        </ModalBase>
+      )}
+
       <div className="w-full overflow-x-auto overflow-y-hidden">
         <div className=" bg-white rounded-3xl flex items-center justify-between py-8 px-10">
           <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
@@ -607,7 +566,7 @@ const Project = (props: Props) => {
             <table className="table-project">
               <thead>
                 <tr>
-                  <th>Id</th>
+                  <th>ID</th>
                   <th>Project name</th>
                   <th>Category name</th>
                   <th>Creator</th>
@@ -618,6 +577,7 @@ const Project = (props: Props) => {
               <tbody>
                 {pageProject.map(
                   ({ members, creator, id, projectName, categoryName }) => {
+                    const isActive = creator.id === admin.id;
                     const bgColor =
                       categoryName === "Dự án web"
                         ? "bg-green-100"
@@ -675,27 +635,29 @@ const Project = (props: Props) => {
                                 </Tooltip>
                               ))}
                             </Avatar.Group>
-                            <span
-                              onClick={() => {
-                                handleToggleModalMember(id);
-                              }}
-                              className="w-[32px] h-[32px] cursor-pointer rounded-full border border-dashed flex items-center justify-center text-text3 border-text3 hover:text-text2 hover:border-text2 select-none transition-all"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-6 h-6"
+                            {isActive && (
+                              <span
+                                onClick={() => {
+                                  handleToggleModalMember(id);
+                                }}
+                                className="w-[32px] h-[32px] cursor-pointer rounded-full border border-dashed flex items-center justify-center text-text3 border-text3 hover:text-text2 hover:border-text2 select-none transition-all"
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M12 4.5v15m7.5-7.5h-15"
-                                />
-                              </svg>
-                            </span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 4.5v15m7.5-7.5h-15"
+                                  />
+                                </svg>
+                              </span>
+                            )}
                           </div>
                         </td>
                         <td>

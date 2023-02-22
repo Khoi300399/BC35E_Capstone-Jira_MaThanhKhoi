@@ -121,7 +121,7 @@ export interface userState {
   userAll: UserModel[];
   userByKeyword: UserModel[];
   loading: boolean;
-  status: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface UserLoginType {

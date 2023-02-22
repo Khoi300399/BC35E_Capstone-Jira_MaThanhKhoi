@@ -35,7 +35,7 @@ const TaskBox = ({ children, name, id }: Props) => {
 
   const { statuses } = useSelector((state: RootState) => state.statusReducer);
 
-  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+  const [{ canDrop }, drop] = useDrop(() => ({
     accept: ItemType.BOX,
     drop: () => ({ statusName: name, statusId: id }),
     canDrop: (item: any, monitor) => {

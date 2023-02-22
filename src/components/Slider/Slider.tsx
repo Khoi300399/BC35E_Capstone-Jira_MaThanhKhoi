@@ -10,7 +10,7 @@ export type RangeType = {
 };
 
 const Slider = ({ min, max, ...props }: RangeType) => {
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
 
   return (
     <div className="flex-col items-center justify-center h-full">

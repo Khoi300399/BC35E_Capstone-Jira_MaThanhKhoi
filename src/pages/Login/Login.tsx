@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useToggle from "../../hooks/useToggle";
 import Label from "../../components/Label/Label";
 import Input from "../../components/Input/Input";
@@ -6,34 +5,25 @@ import IconEyeToggle from "../../components/icons/IconEyeToggle";
 import FormTemplate from "../../templates/FormTemplate/FormTemplate";
 import FormGroup from "../../components/common/FormGroup/FormGroup";
 import Button from "../../components/Button/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ButtonGoogle from "../../components/ButtonGoogle/ButtonGoogle";
 import { userType } from "../../types/global";
 import { loginApi } from "../../redux/userReducer/userReducer";
 import { useDispatch } from "react-redux";
-import { DispathType, RootState } from "../../redux/config";
-import { getStoreJson, USER_LOGIN } from "../../util/setting";
-import { useSelector } from "react-redux";
-import { useToast } from "../../components/Toast";
+import { DispathType } from "../../redux/config";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const dispath: DispathType = useDispatch();
-  const navigate = useNavigate();
-  const { status } = useSelector((state: RootState) => state.userReducer);
-  const { add } = useToast();
+
   const initialValues: userType = {
     email: "",
     passWord: "",
   };
-  useEffect(() => {
-    if (getStoreJson(USER_LOGIN)) {
-      navigate("/");
-    }
-  });
+
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
     useToggle();
   return (
@@ -55,23 +45,8 @@ const Login = (props: Props) => {
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           const actionAsync = loginApi(values);
           await dispath(actionAsync);
+
           setSubmitting(true);
-          console.log("status", status);
-          if (status) {
-            add({
-              type: "success",
-              message: "LogLogged in successfully",
-              duration: 3000,
-              position: "topCenter",
-            });
-          } else {
-            add({
-              type: "error",
-              message: "Login failed",
-              duration: 3000,
-              position: "topCenter",
-            });
-          }
         }}
       >
         {({ isSubmitting }) => {

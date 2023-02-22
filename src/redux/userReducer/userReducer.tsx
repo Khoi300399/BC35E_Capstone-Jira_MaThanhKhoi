@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useToast } from "../../components/Toast";
+import { history } from "../..";
 import {
   UserModel,
   userState,
@@ -20,7 +20,7 @@ const initialState: userState = {
   userAll: [],
   userByKeyword: [],
   loading: false,
-  status: false,
+  isLoggedIn: false,
 };
 const userReducer = createSlice({
   name: "userReducer",
@@ -42,8 +42,8 @@ const userReducer = createSlice({
     setLoading: (state: userState, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setStatus: (state: userState, action: PayloadAction<boolean>) => {
-      state.status = action.payload;
+    setLoggedIn: (state: userState, action: PayloadAction<boolean>) => {
+      state.isLoggedIn = action.payload;
     },
   },
 });
@@ -53,7 +53,7 @@ export const {
   getUserAction,
   getUserByKeywordAction,
   setLoading,
-  setStatus,
+  setLoggedIn,
 } = userReducer.actions;
 
 export default userReducer.reducer;
@@ -67,14 +67,15 @@ export const loginApi = (userLogin: userType) => {
       .then((res) => {
         let action: PayloadAction<userType> = loginAction(res.data.content);
         dispatch(action);
+
         setStoreJson(USER_LOGIN, res.data.content);
         setStoreJson(ACCESS_TOKEN, res.data.content.accessToken);
+
+        history.push("/");
       })
       .catch((error) => {
-        console.log(error);
+        alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
       });
-    let action: PayloadAction<boolean> = setStatus(true);
-    dispatch(action);
   };
 };
 
@@ -92,6 +93,7 @@ export const getUserApi = () => {
         let action: PayloadAction<boolean> = setLoading(false);
         dispatch(action);
       });
+
     let action: PayloadAction<boolean> = setLoading(true);
     dispatch(action);
   };
@@ -99,9 +101,7 @@ export const getUserApi = () => {
 
 export const registerApi = (userRegister: userType) => {
   return async (dispatch: DispathType) => {
-    const res = await http.post("/Users/signup", userRegister);
-
-    console.log("res", res.data.content);
+    await http.post("/Users/signup", userRegister);
   };
 };
 

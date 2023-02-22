@@ -49,6 +49,10 @@ const ProjectDetail = () => {
   const { userAll } = useSelector((state: RootState) => state.userReducer);
 
   const { members, id, projectName, creator } = projectDetail;
+  // Admin
+  const admin = getStoreJson(USER_LOGIN);
+  const isActive = creator.id === admin.id;
+
   useEffect(() => {
     dispatch(getStatusApi());
     dispatch(getProjectDetailApi(params));
@@ -89,8 +93,6 @@ const ProjectDetail = () => {
     dispatch(getProjectDetailApi(params));
   }
 
-  // Admin
-  const admin = getStoreJson(USER_LOGIN);
   const { add } = useToast();
 
   const [openModalMember, setOpenModalMember] = useState<boolean>(false);
@@ -217,7 +219,7 @@ const ProjectDetail = () => {
                         },
                         { setSubmitting, resetForm }
                       ) => {
-                        if (admin.id === creator.id) {
+                        if (isActive) {
                           listUserAsign = addUser.map((item) => item.userId);
                           timeTrackingRemaining =
                             originalEstimate - timeTrackingSpent;
@@ -599,6 +601,10 @@ const ProjectDetail = () => {
 
                     <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
                       {searchFilter(userAll).map(({ avatar, name, userId }) => {
+                        const inx = members.findIndex(
+                          (u) => u.userId === userId
+                        );
+                        const isActive = inx !== -1;
                         return (
                           <div
                             key={userId}
@@ -615,31 +621,21 @@ const ProjectDetail = () => {
                               </span>
                             </div>
                             <button
+                              disabled={isActive}
                               onClick={async () => {
-                                if (creator.id === admin.id) {
-                                  await dispatch(
-                                    assignUserProject({
-                                      projectId: id,
-                                      userId,
-                                    })
-                                  );
-                                  await dispatch(getProjectDetailApi(params));
-                                  await add({
-                                    type: "success",
-                                    message: `Add ${name} successfully`,
-                                    duration: 3000,
-                                    position: "bottomLeft",
-                                  });
-                                } else {
-                                  setOpenModalMember(false);
-                                  add({
-                                    type: "warning",
-                                    message:
-                                      "Only the creator can add member in this project",
-                                    duration: 3000,
-                                    position: "bottomLeft",
-                                  });
-                                }
+                                await dispatch(
+                                  assignUserProject({
+                                    projectId: id,
+                                    userId,
+                                  })
+                                );
+                                await dispatch(getProjectDetailApi(params));
+                                await add({
+                                  type: "success",
+                                  message: `Add ${name} successfully`,
+                                  duration: 3000,
+                                  position: "bottomLeft",
+                                });
                               }}
                               className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg"
                             >
@@ -674,7 +670,7 @@ const ProjectDetail = () => {
                             </div>
                             <button
                               onClick={async () => {
-                                if (creator.id === admin.id) {
+                                if (isActive) {
                                   await dispatch(
                                     removeUserFromProject({
                                       projectId: id,
@@ -735,27 +731,29 @@ const ProjectDetail = () => {
                   </Tooltip>
                 ))}
               </Avatar.Group>
-              <span
-                onClick={() => {
-                  handleToggleModalMember();
-                }}
-                className="w-[32px] h-[32px] rounded-full border border-dashed flex items-center justify-center text-text3 border-text3 hover:text-text2 hover:border-text2 cursor-pointer select-none transition-all"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
+              {isActive && (
+                <span
+                  onClick={() => {
+                    handleToggleModalMember();
+                  }}
+                  className="w-[32px] h-[32px] rounded-full border border-dashed flex items-center justify-center text-text3 border-text3 hover:text-text2 hover:border-text2 cursor-pointer select-none transition-all"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-              </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </span>
+              )}
             </div>
           </div>
 

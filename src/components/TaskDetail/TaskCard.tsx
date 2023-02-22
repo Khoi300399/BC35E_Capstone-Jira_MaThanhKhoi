@@ -28,7 +28,6 @@ import {
   LstTaskDeTail,
   UserLoginType,
   UserModel,
-  userType,
 } from "../../types/global";
 import { DropResult } from "../../types/global";
 import { useToast } from "../Toast";
@@ -49,7 +48,6 @@ import {
   updateTask,
 } from "../../redux/projectReducer/projectReducer";
 import {
-  deleteCommentApi,
   getCommentApi,
   insertCommentApi,
 } from "../../redux/commentReducer/commentReducer";
@@ -83,8 +81,6 @@ interface Values {
 }
 
 const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
-  console.log("creator", creator);
-
   const { add } = useToast();
   const {
     taskName,
