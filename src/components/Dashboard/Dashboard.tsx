@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { history } from "../../index";
 import {
@@ -21,8 +21,8 @@ type linkType = {
   onClick?: any;
 };
 
-type Theme = "light" | "dark";
 // Dark mode
+type Theme = "light" | "dark";
 const getInitialTheme = (): Theme => {
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "light" || savedTheme === "dark") {

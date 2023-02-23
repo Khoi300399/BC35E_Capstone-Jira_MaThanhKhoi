@@ -1,4 +1,3 @@
-import React from "react";
 import btnGg from "../../assets/img/Google.png";
 type Props = {
   text: string;

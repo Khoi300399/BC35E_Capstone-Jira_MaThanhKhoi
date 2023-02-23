@@ -1,4 +1,3 @@
-import React from "react";
 import { useField } from "formik";
 import { withErrorBoundary } from "react-error-boundary";
 import ErrorComponent from "../common/ErrorComponent/ErrorComponent";
