@@ -6,13 +6,13 @@ type Props = {
 
 const HeaderSearch = ({ onChange }: Props) => {
   return (
-    <div className="bg-gray-100 rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full  flex items-center">
+    <div className="bg-gray-100  dark:bg-darkSecondary  rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full  flex items-center">
       <div className="flex-1 px-5">
         <input
           onChange={onChange}
           type="text"
           placeholder="Search..."
-          className="bg-transparent w-full text-sm text-text1 placeholder:text-text4 "
+          className="bg-transparent w-full text-sm text-text1 placeholder:text-text4 dark:placeholder:text-text2 dark:text-white"
         />
       </div>
       <div className="w-[72px] rounded-full bg-secondary bg-opacity-20 text-secondary h-10 flex items-center justify-center flex-shrink-0">

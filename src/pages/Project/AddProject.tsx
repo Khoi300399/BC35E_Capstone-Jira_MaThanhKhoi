@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Input from "../../components/Input/Input";
@@ -44,12 +44,12 @@ const AddProject = (props: Props) => {
 
   useEffect(() => {
     dispatch(getProjectCategoryApi());
-  }, []);
+  }, [dispatch]);
   return (
     <Fragment>
-      <div className="bg-white rounded-xl py-10 px-[66px]">
+      <div className="bg-white dark:bg-darkbg rounded-xl py-10 px-[66px]">
         <div className="text-center">
-          <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
+          <h1 className="py-4 px-14  bg-text4 dark:text-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
             Start a Project 🚀
           </h1>
 

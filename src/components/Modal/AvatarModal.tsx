@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { Coords } from "../../types/global";
 import { ACCESS_TOKEN, clearStore, USER_LOGIN } from "../../util/setting";
 
+// Dark mode
+type Theme = "light" | "dark";
+const getInitialTheme = (): Theme => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light" || savedTheme === "dark") {
+    return savedTheme;
+  }
+  return "light";
+};
+
+const setTheme = (theme: Theme) => {
+  localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute("class", theme);
+};
 const AvatarModal = ({ coords }: { coords: Coords }) => {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme());
+
+  const toggleTheme = () => {
+    setThemeState((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      setTheme(newTheme);
+      return newTheme;
+    });
+  };
+
   function logOut() {
     clearStore(USER_LOGIN);
     clearStore(ACCESS_TOKEN);
@@ -18,15 +42,15 @@ const AvatarModal = ({ coords }: { coords: Coords }) => {
         left: coords.x + coords.width * 1.5,
         top: coords.y + coords.height * 1.5,
       }}
-      className="absolute bg-white rounded-2xl shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] z-10 w-[230px] px-5 -translate-x-full"
+      className="absolute bg-white dark:bg-darkSoft rounded-2xl shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] z-10 w-[230px] px-5 -translate-x-full"
     >
-      <div className="absolute  bg-white right-8 rounded-sm -translate-y-2/4 shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] rotate-45 w-4 h-4 border-t-transparent border-r-transparent"></div>
-      <div className=" pt-5 pb-5  gap-y-2 border-b  border-b-gray-300">
+      <div className="absolute  bg-white dark:bg-darkSoft right-8 rounded-sm -translate-y-2/4 shadow-[0px_14px_64px_rgba(0,_0,_0,_0.1)] rotate-45 w-4 h-4 border-t-transparent border-r-transparent"></div>
+      <div className=" pt-5 pb-5  gap-y-2 dark:border-darkStoke border-b  border-b-gray-300">
         <Link
           to="/profile"
-          className="font-medium  text-text5 inline-block hover:text-blue-500"
+          className="font-medium  text-text5 dark:text-text4 dark:hover:text-blue-500 inline-block hover:text-blue-500"
         >
-          Account
+          My profile
         </Link>
       </div>
       <div className="flex flex-col pt-5 pb-6  gap-y-5">
@@ -34,7 +58,7 @@ const AvatarModal = ({ coords }: { coords: Coords }) => {
           onClick={() => {
             logOut();
           }}
-          className="inline-flex gap-x-2 items-center hover:bg-error hover:bg-opacity-20  rounded transition-all hover:text-error text-text5"
+          className="inline-flex gap-x-2 items-center font-medium  rounded transition-all hover:text-error dark:text-text4 dark:hover:text-red-500  text-text5"
         >
           <svg
             width="24"
@@ -51,7 +75,47 @@ const AvatarModal = ({ coords }: { coords: Coords }) => {
 
           <span> Sign out</span>
         </button>
-        <div className=" text-text5 inline-block ">Interface</div>
+        <div className="flex items-center justify-between">
+          <span className=" text-text5 inline-block font-medium dark:text-text4 ">
+            Interface
+          </span>
+          <button
+            onClick={() => {
+              toggleTheme();
+            }}
+            className="w-12 h-6 rounded-2xl bg-white flex items-center transition duration-300 focus:outline-none shadow"
+          >
+            <div
+              className={`w-7 h-7 relative flex items-center justify-center rounded-full transition duration-500 transform bg-yellow-500 text-white dark:bg-darkbg ${
+                theme === "light" ? "-translate-x-2 p-1 " : "translate-x-full "
+              }  `}
+            >
+              {theme === "light" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+          </button>
+        </div>
       </div>
     </div>,
     document.querySelector("body") as HTMLElement

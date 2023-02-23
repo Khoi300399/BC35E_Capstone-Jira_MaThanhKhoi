@@ -11,10 +11,10 @@ const Select = ({
   return (
     <div
       ref={nodeRef}
-      className={`flex items-center justify-between px-6 py-4  border border-strock rounded-xl text-sm font-semibold cursor-pointer select-none ${className}`}
+      className={`flex items-center justify-between px-6 py-4 dark:bg-darkSecondary dark:border-darkStoke border border-strock rounded-xl text-sm font-semibold cursor-pointer select-none ${className}`}
       onClick={onClick}
     >
-      <span>{placeholder}</span>
+      <span className="dark:text-white">{placeholder}</span>
       <span>
         {show ? (
           <svg

@@ -30,7 +30,7 @@ const Header = () => {
   return (
     <div
       id="header "
-      className="flex items-center justify-between mb-5 border-b pb-2"
+      className="flex items-center justify-between mb-5 border-b border-gray-100 dark:border-darkSecondary pb-2"
     >
       <div className=" max-w-[300px] w-full">
         <Link
@@ -80,7 +80,9 @@ const Header = () => {
           {isShowDropdown && <AvatarModal coords={coords} />}
         </div>
         <div className="flex items-center">
-          <p className="text-text5 font-semibold">{admin?.name || ""}</p>
+          <p className="text-text5 dark:text-text4 font-semibold">
+            {admin?.name || ""}
+          </p>
         </div>
       </div>
     </div>

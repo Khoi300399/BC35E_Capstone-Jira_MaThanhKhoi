@@ -34,6 +34,7 @@ import { getUserApi } from "../../redux/userReducer/userReducer";
 import IconError from "../../components/icons/IconError";
 import { getStoreJson, USER_LOGIN } from "../../util/setting";
 import { Link } from "react-router-dom";
+import { UserLoginType } from "../../types/global";
 type Props = {};
 
 const Project = (props: Props) => {
@@ -104,7 +105,7 @@ const Project = (props: Props) => {
   });
 
   // Admin
-  const admin = getStoreJson(USER_LOGIN);
+  const admin: UserLoginType = getStoreJson(USER_LOGIN);
 
   useEffect(() => {
     dispatch(getProjectApi());
@@ -142,16 +143,16 @@ const Project = (props: Props) => {
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
             <>
-              <div className="relative bg-white max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary">
+              <div className="relative bg-white dark:bg-darkSecondary max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary">
                 <div className="flex gap-x-2 p-6">
                   <IconError />
                   <div className="flex-1">
-                    <h3 className="text-xl font-mono font-semibold">
+                    <h3 className="text-xl font-mono font-semibold dark:text-text4">
                       Delete {projectDetail.projectName}?
                     </h3>
                   </div>
                 </div>
-                <div className="text-sm text-text2 leading-6 px-6">
+                <div className="text-sm text-text2 dark:text-text3  leading-6 px-6">
                   <p className="mb-3">
                     You're about to permanently delete this project, its
                     comments and attachments, and all of its data.
@@ -209,12 +210,12 @@ const Project = (props: Props) => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
               <div>
                 <div className="flex items-start justify-between mx-5 mt-5">
                   <div className=" flex items-center gap-x-3">
                     <div className="text-text2 font-medium">ID :</div>
-                    <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
+                    <span className="flex items-center justify-center p-2 min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
                       {projectDetail.id}
                     </span>
                   </div>
@@ -240,18 +241,18 @@ const Project = (props: Props) => {
                     </svg>
                   </span>
                 </div>
-                <h2 className="mt-5 text-2xl text-center text-text5 font-bold ">
+                <h2 className="mt-5 text-2xl text-center text-text5 dark:text-text4 font-bold ">
                   {projectDetail.projectName}
                 </h2>
                 <div className="flex items-start justify-between">
                   <div className="w-[55%] p-4 ">
-                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                    <h3 className="text-text5 dark:text-text3 text-2xl font-mono font-semibold py-2 text-center">
                       Add member
                     </h3>
 
                     <div className="mt-3">
                       <input
-                        className="p-4 outline-none w-full border border-gray-200 rounded"
+                        className="p-4 outline-none w-full border border-gray-200 dark:border-darkStoke  dark:placeholder:text-text2 dark:bg-darkSecondary dark:text-white rounded"
                         type="text"
                         placeholder="Search user..."
                         onChange={(e: React.FormEvent<HTMLInputElement>) => {
@@ -260,7 +261,7 @@ const Project = (props: Props) => {
                       />
                     </div>
 
-                    <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
+                    <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock dark:border-darkStoke mt-3 rounded-lg">
                       {filteredUsers.map(({ avatar, name, userId }) => {
                         const inx = projectDetail.members.findIndex(
                           (u) => u.userId === userId
@@ -270,7 +271,7 @@ const Project = (props: Props) => {
                         return (
                           <div
                             key={userId}
-                            className="flex items-center justify-between p-4 border-b border-strock"
+                            className="flex items-center justify-between p-4 border-b border-strock dark:border-darkStoke"
                           >
                             <div className="flex items-center gap-x-2">
                               <Avatar
@@ -278,7 +279,7 @@ const Project = (props: Props) => {
                                   <img src={avatar} alt={`${name} avatar`} />
                                 }
                               />
-                              <span className="text-text1 max-w-[250px] font-medium truncate">
+                              <span className="text-text1 dark:text-text3 max-w-[250px] font-medium truncate">
                                 {name}
                               </span>
                             </div>
@@ -311,16 +312,16 @@ const Project = (props: Props) => {
                     </div>
                   </div>
                   <div className="w-[45%] p-4">
-                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                    <h3 className="text-text5 dark:text-text3 text-2xl font-mono font-semibold py-2 text-center">
                       Remove member
                     </h3>
 
-                    <div className="overflow-x-hidden overflow-y-auto border border-strock mt-3 rounded-lg max-h-[470px] scrollbar-none">
+                    <div className="overflow-x-hidden overflow-y-auto border border-strock dark:border-darkStoke mt-3 rounded-lg max-h-[470px] scrollbar-none">
                       {projectDetail.members.map(({ avatar, name, userId }) => {
                         return (
                           <div
                             key={userId}
-                            className="flex items-center justify-between p-4 border-b border-strock "
+                            className="flex items-center justify-between p-4 border-b border-strock dark:border-darkStoke "
                           >
                             <div className="flex items-center gap-x-2">
                               <Avatar
@@ -328,7 +329,7 @@ const Project = (props: Props) => {
                                   <img src={avatar} alt={`${name} avatar`} />
                                 }
                               />
-                              <span className="text-text1 font-medium">
+                              <span className="text-text1 dark:text-text3 font-medium">
                                 {name}
                               </span>
                             </div>
@@ -387,7 +388,6 @@ const Project = (props: Props) => {
                 projectName: Yup.string().required(""),
               })}
               onSubmit={async (values, { setSubmitting }) => {
-                console.log("values", values);
                 setSubmitting(true);
                 await dispatch(updateProject(saveId, values));
                 await dispatch(getProjectApi());
@@ -395,6 +395,15 @@ const Project = (props: Props) => {
               }}
             >
               {({ isSubmitting, setFieldValue, values, resetForm }) => {
+                const placeholderCategory =
+                  values.categoryId === 1
+                    ? "Dự án web"
+                    : values.categoryId === 2
+                    ? "Dự án phần mềm"
+                    : values.categoryId === 3
+                    ? "Dự án di động"
+                    : projectDetail.projectCategory.name;
+
                 const handleSelectCategory = (id: number) => {
                   setShow(false);
                   setFieldValue("categoryId", id);
@@ -402,11 +411,11 @@ const Project = (props: Props) => {
 
                 return (
                   <Form>
-                    <div className="relative bg-white min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
+                    <div className="relative bg-white dark:bg-darkbg min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
                       <div className="flex items-start justify-between mx-5 mt-5">
                         <div className=" flex items-center gap-x-3">
                           <div className="text-text2 font-medium">ID :</div>
-                          <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
+                          <span className="flex p-2 items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
                             {projectDetail.id}
                           </span>
                         </div>
@@ -432,9 +441,9 @@ const Project = (props: Props) => {
                           </svg>
                         </span>
                       </div>
-                      <div className="bg-white rounded-xl py-10 px-[66px]">
+                      <div className="bg-white dark:bg-darkbg rounded-xl py-10 px-[66px]">
                         <div className="text-center">
-                          <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
+                          <h1 className="py-4 px-14 bg-text4 dark:text-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
                             Update Project 📝
                           </h1>
 
@@ -454,21 +463,29 @@ const Project = (props: Props) => {
                                 <Select
                                   nodeRef={nodeRef}
                                   show={show}
-                                  placeholder={
-                                    projectDetail.projectCategory.name
-                                  }
+                                  placeholder={placeholderCategory}
                                   onClick={handleToggleDropdown}
                                 />
                                 <List show={show}>
                                   {projectCategory.map(
-                                    ({ id, projectCategoryName }) => (
-                                      <Option
-                                        key={id}
-                                        onClick={() => handleSelectCategory(id)}
-                                      >
-                                        {projectCategoryName}
-                                      </Option>
-                                    )
+                                    ({ id, projectCategoryName }) => {
+                                      const selected = id === values.categoryId;
+                                      return (
+                                        <Option
+                                          className={
+                                            selected
+                                              ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
+                                              : ""
+                                          }
+                                          key={id}
+                                          onClick={() =>
+                                            handleSelectCategory(id)
+                                          }
+                                        >
+                                          {projectCategoryName}
+                                        </Option>
+                                      );
+                                    }
                                   )}
                                 </List>
                               </Dropdown>
@@ -512,7 +529,7 @@ const Project = (props: Props) => {
                               </>
                             ) : (
                               <div
-                                className="cursor-pointer"
+                                className="cursor-pointer dark:text-text4"
                                 dangerouslySetInnerHTML={{
                                   __html: values.description,
                                 }}
@@ -544,7 +561,7 @@ const Project = (props: Props) => {
       )}
 
       <div className="w-full overflow-x-auto overflow-y-hidden">
-        <div className=" bg-white rounded-3xl flex items-center justify-between py-8 px-10">
+        <div className=" bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
           <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
             <HeaderSearch
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
@@ -577,13 +594,15 @@ const Project = (props: Props) => {
               <tbody>
                 {pageProject.map(
                   ({ members, creator, id, projectName, categoryName }) => {
+                    const colorAdmin =
+                      admin.name === creator.name ? "text-pink-500" : "";
                     const isActive = creator.id === admin.id;
                     const bgColor =
                       categoryName === "Dự án web"
-                        ? "bg-green-100"
+                        ? "bg-green-100 dark:bg-darkSecondary"
                         : categoryName === "Dự án phần mềm"
-                        ? "bg-blue-100"
-                        : "bg-orange-100";
+                        ? "bg-blue-100 dark:bg-darkSecondary"
+                        : "bg-orange-100 dark:bg-darkSecondary";
                     const textColor =
                       categoryName === "Dự án web"
                         ? "text-green-500"
@@ -608,7 +627,9 @@ const Project = (props: Props) => {
                             {categoryName}
                           </span>
                         </td>
-                        <td className="truncate">{creator.name}</td>
+                        <td className={`truncate ${colorAdmin}`}>
+                          {creator.name}
+                        </td>
                         <td>
                           <div className="flex items-center gap-x-2">
                             <Avatar.Group
@@ -699,8 +720,8 @@ const Project = (props: Props) => {
             </div>
           </>
         ) : (
-          <div className="flex justify-center items-center bg-lite h-[400px]">
-            <div className="loader bg-lite p-5 rounded-full flex space-x-3">
+          <div className="flex justify-center items-center bg-lite dark:bg-darkbg h-[400px]">
+            <div className="loader bg-lite dark:bg-darkbg p-5 rounded-full flex space-x-3">
               <div className="w-5 h-5 bg-error rounded-full animate-bounce" />
               <div className="w-5 h-5 bg-primary rounded-full animate-bounce" />
               <div className="w-5 h-5 bg-blue-500 rounded-full animate-bounce" />

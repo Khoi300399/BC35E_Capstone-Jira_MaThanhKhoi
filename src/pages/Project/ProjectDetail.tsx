@@ -185,11 +185,34 @@ const ProjectDetail = () => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white max-w-[900px] w-[9000px] max-h-[650px] h-[650px] overflow-x-hidden overflow-y-auto rounded-lg scrollbar-none shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg max-w-[900px] w-[9000px] max-h-[650px] h-[650px] overflow-x-hidden overflow-y-auto rounded-lg scrollbar-none shadow-sdSecondary">
               <>
-                <div className="bg-white rounded-xl py-10 px-[66px]">
+                <div className="flex items-start justify-end mx-5 mt-5">
+                  <span
+                    className="text-text2 hover:text-error select-none cursor-pointer"
+                    onClick={() => {
+                      setOpenModalCreateTask(false);
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <div className="bg-white dark:bg-darkbg rounded-xl py-10 px-[66px]">
                   <div className="text-center">
-                    <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
+                    <h1 className="py-4 px-14 dark:text-text4  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
                       Create Task 🐱
                     </h1>
 
@@ -319,7 +342,7 @@ const ProjectDetail = () => {
                                             key={priorityId}
                                             className={
                                               selected
-                                                ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                                ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                                 : ""
                                             }
                                             onClick={() => {
@@ -354,7 +377,7 @@ const ProjectDetail = () => {
                                           key={id}
                                           className={
                                             selected
-                                              ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                              ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                               : ""
                                           }
                                           onClick={() => {
@@ -390,7 +413,7 @@ const ProjectDetail = () => {
                                               key={statusId}
                                               className={
                                                 selected
-                                                  ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                                  ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                                   : ""
                                               }
                                               onClick={() => {
@@ -438,7 +461,7 @@ const ProjectDetail = () => {
                                           <OptionTag
                                             className={`${
                                               userExists
-                                                ? "text-[#42526e]  bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary"
+                                                ? "text-[#42526e]  bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary"
                                                 : null
                                             }`}
                                             onClick={() => {
@@ -548,12 +571,12 @@ const ProjectDetail = () => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
               <div key={id + projectName}>
                 <div className="flex items-start justify-between mx-5 mt-5">
                   <div className=" flex items-center gap-x-3">
                     <div className="text-text2 font-medium">ID :</div>
-                    <span className="flex items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
+                    <span className="flex p-2 items-center justify-center min-w-[45px] h-[45px] rounded-lg shadow-sdThirty text-text2 font-semibold select-none">
                       {id}
                     </span>
                   </div>
@@ -579,18 +602,18 @@ const ProjectDetail = () => {
                     </svg>
                   </span>
                 </div>
-                <h2 className="mt-5 text-2xl text-center text-text5 font-bold ">
+                <h2 className="mt-5 text-2xl text-center text-text5 dark:text-text4 font-bold ">
                   {projectName}
                 </h2>
                 <div className="flex items-start justify-between">
                   <div className="w-[55%] p-4 ">
-                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                    <h3 className="text-text5 dark:text-text3  text-2xl font-mono font-semibold py-2 text-center">
                       Add member
                     </h3>
 
                     <div className="mt-3">
                       <input
-                        className="p-4 outline-none w-full border border-gray-200 rounded"
+                        className="p-4 outline-none w-full border border-gray-200 dark:border-darkStoke  dark:placeholder:text-text2 dark:bg-darkSecondary dark:text-white rounded"
                         type="text"
                         placeholder="Search user..."
                         onChange={(e: React.FormEvent<HTMLInputElement>) => {
@@ -599,16 +622,17 @@ const ProjectDetail = () => {
                       />
                     </div>
 
-                    <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock mt-3 rounded-lg">
+                    <div className="overflow-x-hidden overflow-y-auto max-h-[400px] mx-w-[600px] scrollbar-none border border-strock dark:border-darkStoke mt-3 rounded-lg">
                       {searchFilter(userAll).map(({ avatar, name, userId }) => {
                         const inx = members.findIndex(
                           (u) => u.userId === userId
                         );
-                        const isActive = inx !== -1;
+                        const isAct = inx !== -1;
+
                         return (
                           <div
                             key={userId}
-                            className="flex items-center justify-between p-4 border-b border-strock"
+                            className="flex items-center justify-between p-4 border-b border-strock dark:border-darkStoke"
                           >
                             <div className="flex items-center gap-x-2">
                               <Avatar
@@ -616,12 +640,12 @@ const ProjectDetail = () => {
                                   <img src={avatar} alt={`${name} avatar`} />
                                 }
                               />
-                              <span className="text-text1 max-w-[250px] font-medium truncate">
+                              <span className="text-text1 dark:text-text3 max-w-[250px] font-medium truncate">
                                 {name}
                               </span>
                             </div>
                             <button
-                              disabled={isActive}
+                              disabled={isAct}
                               onClick={async () => {
                                 await dispatch(
                                   assignUserProject({
@@ -637,7 +661,7 @@ const ProjectDetail = () => {
                                   position: "bottomLeft",
                                 });
                               }}
-                              className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg"
+                              className="text-white font-medium font-mono bg-blue-500 px-2 py-1 disabled:bg-opacity-20 rounded-lg"
                             >
                               Add
                             </button>
@@ -647,16 +671,16 @@ const ProjectDetail = () => {
                     </div>
                   </div>
                   <div className="w-[45%] p-4">
-                    <h3 className="text-text5 text-2xl font-mono font-semibold py-2 text-center">
+                    <h3 className="text-text5 dark:text-text3 text-2xl font-mono font-semibold py-2 text-center">
                       Remove member
                     </h3>
 
-                    <div className="overflow-x-hidden overflow-y-auto border border-strock mt-3 rounded-lg max-h-[470px] scrollbar-none">
+                    <div className="overflow-x-hidden overflow-y-auto border border-strock dark:border-darkStoke mt-3 rounded-lg max-h-[470px] scrollbar-none">
                       {members.map(({ avatar, name, userId }) => {
                         return (
                           <div
                             key={userId}
-                            className="flex items-center justify-between p-4 border-b border-strock "
+                            className="flex items-center justify-between p-4 border-b border-strock dark:border-darkStoke"
                           >
                             <div className="flex items-center gap-x-2">
                               <Avatar
@@ -664,7 +688,7 @@ const ProjectDetail = () => {
                                   <img src={avatar} alt={`${name} avatar`} />
                                 }
                               />
-                              <span className="text-text1 font-medium">
+                              <span className="text-text1 dark:text-text3 font-medium">
                                 {name}
                               </span>
                             </div>
@@ -712,8 +736,8 @@ const ProjectDetail = () => {
           )}
         </ModalBase>
       )}
-      <div className="bg-lite">
-        <div className="bg-white rounded-3xl flex items-center justify-between py-8 px-10">
+      <div className="bg-lite dark:bg-darkbg">
+        <div className="bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
           <div className="flex items-center gap-x-5 md:w-auto">
             <HeaderSearch></HeaderSearch>
 
@@ -772,7 +796,7 @@ const ProjectDetail = () => {
         </div>
         {!!projectDetail ? (
           <div className="bg-lite flex-1 overflow-auto ">
-            <main className="p-3 h-full flex items-start gap-x-5">
+            <main className="p-3 h-full dark:bg-darkSecondary  flex items-start gap-x-5">
               {/* TODO */}
               {statuses.map((si, i) => {
                 return (

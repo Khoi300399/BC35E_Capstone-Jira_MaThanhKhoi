@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/img/logo.png";
 import ellipse from "../../assets/img/Ellipse.png";
 import { withErrorBoundary } from "react-error-boundary";
@@ -7,8 +7,29 @@ type Props = {
   heading: string;
   children: JSX.Element | React.ReactNode;
 };
+type Theme = "light" | "dark";
+// Dark mode
+const getInitialTheme = (): Theme => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light" || savedTheme === "dark") {
+    return savedTheme;
+  }
+  return "light";
+};
+
+const setTheme = (theme: Theme) => {
+  localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute("class", theme);
+  document.documentElement.classList.toggle("dark", theme === "dark");
+};
 
 const FormTemplate = (props: Props) => {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme());
+
+  useEffect(() => {
+    setTheme(theme);
+  }, [theme]);
+
   const { heading, children } = props;
   return (
     <div className="relative w-full min-h-screen p-10 bg-lite dark:bg-darkbg isolate">

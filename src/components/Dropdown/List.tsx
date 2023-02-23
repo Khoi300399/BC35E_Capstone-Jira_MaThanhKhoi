@@ -6,7 +6,7 @@ const List = ({ children, show, className }: Props) => {
     <>
       {show && (
         <div
-          className={`absolute top-full left-0 w-full bg-white shadow-lg rounded-lg overflow-hidden z-10 ${className}`}
+          className={`absolute top-full left-0 w-full bg-white dark:bg-darkSecondary shadow-lg rounded-lg overflow-hidden z-10 ${className}`}
         >
           {children}
         </div>

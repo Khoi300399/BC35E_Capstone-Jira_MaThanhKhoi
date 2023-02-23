@@ -41,11 +41,11 @@ const ButtonEditComment = ({ id, taskId, text }: Props) => {
           type="text"
           defaultValue={editText}
           onChange={(e) => setEditText(e.target.value)}
-          className="w-full px-6 py-4 border  rounded-xl text-sm font-medium placeholder:text-text4 dark:placeholder:text-text-2"
+          className="w-full px-6 py-4 border  rounded-xl text-sm font-medium placeholder:text-text4  dark:placeholder:text-text2 dark:bg-darkSecondary dark:text-white dark:border-darkStoke"
         />
         <button
           onClick={handleSaveClick}
-          className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite  hover:bg-blue-500 hover:bg-opacity-20 hover:text-blue-500 transition-all"
+          className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 dark:border-darkStoke dark:bg-darkSecondary dark:hover:bg-blue-200 dark:hover:text-blue-500 dark:text-white border-strock shadow-sm bg-lite  hover:bg-blue-500 hover:bg-opacity-20 hover:text-blue-500 transition-all"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const ButtonEditComment = ({ id, taskId, text }: Props) => {
         </button>
         <button
           onClick={handleCancelClick}
-          className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite hover:bg-error hover:bg-opacity-20 hover:text-error transition-all"
+          className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 dark:border-darkStoke dark:bg-darkSecondary dark:hover:bg-red-200 dark:hover:text-red-500 dark:text-white border-strock shadow-sm bg-lite hover:bg-error hover:bg-opacity-20 hover:text-error transition-all"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

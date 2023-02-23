@@ -421,7 +421,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
 
               return (
                 <Form>
-                  <div className="relative bg-white min-w-[1280px] rounded-md shadow-lg">
+                  <div className="relative bg-white dark:bg-darkbg min-w-[1280px] rounded-md shadow-lg">
                     {isLoading ? (
                       <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
                     ) : (
@@ -435,16 +435,16 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                           <i className="fa-solid fa-xmark text-3xl text-red-600"></i>
                         </button>
                         <div className="px-12 pt-7 pb-4 flex items-center justify-between">
-                          <div className="w-2/4 text-text5 text-xl font-semibold ">
+                          <div className="w-2/4 text-text5 dark:text-text3 text-xl font-semibold ">
                             {taskTypeCurrent} - {taskId}
                           </div>
 
                           <div className="flex items-center gap-x-8">
-                            <button className="flex items-baseline justify-center gap-2 text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
+                            <button className="flex items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
                               <i className="fa-regular fa-paper-plane "></i>
                               <span>Give Feedback</span>
                             </button>
-                            <button className="flex items-baseline justify-center gap-2 text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
+                            <button className="flex items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
                               <i className="fa-solid fa-link"></i>
                               <span>Link Issue</span>
                             </button>
@@ -453,7 +453,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                 onClick={() => {
                                   setpenModalDeleteTask(true);
                                 }}
-                                className="flex items-center justify-center text-[#42526e] bg-[rgba(9,30,66,0.04)] hover:bg-error hover:bg-opacity-20 hover:text-error transition-all ease-linear w-10 h-10 rounded text-xl"
+                                className="flex items-center justify-center dark:text-text3 dark:bg-darkSecondary dark:hover:bg-error dark:hover:text-error dark:hover:bg-opacity-20 text-[#42526e] bg-[rgba(9,30,66,0.04)] hover:bg-error hover:bg-opacity-20 hover:text-error transition-all ease-linear w-10 h-10 rounded text-xl"
                               >
                                 <i className="fa-regular fa-trash-can"></i>
                               </button>
@@ -478,7 +478,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                       setEditTitle(values.taskName);
                                       setOpenTaskName(false);
                                     }}
-                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite  hover:bg-blue-500 hover:bg-opacity-20 hover:text-blue-500 transition-all"
+                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock dark:border-darkStoke dark:bg-darkSecondary dark:hover:bg-blue-200 dark:hover:text-blue-500 dark:text-white shadow-sm bg-lite hover:bg-blue-500 hover:bg-opacity-20 hover:text-blue-500 transition-all"
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -497,7 +497,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                     onClick={() => {
                                       setOpenTaskName(false);
                                     }}
-                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock shadow-sm bg-lite hover:bg-error hover:bg-opacity-20 hover:text-error transition-all"
+                                    className="flex items-center justify-center px-1 w-10 h-8 rounded border-2 border-strock dark:border-darkStoke dark:bg-darkSecondary dark:hover:bg-red-200 dark:hover:text-red-500 dark:text-white  shadow-sm bg-lite hover:bg-error hover:bg-opacity-20 hover:text-error transition-all"
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -515,7 +515,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                 onClick={() => {
                                   setOpenTaskName(true);
                                 }}
-                                className="font-medium text-2xl text-text2 cursor-pointer mb-5"
+                                className="font-medium text-2xl text-text2 dark:text-text4 cursor-pointer mb-5"
                               >
                                 {openTitle}
                               </h2>
@@ -623,7 +623,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                   </div>
 
                                   <div className="flex flex-col">
-                                    <h4 className="text-text5 font-semibold">
+                                    <h4 className="text-text5 dark:text-text4 font-semibold">
                                       {user.name}
                                     </h4>
                                     <div className="flex flex-col gap-y-0">
@@ -665,7 +665,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                             key={priorityId}
                                             className={
                                               selected
-                                                ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                                ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                                 : ""
                                             }
                                             onClick={() => {
@@ -701,7 +701,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                           key={id}
                                           className={
                                             selected
-                                              ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                              ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                               : ""
                                           }
                                           onClick={() => {
@@ -734,7 +734,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                         key={statusId}
                                         className={
                                           selected
-                                            ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary bg-opacity-20"
+                                            ? "text-[#42526e] bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary bg-opacity-20"
                                             : ""
                                         }
                                         onClick={() => {
@@ -777,7 +777,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                                         <OptionTag
                                           className={`${
                                             userExists
-                                              ? "text-[#42526e]  bg-[rgba(9,30,66,0.04)] border-l-4 border-l-primary"
+                                              ? "text-[#42526e]  bg-[rgba(9,30,66,0.04)] dark:bg-darkStoke border-l-4 border-l-primary"
                                               : null
                                           }`}
                                           onClick={() => {

@@ -6,7 +6,7 @@ const ListTag = ({ children, show, className }: Props) => {
     <>
       {show && (
         <div
-          className={`absolute top-full left-0 w-full bg-white shadow rounded-lg overflow-x-hidden overflow-y-auto scrollbar-none max-h-[180px] h-[180px] z-10 ${className}`}
+          className={`absolute top-full left-0 w-full bg-white dark:bg-darkSecondary shadow rounded-lg overflow-x-hidden overflow-y-auto scrollbar-none max-h-[180px] h-[180px] z-10 ${className}`}
         >
           {children}
         </div>

@@ -110,17 +110,17 @@ const Users = (props: Props) => {
                 return (
                   <div
                     key={userId}
-                    className="relative bg-white max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary"
+                    className="relative bg-lite dark:bg-darkSecondary max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary"
                   >
                     <div className="flex gap-x-2 p-6">
                       <IconError />
                       <div className="flex-1">
-                        <h3 className="text-xl font-mono font-semibold">
+                        <h3 className="text-xl dark:text-text4 font-mono font-semibold">
                           Delete {name}?
                         </h3>
                       </div>
                     </div>
-                    <div className="text-sm text-text2 leading-6 px-6">
+                    <div className="text-sm text-text2 dark:text-text3 leading-6 px-6">
                       <p className="mb-3">
                         You're about to permanently delete this user, its
                         comments and attachments, and all of its data.
@@ -241,7 +241,7 @@ const Users = (props: Props) => {
                   {({ isSubmitting, errors, setFieldValue }) => {
                     return (
                       <Form>
-                        <div className="relative bg-white min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
+                        <div className="relative bg-white dark:bg-darkbg min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
                           <div className="flex items-start justify-between mx-5 mt-5">
                             <div className=" flex items-center gap-x-3">
                               <div className="text-text2 font-medium">ID :</div>
@@ -271,9 +271,9 @@ const Users = (props: Props) => {
                               </svg>
                             </span>
                           </div>
-                          <div className="bg-white rounded-xl py-10 px-[66px]">
+                          <div className="bg-lite dark:bg-darkbg  rounded-xl py-10 px-[66px]">
                             <div className="text-center">
-                              <h1 className="py-4 px-14  bg-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
+                              <h1 className="py-4 px-14  bg-text4 dark:text-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
                                 Edit User 📝
                               </h1>
 
@@ -358,7 +358,7 @@ const Users = (props: Props) => {
           );
         })}
       <div className="w-full overflow-x-auto">
-        <div className="mb-2 bg-white rounded-3xl flex items-center justify-between py-8 px-10">
+        <div className="mb-2 bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
           <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
             <HeaderSearch onChange={handleSearch}></HeaderSearch>
           </div>
@@ -383,7 +383,7 @@ const Users = (props: Props) => {
               </svg>
             </Link>
             <div className="flex-1">
-              <h1 className="text-text1 font-semibold text-[22px] mb-2">
+              <h1 className="text-text1 dark:text-text3 font-semibold text-[22px] mb-2">
                 Create Your Project
               </h1>
               <p className="text-text3 text-sm mb-2">
@@ -456,8 +456,8 @@ const Users = (props: Props) => {
             </div>
           </>
         ) : (
-          <div className="flex justify-center items-center bg-lite h-[400px]">
-            <div className="loader bg-lite p-5 rounded-full flex space-x-3">
+          <div className="flex justify-center items-center bg-lite dark:bg-darkbg h-[400px]">
+            <div className="loader bg-lite dark:bg-darkbg p-5 rounded-full flex space-x-3">
               <div className="w-5 h-5 bg-error rounded-full animate-bounce" />
               <div className="w-5 h-5 bg-primary rounded-full animate-bounce" />
               <div className="w-5 h-5 bg-blue-500 rounded-full animate-bounce" />

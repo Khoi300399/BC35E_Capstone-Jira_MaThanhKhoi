@@ -13,7 +13,7 @@ const Input = ({
   return (
     <div className="relative ">
       <input
-        className={`w-full px-6 py-4 border  rounded-xl text-sm font-medium placeholder:text-text4 dark:placeholder:text-text-2 ${className} ${
+        className={`w-full px-6 py-4 border rounded-xl text-sm font-medium placeholder:text-text4 dark:placeholder:text-text2 dark:bg-darkSecondary dark:text-white ${className} ${
           meta.touched && meta.error
             ? "border-error text-error"
             : "border-strock text-text1 dark:border-darkStoke"

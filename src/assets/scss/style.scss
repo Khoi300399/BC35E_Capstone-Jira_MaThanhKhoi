@@ -19,16 +19,16 @@
     @apply w-full;
 
     thead tr {
-      @apply bg-gray-100;
+      @apply bg-gray-100 dark:bg-darkSecondary dark:text-text4;
     }
 
     tbody tr {
-      @apply border-b border-gray-100;
+      @apply border-b border-gray-100 dark:border-darkSecondary dark:text-text3;
     }
 
     td,
     th {
-      @apply align-middle p-6 text-left text-sm;
+      @apply align-middle p-6 text-left text-base;
     }
 
     th {
@@ -50,7 +50,7 @@
   .table-user {
     tr {
       display: grid;
-      grid-template-columns: 10% 25% 10% 25% 20% 10%;
+      grid-template-columns: 5% 25% 10% 30% 20% 10%;
     }
     td {
       display: grid;

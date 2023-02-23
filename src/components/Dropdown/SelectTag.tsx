@@ -15,40 +15,44 @@ const SelectTag = ({
   const renderIcon = () => {
     if (data.length === 0) {
       return show ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M5 15l7-7 7 7"
-          />
-        </svg>
+        <span className="dark:text-text3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 15l7-7 7 7"
+            />
+          </svg>
+        </span>
       ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        <span className="dark:text-text3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </span>
       );
     } else {
       return (
         <span
-          className="hover:text-error"
+          className="hover:text-error dark:hover:text-error dark:text-text3"
           onClick={() => {
             clearListUser();
           }}
@@ -69,7 +73,7 @@ const SelectTag = ({
   return (
     <div
       ref={nodeRef}
-      className={`flex items-center justify-between gap-x-5 px-6 py-4 border rounded-xl text-sm cursor-pointer select-none font-semibold ${className}`}
+      className={`flex items-center dark:bg-darkSecondary dark:border-darkStoke justify-between gap-x-5 px-6 py-4 border rounded-xl text-sm cursor-pointer select-none font-semibold ${className}`}
       onClick={onClick}
     >
       <div>
@@ -77,11 +81,11 @@ const SelectTag = ({
           {data?.map(({ userId, name }) => (
             <li
               key={userId + name}
-              className="flex items-center justify-between gap-x-2 p-1 border border-strock bg-white rounded-lg"
+              className="flex items-center justify-between gap-x-2 p-1 border border-strock bg-white dark:border-darkStoke dark:bg-darkSecondary rounded-lg"
             >
-              <span className="text-text1 ">{name}</span>
+              <span className="text-text1 dark:text-white ">{name}</span>
               <span
-                className="flex items-center justify-center w-4 h-4 border rounded-full hover:text-error hover:border-error transition-all"
+                className="flex items-center justify-center w-4 h-4 border rounded-full dark:border-darkStoke dark:text-text4 dark:hover:text-error dark:hover:border-error   hover:text-error hover:border-error transition-all"
                 onClick={() => {
                   removeUser(userId);
                 }}

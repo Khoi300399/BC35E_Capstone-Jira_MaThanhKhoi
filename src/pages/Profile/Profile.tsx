@@ -43,7 +43,7 @@ const Profile = (props: Props) => {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   return (
-    <div className="bg-lite h-screen">
+    <div className="bg-lite dark:bg-darkSoft min-h-screen">
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
@@ -104,11 +104,11 @@ const Profile = (props: Props) => {
                         />
                       </div>
                       <div className="flex flex-col items-start mt-5">
-                        <span className="font-bold text-text5 text-2xl">
+                        <span className="font-bold text-text5 dark:text-text4 text-2xl">
                           {name}
                         </span>
-                        <p className="text-text2 font-thin">
-                          ID: <span>{id}</span>
+                        <p className="text-text2 dark:text-text3 font-thin">
+                          ID: <span className="dark:text-text3">{id}</span>
                         </p>
                       </div>
                     </div>
@@ -127,7 +127,7 @@ const Profile = (props: Props) => {
                     ) : (
                       <div className="flex items-center justify-end gap-x-3 w-2/6 mt-5 ">
                         <button
-                          className="bg-stock border border-strock text-text3 text-base font-medium font-mono px-4 py-2  rounded-lg"
+                          className="bg-stock border border-strock dark:text-text4 dark:hover:text-white dark:border-darkStoke  text-text3 text-base font-medium font-mono px-4 py-2  rounded-lg"
                           type="button"
                           onClick={() => {
                             setUpdate(true);

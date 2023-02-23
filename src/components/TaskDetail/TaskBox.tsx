@@ -80,7 +80,7 @@ const TaskBox = ({ children, name, id }: Props) => {
         </span>
       </div>
       <div className="flex-1 min-h-0">
-        <ul className="pt-1 pb-3 px-3">{children}</ul>
+        <ul className="pt-1 pb-3 px-3 dark:bg-darkStoke ">{children}</ul>
       </div>
     </div>
   );

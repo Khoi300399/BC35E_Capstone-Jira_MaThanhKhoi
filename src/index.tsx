@@ -38,7 +38,7 @@ root.render(
         <HistoryBrowserRouter history={history}>
           <Suspense
             fallback={
-              <div className="flex justify-center items-center h-screen bg-lite">
+              <div className="flex justify-center items-center h-screen bg-lite dark:bg-darkbg">
                 <Loading
                   text1="L"
                   duration={1000}
