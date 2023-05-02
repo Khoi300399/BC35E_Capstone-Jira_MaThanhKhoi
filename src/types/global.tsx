@@ -140,6 +140,7 @@ export const ItemType = {
 
 export interface statusState {
   statuses: statusType[];
+  isMenu: boolean;
 }
 export interface statusType {
   statusId: string;

@@ -110,7 +110,7 @@ const Users = (props: Props) => {
                 return (
                   <div
                     key={userId}
-                    className="relative bg-lite dark:bg-darkSecondary max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary"
+                    className="relative bg-lite dark:bg-darkSecondary md:max-w-[500px] md:w-[400px] md:max-h-[350px] w-[300px] h-auto  overflow-hidden rounded-lg shadow-sdSecondary"
                   >
                     <div className="flex gap-x-2 p-6">
                       <IconError />
@@ -241,7 +241,7 @@ const Users = (props: Props) => {
                   {({ isSubmitting, errors, setFieldValue }) => {
                     return (
                       <Form>
-                        <div className="relative bg-white dark:bg-darkbg min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
+                        <div className="relative bg-white dark:bg-darkbg md:min-w-[750px] md:max-h-[650px] overflow-x-hidden md:overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
                           <div className="flex items-start justify-between mx-5 mt-5">
                             <div className=" flex items-center gap-x-3">
                               <div className="text-text2 font-medium">ID :</div>
@@ -271,7 +271,7 @@ const Users = (props: Props) => {
                               </svg>
                             </span>
                           </div>
-                          <div className="bg-lite dark:bg-darkbg  rounded-xl py-10 px-[66px]">
+                          <div className="bg-lite dark:bg-darkbg  rounded-xl md:py-10 md:px-[66px] px-16 py-5">
                             <div className="text-center">
                               <h1 className="py-4 px-14  bg-text4 dark:text-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
                                 Edit User 📝
@@ -357,9 +357,9 @@ const Users = (props: Props) => {
             </ModalBase>
           );
         })}
-      <div className="w-full overflow-x-auto">
-        <div className="mb-2 bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
-          <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
+      <div className="w-full">
+        <div className="mb-2 bg-white dark:bg-darkbg rounded-3xl flex md:flex-row flex-col-reverse gap-y-5 items-center justify-between py-8 px-10">
+          <div className="ms:w-2/12 md:hover:w-2/6 md:focus-within:w-2/6  transition-all ease-out">
             <HeaderSearch onChange={handleSearch}></HeaderSearch>
           </div>
           <div className="flex items-start gap-x-6">
@@ -396,8 +396,8 @@ const Users = (props: Props) => {
           </div>
         </div>
         {loading ? (
-          <>
-            <table className="table-user">
+          <div className="overflow-x-auto overflow-y-hidden">
+            <table className="table-user ">
               <thead>
                 <tr>
                   <th>No.</th>
@@ -416,7 +416,7 @@ const Users = (props: Props) => {
                         <td>{index + 1}</td>
                         <td className="truncate">{name}</td>
                         <td>{userId}</td>
-                        <td>{email}</td>
+                        <td className="truncate">{email}</td>
                         <td>{phoneNumber}</td>
                         <td>
                           <div className="flex items-center text-gray-500 gap-x-3">
@@ -454,7 +454,7 @@ const Users = (props: Props) => {
                 total={totalItems}
               />
             </div>
-          </>
+          </div>
         ) : (
           <div className="flex justify-center items-center bg-lite dark:bg-darkbg h-[400px]">
             <div className="loader bg-lite dark:bg-darkbg p-5 rounded-full flex space-x-3">

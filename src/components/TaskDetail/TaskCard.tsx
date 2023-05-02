@@ -287,7 +287,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
             <>
-              <div className="relative bg-white max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary">
+              <div className="relative bg-white md:max-w-[500px] md:w-[400px] md:max-h-[350px] w-[300px] h-auto overflow-hidden rounded-lg shadow-sdSecondary">
                 <div className="flex gap-x-2 p-6">
                   <IconError />
                   <div className="flex-1">
@@ -421,7 +421,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
 
               return (
                 <Form>
-                  <div className="relative bg-white dark:bg-darkbg min-w-[1280px] rounded-md shadow-lg">
+                  <div className="relative bg-white dark:bg-darkbg md:min-w-[1280px] w-[375px] h-[812px] rounded-md shadow-lg">
                     {isLoading ? (
                       <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
                     ) : (
@@ -430,21 +430,21 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                           onClick={() => {
                             setOpenModalBase(false);
                           }}
-                          className="absolute px-3 py-1 rounded-full top-0 right-0 -translate-y-2/4 translate-x-2/4 bg-error bg-opacity-20 hover:bg-opacity-50 transition-all ease-linear cursor-pointer"
+                          className="absolute px-3 py-1 rounded-full md:top-0 md:right-0 top-6 right-6 -translate-y-2/4 translate-x-2/4 bg-error bg-opacity-20 hover:bg-opacity-50 transition-all ease-linear cursor-pointer"
                         >
                           <i className="fa-solid fa-xmark text-3xl text-red-600"></i>
                         </button>
                         <div className="px-12 pt-7 pb-4 flex items-center justify-between">
-                          <div className="w-2/4 text-text5 dark:text-text3 text-xl font-semibold ">
+                          <div className="md:w-2/4 w-full md:text-left text-center text-text5 dark:text-text3 text-xl font-semibold ">
                             {taskTypeCurrent} - {taskId}
                           </div>
 
                           <div className="flex items-center gap-x-8">
-                            <button className="flex items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
+                            <button className="md:flex hidden items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
                               <i className="fa-regular fa-paper-plane "></i>
                               <span>Give Feedback</span>
                             </button>
-                            <button className="flex items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
+                            <button className="md:flex hidden items-baseline justify-center gap-2 dark:text-text3 dark:bg-darkSecondary hover:dark:bg-darkStoke text-[#42526e] bg-[rgba(9,30,66,0.04)] px-3 py-1 hover:bg-gray-200 rounded transition-all ease-linear">
                               <i className="fa-solid fa-link"></i>
                               <span>Link Issue</span>
                             </button>
@@ -461,8 +461,8 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                           </div>
                         </div>
 
-                        <div className=" flex items-start justify-between gap-x-20 pl-8 pr-5 pb-8">
-                          <div className="w-[60%] overflow-x-hidden overflow-y-auto max-h-[500px] scrollbar-none ">
+                        <div className=" flex md:flex-row flex-col items-start justify-between gap-x-20 gap-y-10 pl-8 pr-5 pb-8">
+                          <div className="md:w-[60%] overflow-x-hidden overflow-y-auto max-h-[500px] scrollbar-none ">
                             {openTaskName ? (
                               <>
                                 <Input
@@ -643,7 +643,7 @@ const TaskCard = ({ index, items, changeStatusName, creator }: Props) => {
                               );
                             })}
                           </div>
-                          <div className="w-[40%] pr-5 overflow-x-hidden overflow-y-auto h-[500px] max-h-[500px] scrollbar-thumb-stone-300 scrollbar-track-slate-100 scrollbar-thin ">
+                          <div className="md:w-[40%] pr-5 overflow-x-hidden overflow-y-auto h-[500px] max-h-[500px] scrollbar-thumb-stone-300 scrollbar-track-slate-100 scrollbar-thin ">
                             <FormRow>
                               <FormGroup>
                                 <Label>Priority</Label>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Props } from "./Dropdow";
 
 const Search = ({ placeholder, ...props }: Props) => {

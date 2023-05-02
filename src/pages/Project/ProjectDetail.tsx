@@ -185,7 +185,7 @@ const ProjectDetail = () => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white dark:bg-darkbg max-w-[900px] w-[9000px] max-h-[650px] h-[650px] overflow-x-hidden overflow-y-auto rounded-lg scrollbar-none shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg md:max-w-[900px] md:w-[9000px] md:max-h-[650px] md:h-[650px] w-[375px] h-[812px] overflow-x-hidden overflow-y-auto rounded-lg scrollbar-none shadow-sdSecondary">
               <>
                 <div className="flex items-start justify-end mx-5 mt-5">
                   <span
@@ -571,7 +571,7 @@ const ProjectDetail = () => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white dark:bg-darkbg max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg md:max-w-[750px] md:w-[750px] md:max-h-[650px] md:h-[650px] w-[375px] h-[812px] overflow-hidden rounded-lg shadow-sdSecondary">
               <div key={id + projectName}>
                 <div className="flex items-start justify-between mx-5 mt-5">
                   <div className=" flex items-center gap-x-3">
@@ -737,8 +737,8 @@ const ProjectDetail = () => {
         </ModalBase>
       )}
       <div className="bg-lite dark:bg-darkbg">
-        <div className="bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
-          <div className="flex items-center gap-x-5 md:w-auto">
+        <div className="bg-white dark:bg-darkbg rounded-3xl flex md:flex-row flex-col-reverse gap-y-5 items-center justify-between md:py-8 md:px-10 py-4 px-5">
+          <div className="flex items-center  gap-x-5 md:w-auto">
             <HeaderSearch></HeaderSearch>
 
             <div className="flex items-center gap-x-2">

@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import useClickOutside from "../../hooks/useClickOutside";
 import useGetElementCoords from "../../hooks/useGetElementCoords";
-import mainLogo from "../../assets/img/logo.png";
 import AvatarModal from "../Modal/AvatarModal";
 import { getStoreJson, USER_LOGIN } from "../../util/setting";
 import { UserLoginType } from "../../types/global";
+import { useDispatch } from "react-redux";
+import { setIsMenu } from "../../redux/statusReducer/statusReducer";
 
 const Header = () => {
   // Admin
@@ -27,43 +28,26 @@ const Header = () => {
     handleGetElementCoords(e);
   };
 
+  const dispatch = useDispatch();
   return (
     <div
       id="header "
-      className="flex items-center justify-between mb-5 border-b border-gray-100 dark:border-darkSecondary pb-2"
+      className="flex items-center justify-between mb-5 border-b border-gray-100 dark:border-darkSecondary pb-2 md:px-0 px-5 md:py-0 py-3"
     >
       <div className=" max-w-[300px] w-full">
         <Link
           to="/"
           className="flex items-center justify-center-5 gap-x-5 text-2xl text-primary font-bold "
         >
-          <img src={mainLogo} alt="..." className="w-full max-w-[70px]" />
+          <img
+            srcSet="./img/logo.png 2x"
+            alt="..."
+            className="w-full md:max-w-[70px] max-w-[40px]"
+          />
           <span className="hidden lg:inline-block">Monkey Jira</span>
         </Link>
-        <div className=" max-w-[458px] w-full"></div>
       </div>
       <div className="flex items-center flex-1 gap-x-4 justify-end">
-        <div className="indicator ">
-          <span className="indicator-item indicator-top badge badge-xs badge-error text-white p-2 ">
-            9
-          </span>
-          <span className="text-blue-500 p-1 bg-blue-500 bg-opacity-20 rounded-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-              />
-            </svg>
-          </span>
-        </div>
         <div className="relative" ref={nodeRef}>
           <div
             ref={elmRef}
@@ -79,7 +63,17 @@ const Header = () => {
 
           {isShowDropdown && <AvatarModal coords={coords} />}
         </div>
-        <div className="flex items-center">
+
+        <div
+          className="text-primary text-2xl md:hidden block"
+          onClick={() => {
+            dispatch(setIsMenu(true));
+          }}
+        >
+          <i className="fa-solid fa-bars-staggered"></i>
+        </div>
+
+        <div className="md:flex items-center hidden">
           <p className="text-text5 dark:text-text4 font-semibold">
             {admin?.name || ""}
           </p>

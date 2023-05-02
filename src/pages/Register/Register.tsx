@@ -36,7 +36,7 @@ const Register = (props: Props) => {
   return (
     <FormTemplate heading="Sing Up">
       <p className="mb-6 font-normal text-center lg:text-sm text-text3 lg:mb-8">
-        Already have an account?{" "}
+        Already have an account?
         <Link to={"/login"} className="font-medium underline text-primary">
           Sign in
         </Link>

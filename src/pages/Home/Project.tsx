@@ -143,7 +143,7 @@ const Project = (props: Props) => {
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
             <>
-              <div className="relative bg-white dark:bg-darkSecondary max-w-[500px] w-[400px] max-h-[350px]  overflow-hidden rounded-lg shadow-sdSecondary">
+              <div className="relative bg-white dark:bg-darkSecondary md:max-w-[500px] md:w-[400px] md:max-h-[350px] w-[300px] h-auto   overflow-hidden rounded-lg shadow-sdSecondary">
                 <div className="flex gap-x-2 p-6">
                   <IconError />
                   <div className="flex-1">
@@ -210,7 +210,7 @@ const Project = (props: Props) => {
           {isLoading ? (
             <div className="w-8 h-8 rounded-full border-4 border-blue-300 border-t-transparent animate-spin"></div>
           ) : (
-            <div className="relative bg-white dark:bg-darkbg max-w-[750px] w-[750px] max-h-[650px] h-[650px] overflow-hidden rounded-lg shadow-sdSecondary">
+            <div className="relative bg-white dark:bg-darkbg md:max-w-[750px] md:w-[750px] md:max-h-[650px] md:h-[650px] w-[375px] h-[812px]   overflow-hidden rounded-lg shadow-sdSecondary">
               <div>
                 <div className="flex items-start justify-between mx-5 mt-5">
                   <div className=" flex items-center gap-x-3">
@@ -279,7 +279,7 @@ const Project = (props: Props) => {
                                   <img src={avatar} alt={`${name} avatar`} />
                                 }
                               />
-                              <span className="text-text1 dark:text-text3 max-w-[250px] font-medium truncate">
+                              <span className="text-text1 md:text-base text-xs dark:text-text3 max-w-[250px] font-medium truncate">
                                 {name}
                               </span>
                             </div>
@@ -302,7 +302,7 @@ const Project = (props: Props) => {
                                   position: "bottomLeft",
                                 });
                               }}
-                              className="text-white font-medium font-mono bg-blue-500 px-2 py-1 rounded-lg disabled:bg-opacity-20"
+                              className="text-white font-medium font-mono bg-blue-500 md:px-2 md:py-1 p-1 md:text-base text-xs rounded-lg disabled:bg-opacity-20"
                             >
                               Add
                             </button>
@@ -350,7 +350,7 @@ const Project = (props: Props) => {
                                   position: "bottomLeft",
                                 });
                               }}
-                              className="text-white font-medium font-mono bg-error px-2 py-1 rounded-lg"
+                              className="text-white md:px-2 md:py-1 p-1 md:text-base text-xs font-medium font-mono bg-error px-2 py-1 rounded-lg"
                             >
                               Remove
                             </button>
@@ -411,7 +411,7 @@ const Project = (props: Props) => {
 
                 return (
                   <Form>
-                    <div className="relative bg-white dark:bg-darkbg min-w-[750px] max-h-[650px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
+                    <div className="relative bg-white dark:bg-darkbg md:min-w-[750px] md:max-h-[650px] w-[375px] h-[812px] overflow-x-hidden overflow-y-auto rounded-lg shadow-sdSecondary scrollbar-none">
                       <div className="flex items-start justify-between mx-5 mt-5">
                         <div className=" flex items-center gap-x-3">
                           <div className="text-text2 font-medium">ID :</div>
@@ -560,9 +560,9 @@ const Project = (props: Props) => {
         </ModalBase>
       )}
 
-      <div className="w-full overflow-x-auto overflow-y-hidden">
-        <div className=" bg-white dark:bg-darkbg rounded-3xl flex items-center justify-between py-8 px-10">
-          <div className="w-2/12 hover:w-2/6 focus-within:w-2/6  transition-all ease-out">
+      <div className="w-full ">
+        <div className=" bg-white dark:bg-darkbg rounded-3xl flex md:flex-row flex-col-reverse gap-y-5 items-center justify-between md:py-8 md:px-10 py-4 px-5">
+          <div className="md:w-2/12 md:hover:w-2/6 md:focus-within:w-2/6  transition-all ease-out">
             <HeaderSearch
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 setSearch(e.currentTarget.value);
@@ -579,7 +579,7 @@ const Project = (props: Props) => {
           </Button>
         </div>
         {loading ? (
-          <>
+          <div className="overflow-x-auto overflow-y-hidden">
             <table className="table-project">
               <thead>
                 <tr>
@@ -718,7 +718,7 @@ const Project = (props: Props) => {
                 total={totalItems}
               />
             </div>
-          </>
+          </div>
         ) : (
           <div className="flex justify-center items-center bg-lite dark:bg-darkbg h-[400px]">
             <div className="loader bg-lite dark:bg-darkbg p-5 rounded-full flex space-x-3">

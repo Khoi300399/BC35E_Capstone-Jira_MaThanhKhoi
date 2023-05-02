@@ -1,5 +1,3 @@
-import React from "react";
-
 const IconSuccess = () => {
   return (
     <span className="text-green-500">

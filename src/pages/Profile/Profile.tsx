@@ -91,7 +91,7 @@ const Profile = (props: Props) => {
         {({ isSubmitting, resetForm }) => {
           return (
             <Form>
-              <div className="relative h-[150px] bg-gradient-to-r from-[#00a7b4] to-[#a4d96c] rounded-lg ">
+              <div className="relative h-[150px] bg-gradient-to-t from-[#00a7b4] to-[#a4d96c] rounded-lg ">
                 <div className="absolute w-[80%] bottom-0 left-0 translate-y-[70%] translate-x-[20%]">
                   <div className="flex items-center justify-between ">
                     <div className="flex items-center gap-x-5">

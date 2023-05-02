@@ -47,7 +47,7 @@ const AddProject = (props: Props) => {
   }, [dispatch]);
   return (
     <Fragment>
-      <div className="bg-white dark:bg-darkbg rounded-xl py-10 px-[66px]">
+      <div className="bg-white dark:bg-darkbg rounded-xl md:py-10 md:px-[66px] px-5 -z-50">
         <div className="text-center">
           <h1 className="py-4 px-14  bg-text4 dark:text-text4 bg-opacity-5 rounded-xl font-bold text-[25px] inline-block">
             Start a Project 🚀

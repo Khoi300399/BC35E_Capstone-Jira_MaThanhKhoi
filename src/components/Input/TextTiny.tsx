@@ -1,4 +1,3 @@
-import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Field } from "formik";
 
@@ -25,6 +24,7 @@ const TextTiny = ({ control, name, value, ...props }: Props) => {
                     init={{
                       height: 500,
                       menubar: true,
+                      plugins: "image",
                       toolbar:
                         "undo redo | formatselect | " +
                         "bold italic backcolor | alignleft aligncenter " +

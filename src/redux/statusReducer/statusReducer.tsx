@@ -5,6 +5,7 @@ import { DispathType } from "../config";
 
 const initialState: statusState = {
   statuses: [],
+  isMenu: false,
 };
 
 const statusReducer = createSlice({
@@ -17,10 +18,13 @@ const statusReducer = createSlice({
     ) => {
       state.statuses = action.payload;
     },
+    setIsMenu: (state: statusState, action: PayloadAction<boolean>) => {
+      state.isMenu = action.payload;
+    },
   },
 });
 
-export const { getStatusAction } = statusReducer.actions;
+export const { getStatusAction, setIsMenu } = statusReducer.actions;
 
 export default statusReducer.reducer;
 

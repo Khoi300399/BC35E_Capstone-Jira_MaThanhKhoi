@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useToast } from "./useToast";
 import { ToastProps } from "../../types/global";
 import {
@@ -43,6 +43,7 @@ export const Toast = (props: ToastProps) => {
     return () => {
       clearTimeout(dismissRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // progressBar
@@ -65,6 +66,7 @@ export const Toast = (props: ToastProps) => {
     return () => {
       clearInterval(progressBarRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

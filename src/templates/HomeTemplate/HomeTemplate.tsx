@@ -8,11 +8,11 @@ const HomeTemplate = (props: Props) => {
   return (
     <div className="relative min-h-screen md:px-10 md:py-5 bg-lite dark:bg-darkbg">
       <Header />
-      <div className="flex items-start gap-x-10 ">
-        <div className="md:fixed ">
+      <div className="md:flex md:items-start md:gap-x-10 ">
+        <div className="fixed">
           <Dashboard />
         </div>
-        <div className="w-full pl-24">
+        <div className="w-full md:pl-24">
           <Outlet />
         </div>
       </div>

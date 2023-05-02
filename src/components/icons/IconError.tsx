@@ -1,5 +1,3 @@
-import React from "react";
-
 const IconError = () => {
   return (
     <span className="text-red-500">

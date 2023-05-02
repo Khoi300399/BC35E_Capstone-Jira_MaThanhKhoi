@@ -1,4 +1,3 @@
-import React from "react";
 import { useField } from "formik";
 export type RangeType = {
   id?: string;

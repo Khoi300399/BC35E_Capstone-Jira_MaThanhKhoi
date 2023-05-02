@@ -1,4 +1,3 @@
-import React from "react";
 import { portalType } from "../../types/global";
 import Portal from "../Portal/Portal";
 
